@@ -1,7 +1,16 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
+const compiler = {};
+if (process.env.NODE_ENV === "production") {
+  compiler.removeConsole = {
+    exclude: ["error"],
+  };
 }
 
-module.exports = nextConfig
+const moduleExports = {
+  reactStrictMode: true,
+  swcMinify: true,
+  compiler,
+  trailingSlash: true,
+};
+
+module.exports = moduleExports;
+
