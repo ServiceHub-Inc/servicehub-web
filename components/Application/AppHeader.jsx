@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   links: {
-    width: 320,
+    width: 350,
 
     [theme.fn.smallerThan("sm")]: {
       display: "none",
@@ -77,17 +77,6 @@ const useStyles = createStyles((theme) => ({
           : theme.colors.gray[0],
     },
   },
-
-  linkActive: {
-    "&, &:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.25)
-          : theme.colors[theme.primaryColor][0],
-      color:
-        theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 3 : 7],
-    },
-  },
 }));
 
 const links = [
@@ -97,7 +86,7 @@ const links = [
   },
   {
     link: "#services",
-    label: "Our Services",
+    label: "Find Services",
   },
   {
     link: "#contact",
@@ -126,9 +115,9 @@ const socials = [
 export default function Logo() {
   return (
     <Link href="/" passHref>
-      <div className="mt-4">
+      <div className="mt-4 w-40 h-40">
         <a href="/a">
-          <Image src={logo} alt="logo" width={80} height={80} />
+          <Image src={logo} alt="logo" />
         </a>
       </div>
     </Link>
@@ -146,9 +135,9 @@ export function HeaderMiddle() {
     <a
       key={link.label}
       href={link.link}
-      className={cx(classes.link, {
-        [classes.linkActive]: active === link.link,
-      })}
+      className={`${
+        active === link.link && "bg-primary/50"
+      } text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300`}
       onClick={(event) => {
         // event.preventDefault();
 

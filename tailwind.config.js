@@ -17,7 +17,7 @@ module.exports = {
         landing: "url('/images/landing.webp')",
       },
       colors: {
-        primary: "#228be6",
+        primary: "#32CD32",
         secondary: colors.gray[600],
 
         danger: "#FF0000",

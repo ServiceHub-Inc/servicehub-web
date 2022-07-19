@@ -12,6 +12,7 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import Footer from "./AppFooter";
 import { HeaderMiddle as Header } from "./AppHeader";
+import { HeaderAction } from "./Header";
 // import AppHeader from "./Header";
 
 const AppProvider = ({ children }) => {
@@ -88,7 +89,7 @@ const AppProvider = ({ children }) => {
               }}
             >
               <div className="h-screen ">
-                <Header />
+                <HeaderAction />
                 <div className="min-h-[calc(100vh-110px)]">{children}</div>
                 <Footer />
               </div>
