@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import {
   createStyles,
   Menu,
@@ -11,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useBooleanToggle, useWindowScroll } from "@mantine/hooks";
 import { ChevronDown } from "tabler-icons-react";
-import Logo from "./AppHeader";
+import logo from "../../public/images/logo-1.webp";
 
 const HEADER_HEIGHT = 60;
 
@@ -116,7 +118,19 @@ const links = [
   },
 ];
 
-export function AppHeader() {
+export function Logo() {
+  return (
+    <Link href="/" passHref>
+      <div className="mt-4 w-24 h-12 lg:w-36 lg:h-18">
+        <a href="/a">
+          <Image src={logo} alt="logo" />
+        </a>
+      </div>
+    </Link>
+  );
+}
+
+export default function AppHeader() {
   const { classes } = useStyles();
   const [scroll, scrollTo] = useWindowScroll();
   const [opened, toggleOpened] = useBooleanToggle(false);
@@ -168,7 +182,7 @@ export function AppHeader() {
     <Header
       className={`${
         scroll.y >= 60 && "shadow-md"
-      } fixed transition-all duration-300 px-4 py-2 lg:py-0 lg:px-8`}
+      } fixed transition-all duration-300 px-4 py-2 lg:px-8`}
     >
       <div className="flex w-full justify-between items-center">
         <Group>

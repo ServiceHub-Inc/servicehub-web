@@ -11,9 +11,7 @@ import Router from "next/router";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
-import { HeaderMiddle as Header } from "./AppHeader";
-import { AppHeader } from "./AppHeader";
-// import AppHeader from "./Header";
+import AppHeader from "./AppHeader";
 
 const AppProvider = ({ children }) => {
   const router = Router.useRouter();

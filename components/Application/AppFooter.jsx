@@ -1,7 +1,7 @@
 import React from "react";
 import { createStyles, Container, Group, ActionIcon } from "@mantine/core";
 import { BrandTwitter, Mail, BrandInstagram } from "tabler-icons-react";
-import Logo from "./AppHeader";
+import { Logo } from "./AppHeader";
 import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
 
   links: {
     [theme.fn.smallerThan("xs")]: {
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.sm,
     },
   },
 }));
@@ -52,7 +52,7 @@ export default function AppFooter() {
   const { classes } = useStyles();
 
   return (
-    <div className={`${classes.footer} px-8 py-0 my-0`}>
+    <div className={`${classes.footer} px-8 pb-3 lg:pb-0`}>
       <div className={classes.inner}>
         <Logo />
         <Group spacing={6} className={classes.links} position="right" noWrap>
