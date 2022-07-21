@@ -16,7 +16,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: theme.spacing.sm,
+    // paddingBottom: theme.spacing.sm,
 
     [theme.fn.smallerThan("xs")]: {
       flexDirection: "column",
@@ -48,14 +48,14 @@ const socials = [
   },
 ];
 
-export default function Footer() {
+export default function AppFooter() {
   const { classes } = useStyles();
 
   return (
-    <div className={`${classes.footer} mx-12`}>
+    <div className={`${classes.footer} px-8 py-0 my-0`}>
       <div className={classes.inner}>
         <Logo />
-        <Group spacing={0} className={classes.links} position="right" noWrap>
+        <Group spacing={6} className={classes.links} position="right" noWrap>
           {socials.map((item) => (
             <ActionIcon size="lg" key={item.label}>
               <Link href={item.link} passHref>
