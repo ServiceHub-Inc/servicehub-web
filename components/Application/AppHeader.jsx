@@ -1,62 +1,44 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import React from "react";
 import {
   createStyles,
+  Menu,
+  Center,
   Header,
-  Group,
-  ActionIcon,
-  Container,
   Collapse,
+  Group,
+  Button,
   Burger,
 } from "@mantine/core";
 import { useBooleanToggle, useWindowScroll } from "@mantine/hooks";
-import { BrandTwitter, Mail, BrandInstagram } from "tabler-icons-react";
-import logo from "../../public/images/logo-1.webp";
-// import { ThemeSwitch } from "./ThemeSwitch";
+import { ChevronDown } from "tabler-icons-react";
+import Logo from "./AppHeader";
+
+const HEADER_HEIGHT = 60;
 
 const useStyles = createStyles((theme) => ({
   inner: {
+    height: HEADER_HEIGHT,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    height: 70,
-
-    [theme.fn.smallerThan("sm")]: {
-      justifyContent: "flex-start",
-    },
   },
 
   links: {
-    width: 350,
-
     [theme.fn.smallerThan("sm")]: {
       display: "none",
     },
   },
 
-  social: {
-    width: 320,
-
-    [theme.fn.smallerThan("sm")]: {
-      width: "auto",
-      marginLeft: "auto",
-    },
-  },
-
   burger: {
-    marginRight: theme.spacing.md,
-
-    [theme.fn.largerThan("md")]: {
+    [theme.fn.largerThan("sm")]: {
       display: "none",
     },
   },
 
   link: {
-    scrollBehavior: "smooth",
     display: "block",
     lineHeight: 1,
-    padding: "10px 15px",
+    padding: "8px 12px",
     borderRadius: theme.radius.sm,
     textDecoration: "none",
     color:
@@ -66,10 +48,6 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.sm,
     fontWeight: 500,
 
-    [theme.fn.largerThan("sm")]: {
-      padding: "12px 15px",
-    },
-
     "&:hover": {
       backgroundColor:
         theme.colorScheme === "dark"
@@ -77,109 +55,144 @@ const useStyles = createStyles((theme) => ({
           : theme.colors.gray[0],
     },
   },
+
+  linkLabel: {
+    marginRight: 5,
+  },
 }));
 
 const links = [
   {
-    link: "/",
-    label: "Home",
+    link: "/about",
+    label: "Features",
   },
   {
-    link: "#services",
-    label: "Find Services",
+    link: "#1",
+    label: "Learn",
+    links: [
+      {
+        link: "/docs",
+        label: "Documentation",
+      },
+      {
+        link: "/resources",
+        label: "Resources",
+      },
+      {
+        link: "/community",
+        label: "Community",
+      },
+      {
+        link: "/blog",
+        label: "Blog",
+      },
+    ],
   },
   {
-    link: "#contact",
-    label: "Contact Us",
+    link: "/about",
+    label: "About",
+  },
+  {
+    link: "/pricing",
+    label: "Pricing",
+  },
+  {
+    link: "#2",
+    label: "Support",
+    links: [
+      {
+        link: "/faq",
+        label: "FAQ",
+      },
+      {
+        link: "/demo",
+        label: "Book a demo",
+      },
+      {
+        link: "/forums",
+        label: "Forums",
+      },
+    ],
   },
 ];
 
-const socials = [
-  {
-    icon: <BrandTwitter size={22} />,
-    link: "https://twitter.com/DodooRegwels",
-    label: "Twitter",
-  },
-  {
-    icon: <BrandInstagram size={22} />,
-    link: "https://www.instagram.com/quickfix_officina/",
-    label: "Instagram",
-  },
-  {
-    icon: <Mail size={22} />,
-    link: "mailto:quickfixofficina@gmail.com",
-    label: "Mail",
-  },
-];
-
-export default function Logo() {
-  return (
-    <Link href="/" passHref>
-      <div className="mt-4 w-40 h-40">
-        <a href="/a">
-          <Image src={logo} alt="logo" />
-        </a>
-      </div>
-    </Link>
-  );
-}
-
-export function HeaderMiddle() {
-  const [opened, toggleOpened] = useBooleanToggle(false);
+export function AppHeader() {
+  const { classes } = useStyles();
   const [scroll, scrollTo] = useWindowScroll();
-  const [active, setActive] = useState(links[0].link);
-  const { classes, cx } = useStyles();
+  const [opened, toggleOpened] = useBooleanToggle(false);
+  const items = links.map((link) => {
+    const menuItems = link.links?.map((item) => (
+      <Menu.Item key={item.link}>{item.label}</Menu.Item>
+    ));
 
-  const items = links.map((link) => (
-    // <Link key={link.label} href={link.link} passHref>
-    <a
-      key={link.label}
-      href={link.link}
-      className={`${
-        active === link.link && "bg-primary/50"
-      } text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300`}
-      onClick={(event) => {
-        // event.preventDefault();
+    if (menuItems) {
+      return (
+        <Menu
+          key={link.label}
+          trigger="hover"
+          delay={0}
+          transitionDuration={0}
+          placement="end"
+          gutter={1}
+          control={
+            <a
+              href={link.link}
+              className={classes.link}
+              onClick={(event) => event.preventDefault()}
+            >
+              <Center>
+                <span className={classes.linkLabel}>{link.label}</span>
+                <ChevronDown size={12} />
+              </Center>
+            </a>
+          }
+        >
+          {menuItems}
+        </Menu>
+      );
+    }
 
-        setActive(link.link);
-        toggleOpened(false);
-      }}
-    >
-      {link.label}
-    </a>
-    // </Link>
-  ));
+    return (
+      <a
+        key={link.label}
+        href={link.link}
+        className={classes.link}
+        onClick={(event) => event.preventDefault()}
+      >
+        {link.label}
+      </a>
+    );
+  });
 
   return (
     <Header
       className={`${
         scroll.y >= 60 && "shadow-md"
-      } fixed border-0 transition-all duration-300 mx-12`}
+      } fixed transition-all duration-300 px-4 py-2 lg:py-0 lg:px-8`}
     >
-      <div className={classes.inner}>
-        <Burger
-          opened={opened}
-          onClick={() => toggleOpened()}
-          size="sm"
-          className={classes.burger}
-        />
-        <Group className={classes.links} spacing={5}>
+      <div className="flex w-full justify-between items-center">
+        <Group>
+          <Burger
+            opened={opened}
+            onClick={() => toggleOpened()}
+            className={classes.burger}
+            size="sm"
+          />
+
+          <Logo />
+        </Group>
+        <Group spacing={5} className={classes.links}>
           {items}
         </Group>
 
-        <Logo />
-
-        <Group spacing={0} className={classes.social} position="right" noWrap>
-          {socials.map((item) => (
-            <ActionIcon size="lg" key={item.label}>
-              <Link href={item.link} passHref>
-                <a target="_blank" className="text-primary">
-                  {item.icon}
-                </a>
-              </Link>
-            </ActionIcon>
-          ))}
-        </Group>
+        <div>
+          <Button className="rounded-full text-xs bg-primary shadow-sm mr-4">
+            Signup
+          </Button>
+          <Button className="rounded-full text-xs border-primary bg-transparent text-gray-700 shadow-sm">
+            Login
+          </Button>
+        </div>
       </div>
       <Collapse
         in={opened}

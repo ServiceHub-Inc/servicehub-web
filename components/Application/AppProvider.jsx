@@ -10,9 +10,9 @@ import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import Router from "next/router";
 import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
-import Footer from "./AppFooter";
+import AppFooter from "./AppFooter";
 import { HeaderMiddle as Header } from "./AppHeader";
-import { HeaderAction } from "./Header";
+import { AppHeader } from "./AppHeader";
 // import AppHeader from "./Header";
 
 const AppProvider = ({ children }) => {
@@ -38,7 +38,7 @@ const AppProvider = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Quickfix Officina</title>
+        <title>ServiceHub</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -89,9 +89,9 @@ const AppProvider = ({ children }) => {
               }}
             >
               <div className="h-screen ">
-                <HeaderAction />
-                <div className="min-h-[calc(100vh-110px)]">{children}</div>
-                <Footer />
+                <AppHeader />
+                <div className="min-h-[calc(100vh-100px)]">{children}</div>
+                <AppFooter />
               </div>
             </ModalsProvider>
           </NotificationsProvider>
