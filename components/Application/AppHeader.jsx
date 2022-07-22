@@ -121,7 +121,7 @@ const links = [
 export function Logo() {
   return (
     <Link href="/" passHref>
-      <div className="mt-4 w-24 h-12 lg:w-36 lg:h-18">
+      <div className="mt-2 w-24 h-12 lg:w-36 lg:h-18">
         <a href="/a">
           <Image src={logo} alt="logo" />
         </a>
@@ -200,11 +200,15 @@ export default function AppHeader() {
         </Group>
 
         <div>
-          <Button className="rounded-full text-xs bg-primary shadow-sm mr-4">
-            Signup
+          <Button className="rounded-full text-xs lg:text-sm bg-primary shadow-sm mr-4">
+            <a href="/register" className="text-white">
+              Signup
+            </a>
           </Button>
-          <Button className="rounded-full text-xs border-primary bg-transparent text-gray-700 shadow-sm">
-            Login
+          <Button className="rounded-full text-xs lg:text-sm border-primary bg-transparent text-gray-700 shadow-sm">
+            <a href="/login" className="text-gray-700">
+              Login
+            </a>
           </Button>
         </div>
       </div>
