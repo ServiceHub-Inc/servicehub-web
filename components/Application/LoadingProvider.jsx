@@ -4,7 +4,7 @@ import { LoadingOverlay } from "@mantine/core";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { SiSpinrilla } from "react-icons/si";
-import transparentLogo from "../../public/images/logo-1.webp";
+import transparentLogo from "../../public/images/logo.webp";
 
 export const LoadingContext = React.createContext();
 const BouncingLogo = () => (
