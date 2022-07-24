@@ -14,7 +14,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         abstract: "url('/images/abstract-background.webp')",
-        landing: "url('/images/landing.webp')",
+        login: "url('/images/janitor.webp')",
       },
       colors: {
         primary: "#32CD32",
