@@ -58,13 +58,28 @@ function Login({ isAdmin, router }) {
   const handleLogin = async (data) => {
     setPageLoading(true);
     const res = await apiFetcher({
-      url: isAdmin ? "api/admin/auth/login" : "api/auth/login",
+      url: isAdmin ? "api/admin/auth/login" : "/login",
       method: "POST",
       data,
     });
-    const { message, statusCode, responseData } = res;
+    const { message, statusCode, data: responseData, code } = res;
     console.log(res);
-    if (statusCode !== 200) {
+    if (statusCode === 200) {
+      if (code === "000") {
+        notify.success({ message, title: "Login Success" });
+        setLoginState({
+          token: responseData.access_token,
+          loginType: isAdmin ? "admin" : "user",
+          profile: responseData.user,
+        });
+
+        const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard";
+        const url = redirectUrl || defaultUrl;
+        console.log(redirectUrl);
+        window.location.assign(url);
+        return;
+      }
+
       setPageLoading(false);
       notify.error({
         title: "Login Failed",
@@ -72,18 +87,12 @@ function Login({ isAdmin, router }) {
       });
       return;
     }
-
-    notify.success({ message, title: "Login Success" });
-    setLoginState({
-      token: responseData.access_token,
-      loginType: isAdmin ? "admin" : "user",
-      profile: responseData.user,
+    setPageLoading(false);
+    notify.error({
+      title: "Login Failed",
+      message,
     });
-
-    const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard";
-    const url = redirectUrl || defaultUrl;
-    console.log(redirectUrl);
-    window.location.assign(url);
+    return;
   };
 
   useIsomorphicEffect(() => {
