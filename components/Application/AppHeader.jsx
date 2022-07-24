@@ -121,7 +121,7 @@ const links = [
 export function Logo() {
   return (
     <Link href="/" passHref>
-      <div className="mt-2 w-24 h-12 lg:w-36 lg:h-18">
+      <div className="mt-5 lg:mt-1 w-24 h-12 lg:w-36 lg:h-18">
         <a href="/a">
           <Image src={logo} alt="logo" />
         </a>
@@ -182,7 +182,7 @@ export default function AppHeader() {
     <Header
       className={`${
         scroll.y >= 60 && "shadow-md"
-      } fixed transition-all duration-300 px-4 py-2 lg:px-8`}
+      } transition-all duration-300 px-4 py-2 lg:px-8`}
     >
       <div className="flex w-full justify-between items-center">
         <Group>

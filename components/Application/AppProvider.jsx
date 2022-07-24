@@ -88,7 +88,7 @@ const AppProvider = ({ children }) => {
             >
               <div className="h-screen ">
                 <AppHeader />
-                <div className="min-h-[calc(100vh-100px)]">{children}</div>
+                <div className="min-h-[calc(100vh-150px)]">{children}</div>
                 <AppFooter />
               </div>
             </ModalsProvider>
