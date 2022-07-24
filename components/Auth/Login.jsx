@@ -26,7 +26,7 @@ import apiFetcher from "../../lib/hooks/apiFetcher";
 import notify from "../../lib/notify";
 import { LoginContext } from "../../lib/contexts/LoginContext";
 // import ResetPassword from "../Application/Dashboard/Settings/ResetPasswordRequest";
-import logoSm from "../../public/images/logo-1.webp";
+import logoSm from "../../public/images/logo.webp";
 import { decode } from "../../lib/helperFunctions";
 
 const schema = Yup.object().shape({
@@ -97,74 +97,78 @@ function Login({ isAdmin, router }) {
   }, [notiShown]);
 
   return (
-    <div className="mx-auto my-auto pt-20 max-w-[min(90vw,450px)] ">
-      <Paper
-        // className="w-full"
-        component="form"
-        withBorder
-        shadow="sm"
-        p={40}
-        mt={0}
-        radius="sm"
-      >
-        <div className="flex flex-col items-center justify-center text-gray-800">
-          <Image height={60} width={60} alt="NCA Logo" src={logoSm} />
-          <Title align="center" className="mt-4 text-xl font-bold">
-            {isAdmin ? "Admin Login" : "Welcome back!"}
-          </Title>
-        </div>
-        <Text color="dimmed" className="" size="sm" align="center" m={5}>
-          Log in to continue:
-        </Text>
-
-        <TextInput
-          label="Email"
-          placeholder="username@mail.com"
-          icon={<MdMail size={14} />}
-          {...register("email")}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          icon={<MdLock size={14} />}
-          mt="md"
-          {...register("password")}
-        />
-        <Group position="apart" mt="md">
-          <Checkbox label="Remember me" />
-          <UnstyledButton
-            className="text-xs text-primary"
-            onClick={() => setRessettingPassword(true)}
-          >
-            Forgot password?
-          </UnstyledButton>
-        </Group>
-        <Button
-          fullWidth
-          mt="xl"
-          component="button"
-          type="submit"
-          onClick={form.onSubmit(handleLogin)}
+    <div className="absolute w-full h-[calc(100vh-140px)] my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
+      <div className="hidden lg:block bg-top bg-no-repeat bg-cover bg-login col-span-3" />
+      <div className="lg:col-span-2 lg:px-16 mx-auto w-full">
+        <Paper
+          // className="w-full"
+          component="form"
+          // withBorder
+          // shadow="sm"
+          p={40}
+          mt={0}
+          radius="sm"
         >
-          Sign in
-        </Button>
-        <Divider my="lg" />
-        {!isAdmin && (
-          <Text color="dimmed" size="sm" align="center" mt={5}>
-            Do not have an account yet?{" "}
-            <Link href="/register" passHref>
-              <Anchor component="a" pl={4} size="sm">
-                <MdPersonAdd
-                  size={16}
-                  style={{ verticalAlign: "text-bottom", paddingBottom: 2 }}
-                />{" "}
-                Create Account
-              </Anchor>
-            </Link>
+          <div className="flex flex-col items-center justify-center text-gray-800">
+            <Image height={60} width={60} alt="ServiceHub Logo" src={logoSm} />
+            <Title align="center" className="mt-4 text-xl font-bold">
+              {isAdmin ? "Admin Login" : "Welcome back!"}
+            </Title>
+          </div>
+          <Text color="dimmed" className="" size="sm" align="center" m={5}>
+            Log in to continue:
           </Text>
-        )}
-      </Paper>
+
+          <TextInput
+            label="Email"
+            placeholder="username@mail.com"
+            icon={<MdMail size={14} />}
+            {...register("email")}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            required
+            icon={<MdLock size={14} />}
+            mt="md"
+            {...register("password")}
+          />
+          <Group position="apart" mt="md">
+            <Checkbox label="Remember me" />
+            <UnstyledButton
+              className="text-xs text-primary"
+              onClick={() => setRessettingPassword(true)}
+            >
+              Forgot password?
+            </UnstyledButton>
+          </Group>
+          <Button
+            fullWidth
+            mt="xl"
+            component="button"
+            type="submit"
+            className="bg-primary mb-6"
+            onClick={form.onSubmit(handleLogin)}
+          >
+            Sign in
+          </Button>
+          {/* <Divider my="lg" /> */}
+          {!isAdmin && (
+            <Text color="dimmed" size="sm" align="center" mt={5}>
+              Don't have an account?{" "}
+              <Link href="/register" passHref>
+                <Anchor component="a" pl={4} size="sm" className="text-primary">
+                  <MdPersonAdd
+                    size={16}
+                    style={{ verticalAlign: "text-bottom", paddingBottom: 2 }}
+                  />{" "}
+                  Create Account
+                </Anchor>
+              </Link>
+            </Text>
+          )}
+        </Paper>
+      </div>
       {/* <Modal
         opened={resettingPassword}
         onClose={() => setRessettingPassword(false)}
