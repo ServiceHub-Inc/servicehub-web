@@ -65,38 +65,34 @@ const useStyles = createStyles((theme) => ({
 
 const links = [
   {
-    link: "/about",
-    label: "Features",
+    link: "/",
+    label: "Home",
   },
   {
     link: "#1",
-    label: "Learn",
+    label: "Service Categories",
     links: [
       {
-        link: "/docs",
-        label: "Documentation",
+        link: "#docs",
+        label: "Education",
       },
       {
-        link: "/resources",
-        label: "Resources",
+        link: "#resources",
+        label: "Home Services",
       },
       {
-        link: "/community",
-        label: "Community",
+        link: "#community",
+        label: "Commercial",
       },
       {
-        link: "/blog",
-        label: "Blog",
+        link: "#blog",
+        label: "Legal",
       },
     ],
   },
   {
-    link: "/about",
-    label: "About",
-  },
-  {
-    link: "/pricing",
-    label: "Pricing",
+    link: "/providers",
+    label: "Service Providers",
   },
   {
     link: "#2",

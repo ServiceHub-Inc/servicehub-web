@@ -20,10 +20,10 @@ import Link from "next/link";
 import {
   MdMail,
   MdLock,
-  MdPersonAdd,
   MdPerson,
   MdPhoneIphone,
   MdPassword,
+  MdLogin,
 } from "react-icons/md";
 import Image from "next/image";
 import { withRouter } from "next/router";
@@ -229,10 +229,10 @@ function Register({ isAdmin, router }) {
           {/* <Divider my="lg" /> */}
           {!isAdmin && (
             <Text color="dimmed" size="sm" align="center" mt={5}>
-              Already have an account?{" "}
+              Have an account?{" "}
               <Link href="/login" passHref>
                 <Anchor component="a" pl={4} size="sm" className="text-primary">
-                  <MdPersonAdd
+                  <MdLogin
                     size={16}
                     style={{ verticalAlign: "text-bottom", paddingBottom: 2 }}
                   />{" "}
