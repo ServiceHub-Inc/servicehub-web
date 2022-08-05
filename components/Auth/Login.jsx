@@ -28,6 +28,7 @@ import { LoginContext } from "../../lib/contexts/LoginContext";
 // import ResetPassword from "../Application/Dashboard/Settings/ResetPasswordRequest";
 import logoSm from "../../public/images/logo.webp";
 import { decode } from "../../lib/helperFunctions";
+import { GoogleButton, FacebookButton } from "../utils/SocialButtons";
 
 const schema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -106,7 +107,7 @@ function Login({ isAdmin, router }) {
   }, [notiShown]);
 
   return (
-    <div className="absolute w-full h-[calc(100vh-140px)] my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
+    <div className="absolute w-full h-[calc(100vh-69px)] my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
       <div className="hidden lg:block bg-top bg-no-repeat bg-cover bg-login col-span-3" />
       <div className="lg:col-span-2 lg:px-16 mx-auto w-full">
         <Paper
@@ -127,6 +128,17 @@ function Login({ isAdmin, router }) {
           <Text color="dimmed" className="" size="sm" align="center" m={5}>
             Log in to continue:
           </Text>
+
+          <Group grow mb="md" mt="md">
+            <GoogleButton radius="xl">Google</GoogleButton>
+            <FacebookButton radius="xl">Facebook</FacebookButton>
+          </Group>
+
+          <Divider
+            label="Or continue with email"
+            labelPosition="center"
+            my="lg"
+          />
 
           <TextInput
             label="Email"
