@@ -61,7 +61,6 @@ function Register({ isAdmin, router }) {
     initialValues: {
       firstName: "",
       lastName: "",
-      phone: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -185,7 +184,7 @@ function Register({ isAdmin, router }) {
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            required
+            // required
             icon={<MdLock size={14} />}
             mt="md"
             {...register("password")}
@@ -193,7 +192,7 @@ function Register({ isAdmin, router }) {
           <PasswordInput
             label="Confirm Password"
             placeholder="Enter password again"
-            required
+            // required
             icon={<MdLock size={14} />}
             mt="md"
             {...register("confirmPassword")}

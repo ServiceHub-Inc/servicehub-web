@@ -37,7 +37,7 @@ html {
     @apply block px-2 py-3 uppercase  w-full  rounded-md border-gray-300 !text-sm disabled:bg-gray-100;
   }
   .text-input-label {
-    @apply inline-block w-full pl-1 mt-3 text-sm font-medium text-gray-800 capitalize;
+    @apply inline-block w-full pl-1 mt-3 text-sm font-normal text-gray-700 capitalize;
   }
   .text-input-error {
     @apply border-danger text-danger bg-danger/5 focus:border-danger focus:ring-danger;

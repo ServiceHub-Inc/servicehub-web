@@ -171,7 +171,7 @@ function Login({ isAdmin, router }) {
             className="bg-primary mb-6"
             onClick={form.onSubmit(handleLogin)}
           >
-            Sign in
+            LOGIN
           </Button>
           {/* <Divider my="lg" /> */}
           {!isAdmin && (
