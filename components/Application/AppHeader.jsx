@@ -178,7 +178,7 @@ export default function AppHeader() {
     <Header
       className={`${
         scroll.y >= 60 && "shadow-md"
-      } transition-all duration-300 px-4 py-2 lg:px-8`}
+      }  fixed  transition-all duration-300 px-4 py-4 lg:px-8`}
     >
       <div className="flex w-full justify-between items-center">
         <Group>
@@ -198,12 +198,12 @@ export default function AppHeader() {
         <div>
           <Button className="rounded-full text-xs lg:text-sm bg-primary shadow-sm mr-4">
             <a href="/register" className="text-white">
-              Signup
+              Provide Services
             </a>
           </Button>
           <Button className="rounded-full text-xs lg:text-sm border-primary bg-transparent text-gray-700 shadow-sm">
             <a href="/login" className="text-gray-700">
-              Login
+              Request a Service
             </a>
           </Button>
         </div>

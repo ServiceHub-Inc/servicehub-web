@@ -87,8 +87,18 @@ const AppProvider = ({ children }) => {
               }}
             >
               <div className="h-screen ">
-                <AppHeader />
-                <div className="min-h-[calc(100vh-150px)]">{children}</div>
+                {window.location.pathname !== "/login/" &&
+                  window.location.pathname !== "/register/" && <AppHeader />}
+                <div
+                  className={` ${
+                    window.location.pathname !== "/login/" &&
+                    window.location.pathname !== "/register/"
+                      ? "min-h-screen"
+                      : "min-h-[calc(100vh-150px)]"
+                  }`}
+                >
+                  {children}
+                </div>
                 {window.location.pathname !== "/login/" &&
                   window.location.pathname !== "/register/" && <AppFooter />}
               </div>
