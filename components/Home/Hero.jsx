@@ -69,7 +69,7 @@ export default function HeroComponent() {
   const { classes } = useStyles();
   return (
     <div>
-      <div className="lg:w-[90%] mx-auto lg:grid grid-cols-5 mt-24">
+      <div className="lg:w-[90%] mx-auto lg:grid grid-cols-5 mt-28">
         <div className="col-span-3">
           <Title className={classes.title}>
             A{" "}

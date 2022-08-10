@@ -17,6 +17,8 @@ import {
   IconMapPins,
   IconCoin,
   IconListCheck,
+  IconLicense,
+  IconCertificate,
 } from "@tabler/icons";
 
 export const MOCKDATA = [
@@ -33,7 +35,7 @@ export const MOCKDATA = [
       "You decide the terms of your dealings. No need to worry about privacy issues, even during the rendering of services.",
   },
   {
-    icon: IconCookie,
+    icon: IconCertificate,
     title: "Best Quality Professionals",
     description:
       "Service providers on ServiceHub are well vetted and thorougly verified professionals. No wahala. ",

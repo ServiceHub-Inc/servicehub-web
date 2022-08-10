@@ -107,7 +107,7 @@ function Login({ isAdmin, router }) {
   }, [notiShown]);
 
   return (
-    <div className="absolute w-full h-[calc(100vh-69px)] my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
+    <div className="absolute w-full h-full my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
       <div className="hidden lg:block bg-top bg-no-repeat bg-cover bg-login col-span-3" />
       <div className="lg:col-span-2 lg:px-16 mx-auto w-full">
         <Paper
