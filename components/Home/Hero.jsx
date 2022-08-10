@@ -1,14 +1,11 @@
 import {
   createStyles,
   Image,
-  Container,
   Title,
   Button,
   Group,
   Text,
   List,
-  ThemeIcon,
-  CheckboxIcon,
 } from "@mantine/core";
 import { MdCheckCircle } from "react-icons/md";
 import image from "../../public/images/hero-image.svg";
@@ -68,16 +65,23 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function HeroComponent() {
+export default function HeroComponent() {
   const { classes } = useStyles();
   return (
     <div>
       <div className="lg:w-[90%] mx-auto lg:grid grid-cols-5 mt-24">
         <div className="col-span-3">
           <Title className={classes.title}>
-            A <span className={classes.highlight}>Convenient</span> and
-            <br /> <span className={classes.highlight}>Safer</span> way to
-            access services
+            A{" "}
+            <span className="bg-primary bg-opacity-10 px-1 py-3 rounded-sm relative">
+              Convenient
+            </span>{" "}
+            and
+            <br />{" "}
+            <span className="bg-primary bg-opacity-10 px-1 py-3 rounded-sm relative">
+              Safer
+            </span>{" "}
+            way to access services
           </Title>
           <Text color="dimmed" mt="md">
             Access all the various services you need on a simple and unified
@@ -91,12 +95,7 @@ export function HeroComponent() {
             spacing="sm"
             size="sm"
             icon={
-              <MdCheckCircle
-                className="text-primary"
-                size={15}
-                color="red"
-                stroke={1.5}
-              />
+              <MdCheckCircle className="text-primary" size={15} stroke={1.5} />
             }
           >
             <List.Item>
@@ -114,16 +113,16 @@ export function HeroComponent() {
           </List>
 
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control}>
-              Get started
+            <Button radius="xl" size="md" className="bg-primary text-white">
+              Provide Services
             </Button>
             <Button
               variant="default"
               radius="xl"
               size="md"
-              className={classes.control}
+              className="border border-primary"
             >
-              Source code
+              Request Services
             </Button>
           </Group>
         </div>
