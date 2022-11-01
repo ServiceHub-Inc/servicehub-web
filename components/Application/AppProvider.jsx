@@ -5,6 +5,7 @@ import {
   ColorSchemeProvider,
   MantineProvider,
   ColorScheme,
+  AppShell,
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import Router from "next/router";
@@ -12,9 +13,13 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
+import { SideNav } from "./Sidebar";
 
 const AppProvider = ({ children }) => {
   const router = Router.useRouter();
+  const showComponents =
+    window.location.pathname !== "/login/" &&
+    window.location.pathname !== "/register/";
 
   const error = {
     fontSize: "12px",
@@ -87,20 +92,22 @@ const AppProvider = ({ children }) => {
               }}
             >
               <div className="h-screen ">
-                {window.location.pathname !== "/login/" &&
-                  window.location.pathname !== "/register/" && <AppHeader />}
-                <div
-                  className={` ${
-                    window.location.pathname !== "/login/" &&
-                    window.location.pathname !== "/register/"
-                      ? "min-h-screen"
-                      : "min-h-[calc(100vh-150px)]"
-                  }`}
+                <AppShell
+                  navbar={showComponents && <SideNav />}
+                  header={showComponents && <AppHeader />}
+                  footer={showComponents && <AppFooter />}
                 >
-                  {children}
-                </div>
-                {window.location.pathname !== "/login/" &&
-                  window.location.pathname !== "/register/" && <AppFooter />}
+                  <div
+                    className={` ${
+                      window.location.pathname !== "/login/" &&
+                      window.location.pathname !== "/register/"
+                        ? "min-h-screen"
+                        : "min-h-[calc(100vh-150px)]"
+                    }`}
+                  >
+                    {children}
+                  </div>
+                </AppShell>
               </div>
             </ModalsProvider>
           </NotificationsProvider>
