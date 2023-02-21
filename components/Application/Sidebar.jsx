@@ -144,7 +144,7 @@ const useStyles = createStyles((theme) => ({
 const mainLinksMockdata = [
   { icon: IconHome2, label: "Home" },
   { icon: IconGauge, label: "Dashboard" },
-  { icon: IconDeviceDesktopAnalytics, label: "Analytics" },
+  { icon: IconDeviceDesktopAnalytics, label: "Users" },
   { icon: IconCalendarStats, label: "Releases" },
   { icon: IconUser, label: "Account" },
   { icon: IconFingerprint, label: "Security" },

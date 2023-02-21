@@ -108,7 +108,7 @@ const items = [
   </Anchor>
 ));
 
-export default function HeroComponent() {
+export default function UsersComponent() {
   const { classes } = useStyles();
   return (
     <div className="mt-20">  
@@ -117,9 +117,8 @@ export default function HeroComponent() {
 
       {/* Custom Separator */}
       {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
-         <Title></Title>
-            <h4>Users</h4>
-            
+         <Title className="text-gray-500 text-center mb-3">Users</Title>
+  
          <Table highlightOnHover withBorder withColumnBorders>
               <thead>
               <tr>
