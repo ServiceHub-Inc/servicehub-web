@@ -1,6 +1,7 @@
 import {Avatar,
   createStyles,Table,Image,Title,Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
   import { IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
+import UserModal from "../utils/Modal";
 
 
   const elements = [
@@ -31,13 +32,12 @@ import {Avatar,
           </span>
           
       </td>
-      <td>
-          <span><IconDotsVertical/></span>
+      <td> <span><UserModal title={"User Details"}/></span>
+          
           {/* <span className="px-1 mx-1"><IconTrash/></span>
           <span>
             {approved ? <IconUserCheck/> : "Not Approved" }
           </span> */}
-
       </td>
     </tr>
   ));
@@ -101,7 +101,6 @@ const useStyles = createStyles((theme) => ({
 const items = [
   { title: 'Dashboard', href: '#' },
   { title: 'Users', href: '#' },
-  { title: 'User ID', href: '#' },
 ].map((item, index) => (
   <Anchor href={item.href} key={index}>
     {item.title}
@@ -119,7 +118,7 @@ export default function UsersComponent() {
       {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
          <Title className="text-gray-500 text-center mb-3">Users</Title>
   
-         <Table highlightOnHover withBorder withColumnBorders>
+         <Table highlightOnHover>
               <thead>
               <tr>
                 <th>Image</th>
@@ -131,7 +130,6 @@ export default function UsersComponent() {
                 <th>Reg Date</th>
                 <th>Verified</th>
                 <th>User Details</th>
-                
               </tr>
             </thead>
             <tbody>{rows}</tbody>
