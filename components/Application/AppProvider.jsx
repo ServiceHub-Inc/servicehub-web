@@ -14,12 +14,17 @@ import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Sidebar";
+import UserModal from "../utils/Modal";
 
 const AppProvider = ({ children }) => {
+  
   const router = Router.useRouter();
   const showComponents =
-    window.location.pathname !== "/login/" &&
+    window.location.pathname !== "/login/"  &&
     window.location.pathname !== "/register/";
+  
+
+  const showDashboard= window.location.pathname === '/users/';
 
   const error = {
     fontSize: "12px",
@@ -84,16 +89,16 @@ const AppProvider = ({ children }) => {
           <NotificationsProvider autoClose={4000}>
             <ModalsProvider
               modalProps={{
-                centered: true,
                 classNames: {
-                  modal: "max-w-[min(95vw,550px)] ",
+                  modal: "max-w-[min(95vw,660px)] ",
                   body: "border-none !p-2",
                 },
               }}
+           
             >
               <div className="h-screen ">
                 <AppShell
-                  navbar={showComponents && <SideNav />}
+                  navbar={showDashboard && <SideNav />}
                   header={showComponents && <AppHeader />}
                   footer={showComponents && <AppFooter />}
                 >
