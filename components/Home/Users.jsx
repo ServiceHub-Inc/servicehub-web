@@ -5,6 +5,7 @@ import {Avatar,TextInput,
   import { useModals } from '@mantine/modals';
   import { IconUserPlus, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
 import UserModal from "../utils/Modal";
+import AddUserForm from '../Forms/AddUserForm';
 
 
   const elements = [
@@ -95,9 +96,8 @@ export default function UsersComponent() {
     const id = modals.openModal({
       title: 'Add New User',
       children: (
-        <>
-          <TextInput label="name" placeholder="firstname" data-autofocus />
-
+        <>    
+          <AddUserForm/>
           {/* <Button fullWidth onClick={() => modals.closeModal(id)} mt="md">
             Submit
           </Button> */}
