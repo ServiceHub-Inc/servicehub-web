@@ -1,26 +1,37 @@
 import {useState} from 'react';
-import { useModal } from '@mantine/core';
 import {Avatar,TextInput,
   createStyles,Table,Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
-  import { useModals } from '@mantine/modals';
-  import { IconUserPlus, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
+import { modals } from '@mantine/modals';
+import { IconUserPlus, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
 import UserModal from "../utils/Modal";
 import AddUserForm from '../Forms/AddUserForm';
+import { faker } from '@faker-js/faker';
 
 
-  const elements = [
-    { position: 6, mass: 12.011, symbol: 'C', name: 'Fred' },
-    { position: 7, mass: 14.007, symbol: 'N', name: 'Michael' },
-    { position: 39, mass: 88.906, symbol: 'Y', name: 'Frank' },
-    { position: 56, mass: 137.33, symbol: 'Ba', name: 'Kobby' },
-    { position: 58, mass: 140.12, symbol: 'Ce', name: 'Jerry' },
-  ];
+//Creating a Dummy Data with Faker 
+export const USERS = [];
+export function createRandomUser() {
+  return {
+    userId: faker.datatype.uuid(),
+    username: faker.internet.userName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    avatar: faker.image.avatar(),
+    registeredAt: faker.date.past(),
+    idType: faker.helpers.arrayElement(['Ghana-Card', 'VotersID', 'NHIS-Card']),
+    userType: faker.helpers.arrayElement(['Client', 'Provider', 'Staff'])
+  };
+}
+Array.from({ length: 5 }).forEach(() => {
+  USERS.push(createRandomUser());
+});
+
 
     //Checking if user is approved
-      const approved=1;
+      //const approved=1;
 
   
-
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -89,18 +100,17 @@ const items = [
 
 export default function UsersComponent() {
 
-  const modals = useModals();
+  
   const { classes } = useStyles();
        
-  const addUserModal = () => {
-    const id = modals.openModal({
-      title: 'Add New User',
+  
+  const openAddUserModal = () => {
+    const id= modals.open({
+      title:"Add New User",
+      size:"xl",
       children: (
-        <>    
+        <>
           <AddUserForm/>
-          {/* <Button fullWidth onClick={() => modals.closeModal(id)} mt="md">
-            Submit
-          </Button> */}
         </>
       ),
     });
@@ -117,9 +127,11 @@ export default function UsersComponent() {
          <Title className="text-gray-500 text-center mb-3">Users</Title>
 
          <div className="px-4">
-            {/* <p><Button variant="outline" color="green">add</Button></p> */}
-              
-            <Button leftIcon={<IconUserPlus size={16}/>} onClick={addUserModal} variant="outline" color="green" >ADD</Button>
+                    <Button 
+                      leftIcon={<IconUserPlus size={16}/>} 
+                      variant="outline" color="green" 
+                      onClick={openAddUserModal}
+                      >ADD</Button>
          </div>
   
          <Table highlightOnHover>
@@ -136,17 +148,17 @@ export default function UsersComponent() {
                 <th>User Details</th>
               </tr>
             </thead>
-            <tbody>{elements.map((element) => (
-    <tr key={element.name}>
+            <tbody>{USERS.map((user) => (
+    <tr key={user.userId}>
       <td>
-          <Avatar radius="xl" />
+        <Avatar src={user.avatar} alt={user.username} radius="xl" size={32} />
       </td>
-      <td>{element.name}</td>
-      <td>{element.symbol}</td>
-      <td>{element.mass}</td>
-      <td>{element.position}</td>
-      <td>{element.position}</td>
-      <td>{element.position}</td>
+      <td>{user.username}</td>
+      <td>{user.userType}</td>
+      <td>{user.idType}</td>
+      <td>{user.firstName} </td>
+      <td>{user.lastName}</td>
+      <td>"Date here"</td>
       <td>
           <span className="text-primary">
             <IconCircleCheck />

@@ -19,7 +19,6 @@ module.exports = {
       colors: {
         primary: "#32CD32",
         secondary: colors.gray[600],
-
         danger: "#FF0000",
       },
     },

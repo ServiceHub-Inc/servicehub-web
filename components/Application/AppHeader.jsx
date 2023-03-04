@@ -1,4 +1,5 @@
 import React from "react";
+import {useState} from "react"
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -11,7 +12,7 @@ import {
   Button,
   Burger,
 } from "@mantine/core";
-import { useBooleanToggle, useWindowScroll } from "@mantine/hooks";
+import { useWindowScroll, useDisclosure } from "@mantine/hooks";
 import { ChevronDown } from "tabler-icons-react";
 import logo from "../../public/images/logo-1.webp";
 
@@ -129,7 +130,9 @@ export function Logo() {
 export default function AppHeader() {
   const { classes } = useStyles();
   const [scroll, scrollTo] = useWindowScroll();
-  const [opened, toggleOpened] = useBooleanToggle(false);
+
+  const [opened, { toggle }] = useDisclosure(false);
+
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link}>{item.label}</Menu.Item>
@@ -141,23 +144,24 @@ export default function AppHeader() {
           key={link.label}
           trigger="hover"
           delay={0}
-          transitionDuration={0}
           placement="end"
           gutter={1}
-          control={
-            <a
-              href={link.link}
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
-            >
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <ChevronDown size={12} />
-              </Center>
-            </a>
-          }
         >
-          {menuItems}
+          <Menu.Target>
+              <a
+                  href={link.link}
+                  className={classes.link}
+                  onClick={(event) => event.preventDefault()}
+                >
+                  <Center>
+                    <span className={classes.linkLabel}>{link.label}</span>
+                    <ChevronDown size={12} />
+                  </Center>
+                </a>
+          </Menu.Target>
+            <Menu.Dropdown>
+              {menuItems}
+            </Menu.Dropdown>
         </Menu>
       );
     }
@@ -184,11 +188,10 @@ export default function AppHeader() {
         <Group>
           <Burger
             opened={opened}
-            onClick={() => toggleOpened()}
+            onClick={toggle}
             className={classes.burger}
             size="sm"
           />
-
           <Logo />
         </Group>
         <Group spacing={5} className={classes.links}>

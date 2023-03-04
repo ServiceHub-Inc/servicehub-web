@@ -1,20 +1,15 @@
 import PropTypes from "prop-types";
-import React from "react";
 import Head from "next/head";
-import {
-  ColorSchemeProvider,
-  MantineProvider,
-  ColorScheme,
-  AppShell,
-} from "@mantine/core";
+import { MantineProvider } from '@mantine/core';
+import {ColorSchemeProvider, ColorScheme, AppShell} from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import Router from "next/router";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Sidebar";
-import UserModal from "../utils/Modal";
+
 
 const AppProvider = ({ children }) => {
   
@@ -23,7 +18,6 @@ const AppProvider = ({ children }) => {
     window.location.pathname !== "/login/"  &&
     window.location.pathname !== "/register/";
   
-
   const showDashboard= window.location.pathname === '/users/';
 
   const error = {
@@ -41,7 +35,7 @@ const AppProvider = ({ children }) => {
   const toggleColorScheme = (value) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
+    useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   return (
     <>
@@ -57,23 +51,23 @@ const AppProvider = ({ children }) => {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          styles={{
-            PasswordInput: { error },
-            TextInput: { error },
-            NumberInput: { error },
-            Textarea: { error },
-          }}
+            withGlobalStyles
+            withNormalizeCSS
+            styles={{
+              PasswordInput: { error },
+              TextInput: { error },
+              NumberInput: { error },
+              Textarea: { error },
+            }}
           classNames={{
-            Modal: {
-              modal: "max-w-[min(95vw,700px)] w-full",
+            modal:{
+              modal: "max-w-[min(100vw,720px)] w-full",
               title: "text-center w-full",
               header:
                 "bg-primary text-center w-full rounded-md p-2 text-white font-bold",
               body: " border border-solid border-gray-200 rounded-md p-6",
               close: "text-white hover:text-primary",
-            },
+            } 
           }}
           theme={{
             fontFamily:
@@ -86,12 +80,15 @@ const AppProvider = ({ children }) => {
             colorScheme: { colorScheme },
           }}
         >
-          <NotificationsProvider autoClose={4000}>
+          <Notifications autoClose={4000}/>
             <ModalsProvider
               modalProps={{
                 classNames: {
-                  modal: "max-w-[min(95vw,660px)] ",
-                  body: "border-none !p-2",
+                  modal: "max-w-[min(100vw,720px)] w-full",
+                  title:"text-center w-full font-bold bg-primary text-center w-full rounded-md p-3  text-white font-bold",
+                  header:'',
+                  body: " border border-solid border-gray-200 rounded-md p-6",
+                  close: "text-primary text-3xl hover:text-red-800",
                 },
               }}
            
@@ -115,7 +112,6 @@ const AppProvider = ({ children }) => {
                 </AppShell>
               </div>
             </ModalsProvider>
-          </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
