@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import moment from 'moment';
 import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,
   createStyles,Table,Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
 import { usePagination } from '@mantine/hooks';
@@ -118,8 +119,19 @@ export default function UsersComponent() {
   };
   
   //Pagination
-  const pagination = usePagination({ total: 10, initialPage: 1 });
-  pagination.range;
+  const [activePage, setPage] = useState(1);
+  const limit = 5;
+  const perPage = Math.ceil(USERS.length/limit);
+
+  const startIndex = (activePage - 1) * limit;
+  const endIndex = startIndex + limit;
+  const activePageData = USERS.slice(startIndex, endIndex)
+
+  //Handling Page Change
+  const handlePageChange =(newPage)=>{
+        setPage(newPage);
+  }
+
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
@@ -165,7 +177,7 @@ export default function UsersComponent() {
                 <th>User Details</th>
               </tr>
             </thead>
-            <tbody>{USERS.map((user) => (
+            <tbody>{activePageData.map((user) => (
     <tr key={user.userId}>
       <td>
         <Avatar src={user.avatar} alt={user.username} radius="xl" size={32} />
@@ -175,7 +187,7 @@ export default function UsersComponent() {
       <td>{user.idType}</td>
       <td>{user.firstName} </td>
       <td>{user.lastName}</td>
-      <td>"Date here"</td>
+      <td>{moment(user.registeredAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
       <td>
           <span className="text-primary">
             <IconCircleCheck />
@@ -198,8 +210,16 @@ export default function UsersComponent() {
   }
   </tbody>
         </Table>
-        <Pagination total={5} color="green" className='text-primary' />
-        <Button color="ocean-blue">Ocean blue button</Button>
+        <div className="py-2 my-1">
+           <Pagination 
+            value={activePage} 
+            onChange={handlePageChange}
+            position='center'
+            total={perPage} 
+            color="green" 
+            className='text-primary' 
+            size="sm"/>
+        </div>
       </Container>
     </div>
   );
