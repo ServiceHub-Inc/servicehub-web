@@ -1,8 +1,9 @@
 import {useState} from 'react';
-import {Avatar,TextInput,
+import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,
   createStyles,Table,Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
+import { usePagination } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
-import { IconUserPlus, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
+import { IconUserPlus,IconSun, IconMoonStars, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
 import UserModal from "../utils/Modal";
 import AddUserForm from '../Forms/AddUserForm';
 import { faker } from '@faker-js/faker';
@@ -23,7 +24,7 @@ export function createRandomUser() {
     userType: faker.helpers.arrayElement(['Client', 'Provider', 'Staff'])
   };
 }
-Array.from({ length: 5 }).forEach(() => {
+Array.from({ length: 10 }).forEach(() => {
   USERS.push(createRandomUser());
 });
 
@@ -116,17 +117,33 @@ export default function UsersComponent() {
     });
   };
   
+  //Pagination
+  const pagination = usePagination({ total: 10, initialPage: 1 });
+  pagination.range;
 
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === 'dark';
   return (
     <div className="mt-20">  
       <Container size="lg" px="xs" >
+        {/* Dark mode Switch */}
+        <div className="flex justify-end mr-10">
+          <ActionIcon
+              variant="outline"
+              color={dark ? 'yellow' : 'green'}
+              onClick={() => toggleColorScheme()}
+              title="Toggle color scheme"
+            >
+              {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
+            </ActionIcon> 
+        </div>
         <Breadcrumbs>{items}</Breadcrumbs>
       
       {/* Custom Separator */}
       {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
          <Title className="text-gray-500 text-center mb-3">Users</Title>
-
-         <div className="px-4">
+        
+                <div className="px-4">
                     <Button 
                       leftIcon={<IconUserPlus size={16}/>} 
                       variant="outline" color="green" 
@@ -181,6 +198,8 @@ export default function UsersComponent() {
   }
   </tbody>
         </Table>
+        <Pagination total={5} color="green" className='text-primary' />
+        <Button color="ocean-blue">Ocean blue button</Button>
       </Container>
     </div>
   );

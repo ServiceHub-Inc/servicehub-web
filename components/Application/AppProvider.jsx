@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
+import { useState } from 'react';
 import Head from "next/head";
-import { MantineProvider } from '@mantine/core';
-import {ColorSchemeProvider, ColorScheme, AppShell} from "@mantine/core";
+import {MantineProvider, ColorSchemeProvider, ColorScheme, AppShell} from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import Router from "next/router";
 import { Notifications } from "@mantine/notifications";
@@ -9,7 +9,6 @@ import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Sidebar";
-
 
 const AppProvider = ({ children }) => {
   
@@ -31,6 +30,8 @@ const AppProvider = ({ children }) => {
     defaultValue: "light",
     getInitialValueInEffect: true,
   });
+  // const [colorScheme, setColorScheme] = useState('light');
+  
 
   const toggleColorScheme = (value) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
@@ -77,9 +78,11 @@ const AppProvider = ({ children }) => {
               fontFamily:
                 '"Roboto SlabVariable", Roboto,-apple-system , BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
             },
-            colorScheme: { colorScheme },
+            
+             colorScheme,
           }}
         >
+          
           <Notifications autoClose={4000}/>
             <ModalsProvider
               modalProps={{
