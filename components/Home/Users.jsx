@@ -1,13 +1,16 @@
 import {useState} from 'react';
 import moment from 'moment';
-import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,
-  createStyles,Table,Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
+import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,Td, Tr,
+  createStyles,Table, Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
 import { usePagination } from '@mantine/hooks';
 import { modals } from '@mantine/modals';
 import { IconUserPlus,IconSun, IconMoonStars, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
 import UserModal from "../utils/Modal";
 import AddUserForm from '../Forms/AddUserForm';
 import { faker } from '@faker-js/faker';
+import UserTable from '../Forms/UserTable';
+
+
 
 
 //Creating a Dummy Data with Faker 
@@ -15,25 +18,22 @@ export const USERS = [];
 export function createRandomUser() {
   return {
     userId: faker.datatype.uuid(),
-    username: faker.internet.userName(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
     avatar: faker.image.avatar(),
     registeredAt: faker.date.past(),
     idType: faker.helpers.arrayElement(['Ghana-Card', 'VotersID', 'NHIS-Card']),
-    userType: faker.helpers.arrayElement(['Client', 'Provider', 'Staff'])
+    userRole: faker.helpers.arrayElement(['Client', 'Provider', 'Staff'])
   };
 }
-Array.from({ length: 10 }).forEach(() => {
+Array.from({ length: 3 }).forEach(() => {
   USERS.push(createRandomUser());
 });
 
 
     //Checking if user is approved
       //const approved=1;
-
-  
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -99,116 +99,159 @@ const items = [
   </Anchor>
 ));
 
+    
 
 export default function UsersComponent() {
+  const users=USERS
+  ///Search functionality
+  const [searchQuery, setSearchQuery] = useState('');
 
-  
+  //Setting UserList states
+  const [usersList, setUsersList]= useState([]);
+
+  //Adding add user function
+  const handleAddUser = (newUser) => {
+    setUsersList([newUser, ...usersList]);
+  };
+
+
   const { classes } = useStyles();
-       
   
+  
+  //------------------------------ADD USER MODAL---------------------------//
   const openAddUserModal = () => {
     const id= modals.open({
       title:"Add New User",
       size:"xl",
       children: (
         <>
-          <AddUserForm/>
+          <AddUserForm addUser={handleAddUser} close={modals.closeAll}/>
         </>
       ),
     });
   };
+
+  //-----------------------------ADD USER MODAL ENDS HERE--------------------------------//
+
+//For DAtA test Purposes--------------Merging Generated Users and Added USers//
+ const mergedUsers=[...usersList, ...USERS];
+
+
   
+          //---------------------- PAGINATION BLOCK-----------------------//
   //Pagination
   const [activePage, setPage] = useState(1);
   const limit = 5;
-  const perPage = Math.ceil(USERS.length/limit);
+  const perPage = Math.ceil(mergedUsers.length/limit);
 
   const startIndex = (activePage - 1) * limit;
   const endIndex = startIndex + limit;
-  const activePageData = USERS.slice(startIndex, endIndex)
+  const activePageData = mergedUsers.slice(startIndex, endIndex)// Splicing Data PerPage
 
   //Handling Page Change
   const handlePageChange =(newPage)=>{
         setPage(newPage);
   }
 
+//---------------------- PAGINATION BLOCK ENDS HERE-----------------------//
+
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
   return (
-    <div className="mt-20">  
+    <div className="mt-16">  
       <Container size="lg" px="xs" >
-        {/* Dark mode Switch */}
-        <div className="flex justify-end mr-10">
-          <ActionIcon
-              variant="outline"
-              color={dark ? 'yellow' : 'green'}
-              onClick={() => toggleColorScheme()}
-              title="Toggle color scheme"
-            >
-              {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-            </ActionIcon> 
-        </div>
-        <Breadcrumbs>{items}</Breadcrumbs>
-      
-      {/* Custom Separator */}
-      {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
-         <Title className="text-gray-500 text-center mb-3">Users</Title>
         
+        <div className="flex items-center justify-between">
+        <Breadcrumbs>{items}</Breadcrumbs>
+            {/* Custom Separator */}
+            {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
+             <Title className="text-gray-500 text-center mb-2">Users</Title>
+
+             {/* Dark mode Switch */}
+            <p className="flex justify-end mr-10">
+              <ActionIcon
+                  variant="outline"
+                  color={dark ? 'yellow' : 'green'}
+                  onClick={() => toggleColorScheme()}
+                  title="Toggle color scheme"
+                >
+                  {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
+                </ActionIcon> 
+            </p>
+        </div>
+          
+          
+         
+
+            <UserTable users={USERS}/>
+
                 <div className="px-4">
                     <Button 
                       leftIcon={<IconUserPlus size={16}/>} 
                       variant="outline" color="green" 
                       onClick={openAddUserModal}
+                      className='text-sm'
                       >ADD</Button>
-         </div>
-  
+                </div>
+               
+                {/* SEarch Field */}
+                {/* <div className="py-2 my-2">
+                          <TextInput
+                              placeholder="Search..."
+                              value={searchQuery}
+                              onChange={(event) => setSearchQuery(event.target.value)}
+                          />
+                </div> */}
+         
          <Table highlightOnHover>
               <thead>
               <tr>
                 <th>Image</th>
-                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>User Type</th>
                 <th>ID Type/Number</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>email</th>
                 <th>Reg Date</th>
                 <th>Verified</th>
                 <th>User Details</th>
               </tr>
             </thead>
-            <tbody>{activePageData.map((user) => (
-    <tr key={user.userId}>
-      <td>
-        <Avatar src={user.avatar} alt={user.username} radius="xl" size={32} />
-      </td>
-      <td>{user.username}</td>
-      <td>{user.userType}</td>
-      <td>{user.idType}</td>
-      <td>{user.firstName} </td>
-      <td>{user.lastName}</td>
-      <td>{moment(user.registeredAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
-      <td>
-          <span className="text-primary">
-            <IconCircleCheck />
-          </span>
-          
-      </td>
-      <td> 
-       
-            <span>
-              <UserModal title="User Details">body</UserModal>
-            </span>
-          
-          {/* <span className="px-1 mx-1"><IconTrash/></span>
-          <span>
-            {approved ? <IconUserCheck/> : "Not Approved" }
-          </span> */}
-      </td>
-    </tr>
-  ))
-  }
-  </tbody>
+            <tbody>
+              
+              {activePageData.map((user) => (
+                <tr key={user.userId}>
+                  <td>
+                    <Avatar src={user.avatar} alt={user.username} radius="xl" size={32} />
+                  </td>
+                      <td>{user.firstName}</td>
+                      <td>{user.lastName}</td>
+                      <td>{user.userRole}</td>
+                      <td>{user.idType}</td>
+                      <td>{user.email} </td>
+                      
+                      <td>{moment(user.registeredAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                      <td>
+                      <span className="text-primary">
+                        <IconCircleCheck />
+                      </span>
+                      
+                  </td>
+                  <td> 
+                        <span>
+                          <UserModal title="User Details">body</UserModal>
+                        </span>
+                      
+                      {/* <span className="px-1 mx-1"><IconTrash/></span>
+                      <span>
+                        {approved ? <IconUserCheck/> : "Not Approved" }
+                      </span> */}
+                  </td>
+                </tr>
+                ))//Map
+                }
+       </tbody>
         </Table>
         <div className="py-2 my-1">
            <Pagination 

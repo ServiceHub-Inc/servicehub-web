@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
   TextInput,
-  Textarea,
   Button,
   Group,
   Select,
   Loader,
 } from '@mantine/core';
+import { faker } from '@faker-js/faker';
 
-const AddUserForm = ({onSubmit}) => {
+const AddUserForm = ({addUser, close}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Setting UserData State
   const [userData, setUserData] = useState({
-    name: '', 
+    avatar:faker.image.avatar(),
+    idType: faker.helpers.arrayElement(['Ghana-Card', 'VotersID', 'NHIS-Card']),
+    firstName:'',
+    lastName:'',
     email: '',
     phone: '',
     address: '',
     city: '',
-    role: '',
+    userRole: '',
   });
 
   // Handling FormInput Change
@@ -31,9 +35,11 @@ const AddUserForm = ({onSubmit}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    console.log(userData);
+    const userId = uuidv4(); // Generate unique ID
+    const user = { userId, ...userData }; // Combine ID with form data
+    addUser(user);
 
-    // Reset the form and loading state
+    // Resetting the form and loading state
     setUserData({ 
       firstName: '', 
       lastName:'',
@@ -41,9 +47,10 @@ const AddUserForm = ({onSubmit}) => {
       phone: '',
       address: '',
       city: '',
-      role: '',
+      userRole: '',
     });
     setIsLoading(false);
+    close();
   };
 
   return (
@@ -110,9 +117,9 @@ const AddUserForm = ({onSubmit}) => {
             { value: 'provider', label: 'Provider' },
             { value: 'staff', label: 'Staff' },
           ]}
-          value={userData.role}
-          onChange={(value) => setUserData({ ...userData, role: value })}
-          name="role"
+          value={userData.userRole}
+          onChange={(value) => setUserData({ ...userData, userRole: value })}
+          name="userRole"
         />
         <Button type="submit" variant="outline" color="green" fullWidth>
           {isLoading ? <Loader size={24} /> : 'Add User'}

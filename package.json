@@ -30,6 +30,7 @@
     "react-icons": "^4.4.0",
     "tabler-icons-react": "^1.53.0",
     "universal-cookie": "^4.0.4",
+    "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
