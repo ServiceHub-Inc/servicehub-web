@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import moment from 'moment';
 import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,Td, Tr,
   createStyles,Table, Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
@@ -109,14 +109,40 @@ export default function UsersComponent() {
   //Setting UserList states
   const [usersList, setUsersList]= useState(USERS);
 
-  //Adding add user function
+  //Getting users List from LocalStorage
+  useEffect(() => {
+    const storedUsersList = localStorage.getItem('usersList');
+       if (storedUsersList) {
+      setUsersList(JSON.parse(storedUsersList));
+    }
+  }, []);
+  
+
+  //Adding user function
   const handleAddUser = (newUser) => {
     setUsersList([newUser, ...usersList]);
+    //Setting users to LocalStorage
+    localStorage.setItem('usersList', JSON.stringify([newUser,...usersList]));
+  };
+
+
+  //"Updating User function"
+  const updateUser=(user)=>{
+    setUsersList([user, ...usersList]);
   };
 
    // Function to remove/Delete a user from the list
    const deleteUser = (userId) => {
+      
     setUsersList(usersList.filter((user) => user.userId !== userId));
+    
+    // Remove user from local storage
+      const userData = localStorage.getItem('usersList');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const updatedUserData = parsedUserData.filter((user) => user.userId !== userId);
+        localStorage.setItem('usersList', JSON.stringify(updatedUserData));
+      }
   };
 
   const { classes } = useStyles();
@@ -238,9 +264,9 @@ export default function UsersComponent() {
                       <span className="text-primary">
                         <IconCircleCheck />
                       </span>
-                      <span className="text-red-600 cursor-pointer">
+                      {/* <span className="text-red-600 cursor-pointer">
                         <IconTrash onClick={() => deleteUser(user.userId)} />
-                      </span>
+                      </span> */}
                       </td>
                       <td> 
                         <span>
