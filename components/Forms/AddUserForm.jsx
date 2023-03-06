@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  TextInput,
-  Button,
-  Group,
-  Select,
-  Loader,
-} from '@mantine/core';
+  TextInput,Button,Group,Select,Loader, NativeSelect} from '@mantine/core';
 import { faker } from '@faker-js/faker';
+import {IconUserExclamation} from '@tabler/icons'
 
 const AddUserForm = ({addUser, close}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -107,24 +103,30 @@ const AddUserForm = ({addUser, close}) => {
           onChange={handleInputChange}
           name="city"
         />
-        <Select
-          label="Role"
-          placeholder="Select role"
+         </Group>
+
+         <Group className='pt-2 mt-2'>
+        <NativeSelect
+          label="User Role"
+          clearable
+          description="Select user role"
           required
-          data={[
-            { value: 'admin', label: 'Admin' },
-            { value: 'client', label: 'Client' },
-            { value: 'provider', label: 'Provider' },
-            { value: 'staff', label: 'Staff' },
+          icon={<IconUserExclamation size="1rem"/>}
+          data={[   
+                    { value: 'admin', label: 'Admin',  },
+                    { value: 'client', label: 'Client' },
+                    { value: 'provider', label: 'Provider' },
+                    { value: 'staff', label: 'Staff' },
           ]}
           value={userData.userRole}
-          onChange={(value) => setUserData({ ...userData, userRole: value })}
+          // onChange={(value) => console.log(value)}
+          onChange={handleInputChange}
           name="userRole"
         />
         <Button type="submit" variant="outline" color="green" fullWidth>
           {isLoading ? <Loader size={24} /> : 'Add User'}
         </Button>
-      </Group>
+        </Group>
     </form>
   );
 };

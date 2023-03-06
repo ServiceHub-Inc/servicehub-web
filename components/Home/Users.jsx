@@ -107,13 +107,17 @@ export default function UsersComponent() {
   const [searchQuery, setSearchQuery] = useState('');
 
   //Setting UserList states
-  const [usersList, setUsersList]= useState([]);
+  const [usersList, setUsersList]= useState(USERS);
 
   //Adding add user function
   const handleAddUser = (newUser) => {
     setUsersList([newUser, ...usersList]);
   };
 
+   // Function to remove/Delete a user from the list
+   const deleteUser = (userId) => {
+    setUsersList(usersList.filter((user) => user.userId !== userId));
+  };
 
   const { classes } = useStyles();
   
@@ -134,19 +138,17 @@ export default function UsersComponent() {
   //-----------------------------ADD USER MODAL ENDS HERE--------------------------------//
 
 //For DAtA test Purposes--------------Merging Generated Users and Added USers//
- const mergedUsers=[...usersList, ...USERS];
-
 
   
           //---------------------- PAGINATION BLOCK-----------------------//
   //Pagination
   const [activePage, setPage] = useState(1);
   const limit = 5;
-  const perPage = Math.ceil(mergedUsers.length/limit);
+  const perPage = Math.ceil(usersList.length/limit);
 
   const startIndex = (activePage - 1) * limit;
   const endIndex = startIndex + limit;
-  const activePageData = mergedUsers.slice(startIndex, endIndex)// Splicing Data PerPage
+  const activePageData = usersList.slice(startIndex, endIndex)// Splicing Data PerPage
 
   //Handling Page Change
   const handlePageChange =(newPage)=>{
@@ -236,9 +238,11 @@ export default function UsersComponent() {
                       <span className="text-primary">
                         <IconCircleCheck />
                       </span>
-                      
-                  </td>
-                  <td> 
+                      <span className="text-red-600 cursor-pointer">
+                        <IconTrash onClick={() => deleteUser(user.userId)} />
+                      </span>
+                      </td>
+                      <td> 
                         <span>
                           <UserModal title="User Details">body</UserModal>
                         </span>
