@@ -1,10 +1,20 @@
 import {useState, useEffect} from 'react';
 import moment from 'moment';
-import {Avatar,TextInput,Pagination,ActionIcon, useMantineColorScheme,Td, Tr,
-  createStyles,Table, Image,Title, Button,Container,Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
-import { usePagination } from '@mantine/hooks';
-import { modals } from '@mantine/modals';
-import { IconUserPlus,IconSun, IconMoonStars, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck } from '@tabler/icons';
+import {
+  Avatar,
+  TextInput,
+  Pagination,
+  ActionIcon, 
+  useMantineColorScheme, 
+  Menu,
+  createStyles,
+  Table, 
+  Image,Title, 
+  Button,
+  Container,
+  Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
+import { modals, openModal } from '@mantine/modals';
+import { IconUserPlus,IconSun, IconMoonStars,IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconArrowsLeftRight, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck, IconEdit } from '@tabler/icons';
 import UserModal from "../utils/Modal";
 import AddUserForm from '../Forms/AddUserForm';
 import { faker } from '@faker-js/faker';
@@ -99,10 +109,27 @@ const items = [
   </Anchor>
 ));
 
+
     
 
 export default function UsersComponent() {
   const users=USERS
+
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = (userId) => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setSelectedUser(null);
+    setIsOpen(false);
+
+  };
+
+
   ///Search functionality
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -189,7 +216,6 @@ export default function UsersComponent() {
   return (
     <div className="mt-16">  
       <Container size="lg" px="xs" >
-        
         <div className="flex items-center justify-between">
         <Breadcrumbs>{items}</Breadcrumbs>
             {/* Custom Separator */}
@@ -231,7 +257,7 @@ export default function UsersComponent() {
                               onChange={(event) => setSearchQuery(event.target.value)}
                           />
                 </div> */}
-         
+                      
          <Table highlightOnHover>
               <thead>
               <tr>
@@ -264,14 +290,34 @@ export default function UsersComponent() {
                       <span className="text-primary">
                         <IconCircleCheck />
                       </span>
-                      {/* <span className="text-red-600 cursor-pointer">
-                        <IconTrash onClick={() => deleteUser(user.userId)} />
-                      </span> */}
+                      <UserModal title="User Details">hello</UserModal>
                       </td>
                       <td> 
-                        <span>
+                      <div>
+                        <Menu shadow="xl" offset={-4} position='left' width={200} withArrow arrowPosition="center" >
+                        <Menu.Target>
+                          <span><IconDotsVertical className='hover:text-primary'></IconDotsVertical></span>
+                        </Menu.Target>
+
+                              <Menu.Dropdown>
+                                <Menu.Label>Action</Menu.Label>
+                                <Menu.Item 
+                                  onClick={() => setSelectedUser(user)}
+                                  icon={<IconEye size={14} />}>
+                                  View
+                                </Menu.Item>
+                                <Menu.Item icon={<IconEdit size={14} />}>Edit</Menu.Item>
+                                <Menu.Divider />
+
+                                <Menu.Label>Danger zone - careful</Menu.Label>
+                                <Menu.Item icon={<IconArrowsLeftRight size={14} />}>Transfer data</Menu.Item>
+                                <Menu.Item onClick={() => deleteUser(user.userId)} color="red" icon={<IconTrash size={14} />}>Delete account</Menu.Item>
+                              </Menu.Dropdown>
+                            </Menu>
+                            </div>
+                        {/* <span>
                           <UserModal title="User Details">body</UserModal>
-                        </span>
+                        </span> */}
                       
                       {/* <span className="px-1 mx-1"><IconTrash/></span>
                       <span>
@@ -283,6 +329,22 @@ export default function UsersComponent() {
                 }
        </tbody>
         </Table>
+        
+          <div>
+            {selectedUser && (
+                    <UserModal
+                      title={`${selectedUser.firstName}'s Details`}
+                      isOpen={true}
+                      handleClose={handleClose}
+                    >
+                      <div>
+                            <Text>Email: {selectedUser.email}</Text>
+                            <Text>User Type: {selectedUser.userRole}</Text>
+                            {/* Add other user details here */}
+                      </div>
+                    </UserModal>
+                  )}
+          </div>
         <div className="py-2 my-1">
            <Pagination 
             value={activePage} 
