@@ -1,23 +1,23 @@
-import {useState} from "react";
-import { useListState } from '@mantine/hooks';
-import { TextInput } from '@mantine/core';
-import { Table, Tbody, Tr, Td } from '@mantine/core';
+import { useState } from "react";
+import { TextInput } from "@mantine/core";
+import { Table } from "@mantine/core";
+import { IconSearch } from "@tabler/icons";
 
-const UserTable = ({users}) => {
-    const [searchValue, setSearchValue] = useState('');
-    
-    const filter = () => handlers.filter((item) => item.a === 'new-prop');
-  
-    const handleSearchChange = (event) => {
-      setSearchValue(event.target.value);
-    };
+const UserTable = ({ users }) => {
+  const [searchValue, setSearchValue] = useState("");
 
-       
-    return ( 
-        <div className="mx-4 px-4 my-3">
+  const filter = () => handlers.filter((item) => item.a === "new-prop");
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  return (
+    <div className="mx-4 px-4 my-3">
       <TextInput
         label="Search"
         placeholder="Search users..."
+        icon={<IconSearch size="1rem" />}
         value={searchValue}
         onChange={handleSearchChange}
       />
@@ -32,7 +32,7 @@ const UserTable = ({users}) => {
         </Tbody> */}
       </Table>
     </div>
-     );
-}
- 
+  );
+};
+
 export default UserTable;

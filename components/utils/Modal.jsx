@@ -1,25 +1,24 @@
-
-import { Modal, useMantineTheme, Button, Portal, Text, Menu, Group } from '@mantine/core';
+import { Modal, useMantineTheme } from "@mantine/core";
 
 const UserModal = ({ title, isOpen, handleClose, children }) => {
-  
   const theme = useMantineTheme();
 
-  
   return (
     <>
       <Modal
         opened={isOpen}
-        styles={{
-          title: {
-            color: 'green',
-          },
-          close: { color: 'red' },
+        classNames={{
+          header: "shadow-md",
+          title: "text-primary text-xl font-bold",
+          close: "text-red-700",
         }}
         size="70%"
         transition="fade"
         overlayProps={{
-          color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
+          color:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[9]
+              : theme.colors.gray[2],
           opacity: 0.55,
           blur: 3,
         }}

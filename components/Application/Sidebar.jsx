@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import {
   createStyles,
   Navbar,
@@ -7,13 +8,13 @@ import {
   Title,
 } from "@mantine/core";
 import {
-  IconHome2,
-  IconGauge,
-  IconDeviceDesktopAnalytics,
-  IconFingerprint,
-  IconCalendarStats,
-  IconUser,
+  IconChartDots2,
+  IconUsers,
+  IconReportAnalytics,
+  IconFriends,
+  IconNotification,
   IconSettings,
+  IconLayoutDashboard,
 } from "@tabler/icons";
 import { Logo } from "./AppHeader";
 
@@ -25,10 +26,11 @@ const useStyles = createStyles((theme) => ({
   aside: {
     flex: "0 0 60px",
     backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+      theme.colorScheme === "dark" ? theme.colors.green[7] : theme.white,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    // padding: "2px",
     borderRight: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
     }`,
@@ -45,7 +47,7 @@ const useStyles = createStyles((theme) => ({
   mainLink: {
     width: 44,
     height: 44,
-    borderRadius: theme.radius.md,
+    borderRadius: theme.radius.lg,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -89,7 +91,6 @@ const useStyles = createStyles((theme) => ({
 
   logo: {
     boxSizing: "border-box",
-    width: "100%",
     display: "flex",
     justifyContent: "center",
     height: 60,
@@ -103,19 +104,19 @@ const useStyles = createStyles((theme) => ({
   link: {
     boxSizing: "border-box",
     display: "block",
+    // textAlign: "center",
     textDecoration: "none",
-    borderTopRightRadius: theme.radius.md,
-    borderBottomRightRadius: theme.radius.md,
     color:
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    padding: `0 ${theme.spacing.md}px`,
+    padding: "4px",
     fontSize: theme.fontSizes.sm,
+    marginLeft: theme.spacing.md,
     marginRight: theme.spacing.md,
     fontWeight: 500,
-    height: 44,
-    lineHeight: "44px",
+    // height: 50,
+    lineHeight: "35px",
 
     "&:hover": {
       backgroundColor:
@@ -128,26 +129,22 @@ const useStyles = createStyles((theme) => ({
 
   linkActive: {
     "&, &:hover": {
-      borderLeftColor: theme.fn.variant({
-        variant: "filled",
-        color: theme.primaryColor,
-      }).background,
-      backgroundColor: theme.fn.variant({
-        variant: "filled",
-        color: theme.primaryColor,
-      }).background,
-      color: theme.white,
+      borderLeft: "4px solid",
+      paddingLeft: theme.spacing.sm,
+      borderLeftColor: theme.fn.primaryColor(),
+      // backgroundColor: theme.fn.primaryColor(),
+      color: theme.fn.primaryColor(),
     },
   },
 }));
 
 const mainLinksMockdata = [
-  { icon: IconHome2, label: "Home" },
-  { icon: IconGauge, label: "Dashboard" },
-  { icon: IconDeviceDesktopAnalytics, label: "Users" },
-  { icon: IconCalendarStats, label: "Releases" },
-  { icon: IconUser, label: "Account" },
-  { icon: IconFingerprint, label: "Security" },
+  { icon: IconLayoutDashboard, label: "Dashboard" },
+  { icon: IconUsers, label: "Users" },
+  { icon: IconFriends, label: "Services" },
+  { icon: IconNotification, label: "Notifications" },
+  { icon: IconReportAnalytics, label: "Reporting" },
+  { icon: IconChartDots2, label: "Analytics" },
   { icon: IconSettings, label: "Settings" },
 ];
 
@@ -157,17 +154,11 @@ const linksMockdata = [
   "Dashboard",
   "Releases",
   "Account",
-  "Orders",
-  "Clients",
-  "Databases",
-  "Pull Requests",
-  "Open Issues",
-  "Wiki pages",
 ];
 
 export function SideNav() {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Releases");
+  const [active, setActive] = useState("Dashboard");
   const [activeLink, setActiveLink] = useState("Settings");
 
   const mainLinks = mainLinksMockdata.map((link) => (
@@ -190,30 +181,28 @@ export function SideNav() {
   ));
 
   const links = linksMockdata.map((link) => (
-    <a
-      className={cx(classes.link, {
-        [classes.linkActive]: activeLink === link,
-      })}
-      href="/"
-      onClick={(event) => {
-        event.preventDefault();
-        setActiveLink(link);
-      }}
-      key={link}
-    >
-      {link}
-    </a>
+    <Link href={`/${link}`} key={link}>
+      <a
+        className={cx(classes.link, {
+          [classes.linkActive]: activeLink === link,
+        })}
+        onClick={() => setActiveLink(link)}
+      >
+        {link}
+      </a>
+    </Link>
   ));
 
   return (
-    <Navbar height={750} width={{ sm: 300 }}>
+    <Navbar height={700} width={{ sm: 300 }}>
       <Navbar.Section grow className={classes.wrapper}>
         <div className={classes.aside}>
           <div className={classes.logo}>
-            <Logo type="mark" size={30} />
+            <Logo type="mark" size={20} />
           </div>
           {mainLinks}
         </div>
+        <Link href="/dashboard">hello there</Link>
         <div className={classes.main}>
           <Title order={4} className={classes.title}>
             {active}

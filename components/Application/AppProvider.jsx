@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
-import { useState } from 'react';
 import Head from "next/head";
-import {MantineProvider, ColorSchemeProvider, ColorScheme, AppShell} from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+  AppShell,
+} from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import Router from "next/router";
 import { Notifications } from "@mantine/notifications";
@@ -9,15 +13,15 @@ import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Sidebar";
+import SideBar from "./SideNav";
 
 const AppProvider = ({ children }) => {
-  
   const router = Router.useRouter();
   const showComponents =
-    window.location.pathname !== "/login/"  &&
+    window.location.pathname !== "/login/" &&
     window.location.pathname !== "/register/";
-  
-  const showDashboard= window.location.pathname === '/users/';
+
+  const showDashboard = window.location.pathname === "/users/";
 
   const error = {
     fontSize: "12px",
@@ -31,12 +35,11 @@ const AppProvider = ({ children }) => {
     getInitialValueInEffect: true,
   });
   // const [colorScheme, setColorScheme] = useState('light');
-  
 
   const toggleColorScheme = (value) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
-    useHotkeys([["mod+J", () => toggleColorScheme()]]);
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   return (
     <>
@@ -52,25 +55,40 @@ const AppProvider = ({ children }) => {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            styles={{
-              PasswordInput: { error },
-              TextInput: { error },
-              NumberInput: { error },
-              Textarea: { error },
-            }}
-          classNames={{
-            modal:{
-              modal: "max-w-[min(100vw,720px)] w-full",
-              title: "text-center w-full",
-              header:
-                "bg-primary text-center w-full rounded-md p-2 text-white font-bold",
-              body: " border border-solid border-gray-200 rounded-md p-6",
-              close: "text-white hover:text-primary",
-            } 
+          withGlobalStyles
+          withNormalizeCSS
+          styles={{
+            PasswordInput: { error },
+            TextInput: { error },
+            NumberInput: { error },
+            Textarea: { error },
           }}
+          // classNames={{
+          //   modal: {
+          //     modal: "max-w-[min(100vw,720px)] w-full",
+          //     title: "text-center w-full",
+          //     header:
+          //       "bg-primary text-center w-full rounded-md p-2 text-white font-bold",
+          //     body: " border border-solid border-gray-200 rounded-md p-6",
+          //     close: "text-white hover:text-primary",
+          //   },
+          // }}
           theme={{
+            colors: {
+              brand: [
+                "#ebfbee",
+                "#d3f9d8",
+                "#b2f2bb",
+                "#8ce99a",
+                "#69db7c",
+                "#51cf66",
+                "#40c057",
+                "#37b24d",
+                "#2f9e44",
+                "#32CD32",
+              ],
+            },
+            primaryColor: "brand",
             fontFamily:
               'Roboto,-apple-system , BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
             fontSize: "10px",
@@ -78,43 +96,44 @@ const AppProvider = ({ children }) => {
               fontFamily:
                 '"Roboto SlabVariable", Roboto,-apple-system , BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
             },
-            
-             colorScheme,
+
+            colorScheme,
           }}
         >
-          
-          <Notifications autoClose={4000}/>
-            <ModalsProvider
-              modalProps={{
-                classNames: {
-                  modal: "max-w-[min(100vw,720px)] w-full",
-                  title:"text-center w-full font-bold bg-primary text-center w-full rounded-md p-3  text-white font-bold",
-                  header:'',
-                  body: " border border-solid border-gray-200 rounded-md p-6",
-                  close: "text-primary text-3xl hover:text-red-800",
-                },
-              }}
-           
-            >
-              <div className="h-screen ">
-                <AppShell
-                  navbar={showDashboard && <SideNav />}
-                  header={showComponents && <AppHeader />}
-                  footer={showComponents && <AppFooter />}
+          <Notifications autoClose={4000} />
+          <ModalsProvider
+            modalProps={
+              {
+                // classNames: {
+                //   modal: "max-w-[min(100vw,720px)] w-full",
+                //   header: "text-center bg-primary m-3",
+                //   title:
+                //     "text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
+                //   body: " border border-solid border-gray-200 rounded-md p-6",
+                //   close: "text-red-700  text-4xl hover:text-red-800",
+                // },
+              }
+            }
+          >
+            <div className="h-screen ">
+              <AppShell
+                header={showComponents && <AppHeader />}
+                navbar={showDashboard && <SideNav />}
+                footer={showComponents && <AppFooter />}
+              >
+                <div
+                  className={` ${
+                    window.location.pathname !== "/login/" &&
+                    window.location.pathname !== "/register/"
+                      ? "min-h-screen"
+                      : "min-h-[calc(100vh-150px)]"
+                  }`}
                 >
-                  <div
-                    className={` ${
-                      window.location.pathname !== "/login/" &&
-                      window.location.pathname !== "/register/"
-                        ? "min-h-screen"
-                        : "min-h-[calc(100vh-150px)]"
-                    }`}
-                  >
-                    {children}
-                  </div>
-                </AppShell>
-              </div>
-            </ModalsProvider>
+                  {children}
+                </div>
+              </AppShell>
+            </div>
+          </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

@@ -1,29 +1,45 @@
-import {useState, useEffect} from 'react';
-import moment from 'moment';
+import { useState, useEffect } from "react";
+import moment from "moment";
 import {
   Avatar,
+  Indicator,
+  Divider,
+  Paper,
   TextInput,
   Pagination,
-  ActionIcon, 
-  useMantineColorScheme, 
+  ActionIcon,
+  useMantineColorScheme,
   Menu,
   createStyles,
-  Table, 
-  Image,Title, 
+  Table,
+  Image,
+  Title,
   Button,
   Container,
-  Group,Text,List,Breadcrumbs, Anchor} from "@mantine/core";
-import { modals, openModal } from '@mantine/modals';
-import { IconUserPlus,IconSun, IconMoonStars,IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconArrowsLeftRight, IconEye, IconDotsVertical, IconTrash, IconUserCheck,IconCircleCheck, IconEdit } from '@tabler/icons';
+  Group,
+  Text,
+  List,
+  Breadcrumbs,
+  Anchor,
+} from "@mantine/core";
+import { modals, openModal } from "@mantine/modals";
+import {
+  IconUserPlus,
+  IconSun,
+  IconMoonStars,
+  IconArrowsLeftRight,
+  IconEye,
+  IconDotsVertical,
+  IconTrash,
+  IconCircleCheck,
+  IconEdit,
+} from "@tabler/icons";
 import UserModal from "../utils/Modal";
-import AddUserForm from '../Forms/AddUserForm';
-import { faker } from '@faker-js/faker';
-import UserTable from '../Forms/UserTable';
+import AddUserForm from "../Forms/AddUserForm";
+import { faker } from "@faker-js/faker";
+import UserTable from "../Forms/UserTable";
 
-
-
-
-//Creating a Dummy Data with Faker 
+//Creating a Dummy Data with Faker
 export const USERS = [];
 export function createRandomUser() {
   return {
@@ -31,19 +47,21 @@ export function createRandomUser() {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
+    phone: faker.phone.number("(###) ###-####"),
+    city: faker.address.city(),
+    address: faker.address.streetAddress(),
     avatar: faker.image.avatar(),
     registeredAt: faker.date.past(),
-    idType: faker.helpers.arrayElement(['Ghana-Card', 'VotersID', 'NHIS-Card']),
-    userRole: faker.helpers.arrayElement(['Client', 'Provider', 'Staff'])
+    idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
+    userRole: faker.helpers.arrayElement(["Client", "Provider", "Staff"]),
   };
 }
 Array.from({ length: 3 }).forEach(() => {
   USERS.push(createRandomUser());
 });
 
-
-    //Checking if user is approved
-      //const approved=1;
+//Checking if user is approved
+//const approved=1;
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -101,19 +119,45 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const items = [
-  { title: 'Dashboard', href: '#' },
-  { title: 'Users', href: '#' },
+  { title: "Dashboard", href: "#" },
+  { title: "Users", href: "#" },
 ].map((item, index) => (
   <Anchor href={item.href} key={index}>
     {item.title}
   </Anchor>
 ));
 
-
-    
-
 export default function UsersComponent() {
-  const users=USERS
+  const users = USERS;
+
+  //Delete User Confirmation.
+  const DeleteModal = (user) =>
+    modals.openConfirmModal({
+      classNames: {
+        header: "text-center",
+        title:
+          "w-full font-bold text-center w-full rounded-md text-red-500 font-bold",
+        body: "text-center border-solid border-gray-200 rounded-md p-4",
+        close: "text-white text-4xl hover:text-red-800",
+        confirm: "text-center flex justify-content-center", // add justify-content-center here
+      },
+      title: `Delete User`,
+      size: "sm",
+      centered: true,
+      children: (
+        <Text fz="md" ta="center" className="pb-4">
+          Are you sure you want to delete {`${user.firstName}`}?
+        </Text>
+      ),
+      labels: { confirm: "Yes, Delete", cancel: "No, Cancel" },
+      // labels: {
+      //   confirm: <Text>Delete</Text>,
+      //   cancel: "Cancel",
+      // },
+      confirmProps: { color: "red", position: "left" },
+      onCancel: () => console.log(user.firstName),
+      onConfirm: () => deleteUser(user.userId),
+    });
 
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -126,63 +170,74 @@ export default function UsersComponent() {
   const handleClose = () => {
     setSelectedUser(null);
     setIsOpen(false);
-
   };
 
-
   ///Search functionality
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   //Setting UserList states
-  const [usersList, setUsersList]= useState(USERS);
+  const [usersList, setUsersList] = useState(USERS);
 
   //Getting users List from LocalStorage
   useEffect(() => {
-    const storedUsersList = localStorage.getItem('usersList');
-       if (storedUsersList) {
+    const storedUsersList = localStorage.getItem("usersList");
+    if (storedUsersList) {
       setUsersList(JSON.parse(storedUsersList));
     }
   }, []);
-  
 
   //Adding user function
   const handleAddUser = (newUser) => {
     setUsersList([newUser, ...usersList]);
     //Setting users to LocalStorage
-    localStorage.setItem('usersList', JSON.stringify([newUser,...usersList]));
+    localStorage.setItem("usersList", JSON.stringify([newUser, ...usersList]));
   };
 
-
   //"Updating User function"
-  const updateUser=(user)=>{
+  const updateUser = (user) => {
     setUsersList([user, ...usersList]);
   };
 
-   // Function to remove/Delete a user from the list
-   const deleteUser = (userId) => {
-      
+  // Function to remove/Delete a user from the list
+  const deleteUser = (userId) => {
     setUsersList(usersList.filter((user) => user.userId !== userId));
-    
+
     // Remove user from local storage
-      const userData = localStorage.getItem('usersList');
-      if (userData) {
-        const parsedUserData = JSON.parse(userData);
-        const updatedUserData = parsedUserData.filter((user) => user.userId !== userId);
-        localStorage.setItem('usersList', JSON.stringify(updatedUserData));
-      }
+    const userData = localStorage.getItem("usersList");
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      const updatedUserData = parsedUserData.filter(
+        (user) => user.userId !== userId,
+      );
+      localStorage.setItem("usersList", JSON.stringify(updatedUserData));
+    }
   };
 
   const { classes } = useStyles();
-  
-  
+
   //------------------------------ADD USER MODAL---------------------------//
   const openAddUserModal = () => {
-    const id= modals.open({
-      title:"Add New User",
-      size:"xl",
+    const id = modals.open({
+      classNames: {
+        modal: "max-w-[min(100vw,720px)] w-full",
+        header: "text-center bg-primary m-3",
+        title:
+          "text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
+        body: " border border-solid border-gray-200 rounded-md p-6",
+        close: "text-red-700  text-4xl hover:text-red-800",
+      },
+      title: (
+        <Text
+          ta="center"
+          className="text-center w-full rounded-md text-white font-bold"
+        >
+          Add New User
+        </Text>
+      ),
+      size: "xl",
       children: (
         <>
-          <AddUserForm addUser={handleAddUser} close={modals.closeAll}/>
+          <AddUserForm addUser={handleAddUser} close={modals.closeAll} />
         </>
       ),
     });
@@ -190,170 +245,272 @@ export default function UsersComponent() {
 
   //-----------------------------ADD USER MODAL ENDS HERE--------------------------------//
 
-//For DAtA test Purposes--------------Merging Generated Users and Added USers//
+  //For DAtA test Purposes--------------Merging Generated Users and Added USers//
 
-  
-          //---------------------- PAGINATION BLOCK-----------------------//
+  //---------------------- PAGINATION BLOCK-----------------------//
   //Pagination
   const [activePage, setPage] = useState(1);
   const limit = 5;
-  const perPage = Math.ceil(usersList.length/limit);
+  const perPage = Math.ceil(usersList.length / limit);
 
   const startIndex = (activePage - 1) * limit;
   const endIndex = startIndex + limit;
-  const activePageData = usersList.slice(startIndex, endIndex)// Splicing Data PerPage
+  const activePageData = usersList.slice(startIndex, endIndex); // Splicing Data PerPage
 
   //Handling Page Change
-  const handlePageChange =(newPage)=>{
-        setPage(newPage);
-  }
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
 
-//---------------------- PAGINATION BLOCK ENDS HERE-----------------------//
-
+  //---------------------- PAGINATION BLOCK ENDS HERE-----------------------//
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const dark = colorScheme === 'dark';
+  const dark = colorScheme === "dark";
   return (
-    <div className="mt-16">  
-      <Container size="lg" px="xs" >
+    <div className="mt-16">
+      <Container size="lg" px="xs">
         <div className="flex items-center justify-between">
-        <Breadcrumbs>{items}</Breadcrumbs>
-            {/* Custom Separator */}
-            {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
-             <Title className="text-gray-500 text-center mb-2">Users</Title>
+          <Breadcrumbs>{items}</Breadcrumbs>
+          {/* Custom Separator */}
+          {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
+          <Title order={3} className="text-gray-500 text-center mb-2">
+            Users
+          </Title>
 
-             {/* Dark mode Switch */}
-            <p className="flex justify-end mr-10">
-              <ActionIcon
-                  variant="outline"
-                  color={dark ? 'yellow' : 'green'}
-                  onClick={() => toggleColorScheme()}
-                  title="Toggle color scheme"
-                >
-                  {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-                </ActionIcon> 
-            </p>
+          {/* Dark mode Switch */}
+          <p className="flex justify-end mr-10">
+            <ActionIcon
+              variant="outline"
+              color={dark ? "yellow" : "green"}
+              onClick={() => toggleColorScheme()}
+              title="Toggle color scheme"
+            >
+              {dark ? (
+                <IconSun size="1.1rem" />
+              ) : (
+                <IconMoonStars size="1.1rem" />
+              )}
+            </ActionIcon>
+          </p>
         </div>
-          
-          
-         
 
-            <UserTable users={USERS}/>
+        <UserTable />
 
-                <div className="px-4">
-                    <Button 
-                      leftIcon={<IconUserPlus size={16}/>} 
-                      variant="outline" color="green" 
-                      onClick={openAddUserModal}
-                      className='text-sm'
-                      >ADD</Button>
-                </div>
-               
-                {/* SEarch Field */}
-                {/* <div className="py-2 my-2">
+        <div className="px-4">
+          <Button
+            leftIcon={<IconUserPlus size={16} />}
+            variant="outline"
+            color="green"
+            onClick={openAddUserModal}
+            className="text-sm"
+          >
+            ADD
+          </Button>
+        </div>
+
+        {/* SEarch Field */}
+        {/* <div className="py-2 my-2">
                           <TextInput
                               placeholder="Search..."
                               value={searchQuery}
                               onChange={(event) => setSearchQuery(event.target.value)}
                           />
                 </div> */}
-                      
-         <Table highlightOnHover>
-              <thead>
-              <tr>
-                <th>Image</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>User Type</th>
-                <th>ID Type/Number</th>
-                <th>email</th>
-                <th>Reg Date</th>
-                <th>Verified</th>
-                <th>User Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-              {activePageData.map((user) => (
+
+        <Table highlightOnHover>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>User Type</th>
+              <th>ID Type/Number</th>
+              <th>email</th>
+              <th>Reg Date</th>
+              <th>Verified</th>
+              <th>User Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              activePageData.map((user) => (
                 <tr key={user.userId}>
                   <td>
-                    <Avatar src={user.avatar} alt={user.username} radius="xl" size={32} />
+                    <Avatar
+                      src={user.avatar}
+                      alt={user.username}
+                      radius="xl"
+                      size={32}
+                    />
                   </td>
-                      <td>{user.firstName}</td>
-                      <td>{user.lastName}</td>
-                      <td>{user.userRole}</td>
-                      <td>{user.idType}</td>
-                      <td>{user.email} </td>
-                      
-                      <td>{moment(user.registeredAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
-                      <td>
-                      <span className="text-primary">
-                        <IconCircleCheck />
-                      </span>
-                      <UserModal title="User Details">hello</UserModal>
-                      </td>
-                      <td> 
-                      <div>
-                        <Menu shadow="xl" offset={-4} position='left' width={200} withArrow arrowPosition="center" >
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.userRole}</td>
+                  <td>{user.idType}</td>
+                  <td>{user.email} </td>
+
+                  <td>{moment(user.registeredAt).format("MMMM Do YYYY")}</td>
+                  <td>
+                    <span className="text-primary">
+                      <IconCircleCheck />
+                    </span>
+                    <UserModal title="User Details">hello</UserModal>
+                  </td>
+                  <td>
+                    <div>
+                      <Menu
+                        transitionProps={{
+                          transition: "rotate-right",
+                          duration: 150,
+                        }}
+                        shadow="xl"
+                        offset={-4}
+                        position="left"
+                        width={200}
+                        withArrow
+                        arrowPosition="center"
+                      >
                         <Menu.Target>
-                          <span><IconDotsVertical className='hover:text-primary'></IconDotsVertical></span>
+                          <span>
+                            <IconDotsVertical className="hover:text-primary active:text-primary"></IconDotsVertical>
+                          </span>
                         </Menu.Target>
 
-                              <Menu.Dropdown>
-                                <Menu.Label>Action</Menu.Label>
-                                <Menu.Item 
-                                  onClick={() => setSelectedUser(user)}
-                                  icon={<IconEye size={14} />}>
-                                  View
-                                </Menu.Item>
-                                <Menu.Item icon={<IconEdit size={14} />}>Edit</Menu.Item>
-                                <Menu.Divider />
+                        <Menu.Dropdown>
+                          <Menu.Label>Action</Menu.Label>
+                          <Menu.Item
+                            onClick={() => setSelectedUser(user)}
+                            icon={<IconEye size={14} />}
+                          >
+                            View
+                          </Menu.Item>
+                          <Menu.Item icon={<IconEdit size={14} />}>
+                            Edit
+                          </Menu.Item>
+                          <Menu.Divider />
 
-                                <Menu.Label>Danger zone - careful</Menu.Label>
-                                <Menu.Item icon={<IconArrowsLeftRight size={14} />}>Transfer data</Menu.Item>
-                                <Menu.Item onClick={() => deleteUser(user.userId)} color="red" icon={<IconTrash size={14} />}>Delete account</Menu.Item>
-                              </Menu.Dropdown>
-                            </Menu>
-                            </div>
-                        {/* <span>
+                          <Menu.Label>Danger zone - Careful</Menu.Label>
+                          <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
+                            Transfer Data
+                          </Menu.Item>
+                          <Menu.Item
+                            onClick={() => DeleteModal(user)}
+                            color="red"
+                            icon={<IconTrash size={14} />}
+                          >
+                            Delete Account
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
+                    </div>
+                    {/* <span>
                           <UserModal title="User Details">body</UserModal>
                         </span> */}
-                      
-                      {/* <span className="px-1 mx-1"><IconTrash/></span>
+
+                    {/* <span className="px-1 mx-1"><IconTrash/></span>
                       <span>
                         {approved ? <IconUserCheck/> : "Not Approved" }
                       </span> */}
                   </td>
                 </tr>
-                ))//Map
-                }
-       </tbody>
+              )) //Map
+            }
+          </tbody>
         </Table>
-        
-          <div>
-            {selectedUser && (
-                    <UserModal
-                      title={`${selectedUser.firstName}'s Details`}
-                      isOpen={true}
-                      handleClose={handleClose}
-                    >
-                      <div>
-                            <Text>Email: {selectedUser.email}</Text>
-                            <Text>User Type: {selectedUser.userRole}</Text>
-                            {/* Add other user details here */}
-                      </div>
-                    </UserModal>
-                  )}
-          </div>
+
+        <div>
+          {selectedUser && (
+            <UserModal
+              title={`${selectedUser.firstName}'s Details`}
+              isOpen={true}
+              handleClose={handleClose}
+            >
+              <div className="px-8 py-6">
+                <div className="flex items-center justify-center mb-6">
+                  <Indicator
+                    inline
+                    size={16}
+                    offset={7}
+                    label={selectedUser.userRole}
+                    position="bottom-end"
+                    color="green"
+                    withBorder
+                  >
+                    <Avatar
+                      src={selectedUser.avatar}
+                      alt={selectedUser.firstName}
+                      radius="xl"
+                      className="shadow-md hover:shadow-lg"
+                      size={68}
+                    />
+                  </Indicator>
+                  <div className="ml-6">
+                    <h2 className="text-3xl font-bold text-primary">
+                      {selectedUser.firstName} {selectedUser.lastName}
+                    </h2>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 ">
+                  <div>
+                    <p className="text-xl font-medium mb-1 text-gray-500">
+                      <Divider
+                        label="Contact Information"
+                        labelPosition="center"
+                        my="sm"
+                      />
+                    </p>
+                    <p className="text-md list-none ml-0">
+                      <li className="mb-1 text-gray-600 ">
+                        {selectedUser.email}
+                      </li>
+                      <li className="mb-1 text-gray-600">
+                        {selectedUser.phone}
+                      </li>
+                      <li className="text-gray-600">
+                        {selectedUser.address} | {selectedUser.city}
+                      </li>
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xl font-medium mb-1 text-gray-500">
+                      <Divider
+                        label="Other Info"
+                        labelPosition="right"
+                        my="sm"
+                      />
+                    </p>
+                    <Paper>
+                      <p className="text-md list-none ml-0">
+                        <li className="mb-1 text-gray-600 ">
+                          {selectedUser.idType}
+                        </li>
+                        <li className="mb-1 text-gray-600">
+                          {moment(selectedUser.registeredAt).format(
+                            "MMMM Do YYYY",
+                          )}
+                        </li>
+                        <li className="text-gray-600">
+                          {selectedUser.userRole}
+                        </li>
+                      </p>
+                    </Paper>
+                  </div>
+                </div>
+              </div>
+            </UserModal>
+          )}
+        </div>
         <div className="py-2 my-1">
-           <Pagination 
-            value={activePage} 
+          <Pagination
+            value={activePage}
             onChange={handlePageChange}
-            position='center'
-            total={perPage} 
-            color="green" 
-            className='text-primary' 
-            size="sm"/>
+            position="center"
+            total={perPage}
+            color="green"
+            className="text-primary"
+            size="sm"
+          />
         </div>
       </Container>
     </div>
