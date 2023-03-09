@@ -19,7 +19,6 @@ import {
   Group,
   Text,
   List,
-  Breadcrumbs,
   Anchor,
 } from "@mantine/core";
 import { modals, openModal } from "@mantine/modals";
@@ -38,6 +37,7 @@ import UserModal from "../utils/Modal";
 import AddUserForm from "../Forms/AddUserForm";
 import { faker } from "@faker-js/faker";
 import UserTable from "../Forms/UserTable";
+import Breadcrumb from "../utils/BreadCrumbs";
 
 //Creating a Dummy Data with Faker
 export const USERS = [];
@@ -219,7 +219,6 @@ export default function UsersComponent() {
   const openAddUserModal = () => {
     const id = modals.open({
       classNames: {
-        modal: "max-w-[min(100vw,720px)] w-full",
         header: "text-center bg-primary m-3",
         title:
           "text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
@@ -234,7 +233,8 @@ export default function UsersComponent() {
           Add New User
         </Text>
       ),
-      size: "xl",
+
+      size: "65%",
       children: (
         <>
           <AddUserForm addUser={handleAddUser} close={modals.closeAll} />
@@ -270,13 +270,10 @@ export default function UsersComponent() {
     <div className="mt-16">
       <Container size="lg" px="xs">
         <div className="flex items-center justify-between">
-          <Breadcrumbs>{items}</Breadcrumbs>
-          {/* Custom Separator */}
-          {/* <Breadcrumbs separator="→">{items}</Breadcrumbs> */}
+          <Breadcrumb items={items} />
           <Title order={3} className="text-gray-500 text-center mb-2">
             Users
           </Title>
-
           {/* Dark mode Switch */}
           <p className="flex justify-end mr-10">
             <ActionIcon
@@ -293,8 +290,9 @@ export default function UsersComponent() {
             </ActionIcon>
           </p>
         </div>
-
-        <UserTable />
+        <div className=" items-center px-10 max-w-md mx-auto">
+          <UserTable />
+        </div>
 
         <div className="px-4">
           <Button
@@ -336,12 +334,27 @@ export default function UsersComponent() {
               activePageData.map((user) => (
                 <tr key={user.userId}>
                   <td>
-                    <Avatar
-                      src={user.avatar}
-                      alt={user.username}
-                      radius="xl"
-                      size={32}
-                    />
+                    <Group spacing="sm">
+                      <Avatar
+                        size={32}
+                        src={user.avatar}
+                        radius="xl"
+                        onClick={() => setSelectedUser(user)}
+                        className="hover:shadow-md transition duration-150 ease-in-out cursor-pointer"
+                      />
+                      <div>
+                        <Text fz="sm" fw={500}>
+                          {user.firstName}
+                        </Text>
+                        <Text
+                          fz="xs"
+                          c="dimmed"
+                          className="text-gray-500 opacity-30"
+                        >
+                          {user.email}
+                        </Text>
+                      </div>
+                    </Group>
                   </td>
                   <td>{user.firstName}</td>
                   <td>{user.lastName}</td>

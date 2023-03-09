@@ -1,38 +1,36 @@
-import { useState } from "react";
-import { TextInput } from "@mantine/core";
-import { Table } from "@mantine/core";
-import { IconSearch } from "@tabler/icons";
+import {
+  TextInput,
+  TextInputProps,
+  ActionIcon,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons";
 
-const UserTable = ({ users }) => {
-  const [searchValue, setSearchValue] = useState("");
-
-  const filter = () => handlers.filter((item) => item.a === "new-prop");
-
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
+export default function UserTable({ props }) {
+  const theme = useMantineTheme();
 
   return (
-    <div className="mx-4 px-4 my-3">
-      <TextInput
-        label="Search"
-        placeholder="Search users..."
-        icon={<IconSearch size="1rem" />}
-        value={searchValue}
-        onChange={handleSearchChange}
-      />
-      <Table>
-        {/* <Tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.username}</td>
-              <td>{user.firstname}</td>
-            </tr>
-          ))}
-        </Tbody> */}
-      </Table>
-    </div>
+    <TextInput
+      icon={<IconSearch size="1.1rem" stroke={1.5} />}
+      radius="xl"
+      size="sm"
+      rightSection={
+        <ActionIcon
+          size={32}
+          radius="xl"
+          color={theme.primaryColor}
+          variant="filled"
+        >
+          {theme.dir === "ltr" ? (
+            <IconArrowRight size="1.1rem" stroke={1.5} />
+          ) : (
+            <IconArrowLeft size="1.1rem" stroke={1.5} />
+          )}
+        </ActionIcon>
+      }
+      placeholder="Search..."
+      rightSectionWidth={38}
+      {...props}
+    />
   );
-};
-
-export default UserTable;
+}
