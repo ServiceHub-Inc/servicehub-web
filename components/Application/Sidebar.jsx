@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   createStyles,
   Navbar,
@@ -21,6 +22,7 @@ import { Logo } from "./AppHeader";
 const useStyles = createStyles((theme) => ({
   wrapper: {
     display: "flex",
+    paddingLeft: "10px",
   },
 
   aside: {
@@ -30,7 +32,7 @@ const useStyles = createStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // padding: "2px",
+    paddingRight: "20px",
     borderRight: `1px solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
     }`,
@@ -78,26 +80,24 @@ const useStyles = createStyles((theme) => ({
   title: {
     boxSizing: "border-box",
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: theme.fn.primaryColor(),
     marginBottom: theme.spacing.xl,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     padding: theme.spacing.md,
     paddingTop: 18,
     height: 60,
-    borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
-    }`,
   },
 
   logo: {
     boxSizing: "border-box",
     display: "flex",
     justifyContent: "center",
-    height: 60,
+    height: 25,
     paddingTop: theme.spacing.md,
-    borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[3]
-    }`,
     marginBottom: theme.spacing.xl,
   },
 
@@ -110,10 +110,10 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    padding: "4px",
+    // padding: "4px",
     fontSize: theme.fontSizes.sm,
     marginLeft: theme.spacing.md,
-    marginRight: theme.spacing.md,
+    // marginRight: theme.spacing.md,
     fontWeight: 500,
     // height: 50,
     lineHeight: "35px",
@@ -148,18 +148,13 @@ const mainLinksMockdata = [
   { icon: IconSettings, label: "Settings" },
 ];
 
-const linksMockdata = [
-  "Security",
-  "Settings",
-  "Dashboard",
-  "Releases",
-  "Account",
-];
+const linksMockdata = ["Users", "Services"];
 
 export function SideNav() {
+  const router = useRouter();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Dashboard");
-  const [activeLink, setActiveLink] = useState("Settings");
+  const [activeLink, setActiveLink] = useState("Users");
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -181,12 +176,15 @@ export function SideNav() {
   ));
 
   const links = linksMockdata.map((link) => (
-    <Link href={`/${link}`} key={link}>
+    <Link href={`/${link.toLowerCase()}`} key={link}>
       <a
         className={cx(classes.link, {
           [classes.linkActive]: activeLink === link,
         })}
-        onClick={() => setActiveLink(link)}
+        onClick={(e) => {
+          setActiveLink(link);
+        }}
+        // }}
       >
         {link}
       </a>
@@ -194,21 +192,27 @@ export function SideNav() {
   ));
 
   return (
-    <Navbar height={700} width={{ sm: 300 }}>
+    <Navbar width={{ base: 300 }} height={661} p="xs" className="fixed left-0">
       <Navbar.Section grow className={classes.wrapper}>
         <div className={classes.aside}>
-          <div className={classes.logo}>
+          {/* <div className={classes.logo}>
             <Logo type="mark" size={20} />
-          </div>
+          </div> */}
           {mainLinks}
         </div>
-        <Link href="/dashboard">hello there</Link>
         <div className={classes.main}>
           <Title order={4} className={classes.title}>
             {active}
           </Title>
-
           {links}
+          {/* <ul className="list-none">
+            <Link href="/users">
+              <li>Users</li>
+            </Link>
+            <Link href="/services">
+              <li>Services</li>
+            </Link>
+          </ul> */}
         </div>
       </Navbar.Section>
     </Navbar>

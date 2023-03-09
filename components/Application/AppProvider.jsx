@@ -13,7 +13,6 @@ import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Sidebar";
-import SideBar from "./SideNav";
 
 const AppProvider = ({ children }) => {
   const router = Router.useRouter();
@@ -21,7 +20,7 @@ const AppProvider = ({ children }) => {
     window.location.pathname !== "/login/" &&
     window.location.pathname !== "/register/";
 
-  const showDashboard = window.location.pathname === "/users/";
+  const showDashboard = window.location.pathname !== "/" && showComponents;
 
   const error = {
     fontSize: "12px",
@@ -118,7 +117,11 @@ const AppProvider = ({ children }) => {
             <div className="h-screen ">
               <AppShell
                 header={showComponents && <AppHeader />}
-                navbar={showDashboard && <SideNav />}
+                navbar={
+                  showDashboard && (
+                    <SideNav width={{ base: 300 }} height={500} p="xs" />
+                  )
+                }
                 footer={showComponents && <AppFooter />}
               >
                 <div
