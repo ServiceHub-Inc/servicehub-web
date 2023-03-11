@@ -7,21 +7,28 @@ import {
   Divider,
   Group,
   MultiSelect,
+  Text,
   Select,
   Loader,
   NativeSelect,
+  useMantineTheme,
   FileInput,
 } from "@mantine/core";
 import { faker } from "@faker-js/faker";
 import {
   IconUserExclamation,
   IconUpload,
+  IconPhoto,
+  IconX,
   IconArrowNarrowRight,
 } from "@tabler/icons";
 import { VscOrganization, VscPerson } from "react-icons/vsc";
-import { FcBusinessman } from "react-icons/fc";
+import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import UserUploads from "./UserUploads";
 
 const AddUserForm = ({ addUser, close }) => {
+  const theme = useMantineTheme();
+
   //Skills Set and State
   const [skillsSet, setSkillsSet] = useState([
     { value: "coding", label: "Coding" },
@@ -396,10 +403,14 @@ const AddUserForm = ({ addUser, close }) => {
           </Group>
         </Stepper.Step>
         <Stepper.Step label="Uploads" description="IDs and Attachments">
-          Step 3 content: Get full access
+          <div className="py-2 my-4">
+            <UserUploads />
+          </div>
         </Stepper.Step>
         <Stepper.Completed>
-          Completed, click back button to get to previous step
+          <div className="py-1 my-1">
+            <p className="text-center font-medium text-lg">Review & Submit</p>
+          </div>
         </Stepper.Completed>
       </Stepper>
 
@@ -410,10 +421,16 @@ const AddUserForm = ({ addUser, close }) => {
         {ProviderSelected ? (
           <Button
             disabled={!selectedOption}
-            rightIcon={<IconArrowNarrowRight size="1rem" />}
+            rightIcon={
+              active === 3 ? (
+                <IconUpload size="1rem" />
+              ) : (
+                <IconArrowNarrowRight size="1rem" />
+              )
+            }
             onClick={nextStep}
           >
-            Next Step
+            {active === 3 ? "Submit" : "Next Step"}
           </Button>
         ) : (
           <Button type="submit">
