@@ -25,6 +25,8 @@ import {
 import { VscOrganization, VscPerson } from "react-icons/vsc";
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import UserUploads from "./UserUploads";
+import IndividualProvider from "./IndividualProvider";
+import CorporateProvider from "./CorporateProvider";
 
 const AddUserForm = ({ addUser, close }) => {
   const theme = useMantineTheme();
@@ -309,98 +311,12 @@ const AddUserForm = ({ addUser, close }) => {
           label="Additional Info"
           description="Identification, Education & Skills"
         >
-          <Group className="py-2 my-2 max-w-full">
-            <NativeSelect
-              className="ml-16 w-[30%]"
-              radius="lg"
-              label="ID Type"
-              clearable
-              // description="Select user role"
-              required
-              icon={<IconUserExclamation size="1rem" color="green" />}
-              data={[
-                { value: "GhCard", label: "Ghana-Card" },
-                { value: "voterID", label: "Voter ID" },
-                { value: "NHIS", label: "NHIS" },
-              ]}
-              value={userData.idType}
-              // onChange={(value) => console.log(value)}
-              onChange={handleInputChange}
-              name="idType"
-            />
-            <TextInput
-              className="ml-40 w-[30%]"
-              label="ID Number"
-              placeholder="ID"
-              required
-              value={userData.idNumber}
-              onChange={handleInputChange}
-              name="idNumber"
-            />
-          </Group>
-          {/* Additional INfo, Education, Skills etc */}
-          <Group className="ml-16 space-x-6">
-            <MultiSelect
-              label="Select or Add Skill"
-              className="w-[50%]"
-              required
-              data={skillsSet}
-              placeholder="Skills"
-              searchable
-              maxSelectedValues={3}
-              description="you can add a max of 3 skill sets"
-              creatable
-              getCreateLabel={(query) => `+ add ${query} as a skill`}
-              onCreate={(query) => {
-                const item = { value: query, label: query };
-                setSkillsSet((current) => [...current, item]);
-                return item;
-              }}
-            />
-
-            <TextInput
-              className="w-[40%]"
-              label="Highest Education"
-              description="highest form of training / education attained"
-              required
-              // value={userData.firstName}
-              // onChange={handleInputChange}
-              name="education"
-            />
-          </Group>
-
-          <Group className="py-2 my-2 max-w-full">
-            <TextInput
-              className="ml-16 w-[30%]"
-              label="Referee Full Name"
-              placeholder="Rockson Doe"
-              required
-              // value={userData.firstName}
-              // onChange={handleInputChange}
-              name="refName"
-            />
-            <TextInput
-              className="ml-40 w-[30%]"
-              label="Referee's Contact"
-              placeholder="050 729-5961"
-              required
-              type="tel"
-              // value={userData.phone}
-              // onChange={handleInputChange}
-              name="refContact"
-            />
-          </Group>
-          <Group className="ml-16 space-x-6">
-            <TextInput
-              className="w-[30%]"
-              label="Relationship of referee"
-              placeholder="Supervisor"
-              required
-              // value={userData.lastName}
-              // onChange={handleInputChange}
-              name="refRelation"
-            />
-          </Group>
+          {selectedOption === "client" ? (
+            <IndividualProvider userData handleInputChange />
+          ) : null}
+          {selectedOption === "provider" ? (
+            <CorporateProvider userData handleInputChange />
+          ) : null}
         </Stepper.Step>
         <Stepper.Step label="Uploads" description="IDs and Attachments">
           <div className="py-2 my-4">
