@@ -6,18 +6,27 @@ import {
   Stepper,
   Divider,
   Group,
+  MultiSelect,
   Select,
   Loader,
   NativeSelect,
   FileInput,
 } from "@mantine/core";
 import { faker } from "@faker-js/faker";
-import { IconUserExclamation, IconUpload } from "@tabler/icons";
-import { GiPerson } from "react-icons/gi";
+import {
+  IconUserExclamation,
+  IconUpload,
+  IconArrowNarrowRight,
+} from "@tabler/icons";
 import { VscOrganization, VscPerson } from "react-icons/vsc";
 import { FcBusinessman } from "react-icons/fc";
 
 const AddUserForm = ({ addUser, close }) => {
+  //Skills Set and State
+  const [skillsSet, setSkillsSet] = useState([
+    { value: "coding", label: "Coding" },
+  ]);
+
   const [selectedOption, setSelectedOption] = useState("");
   //Stepper States
   const [active, setActive] = useState(0);
@@ -219,10 +228,10 @@ const AddUserForm = ({ addUser, close }) => {
           </Group>
 
           {ProviderSelected && (
-            <div className="flex justify-evenly items-center">
+            <div className="flex justify-center space-x-4 items-center">
               <div>
                 <label
-                  className={`bg-gray-50 shadow-md hover:bg-green-600 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
+                  className={`bg-gray-50 shadow-md hover:bg-green-100 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
                     selectedOption === "client"
                       ? "ring-2 ring-offset-2 ring-green-400"
                       : ""
@@ -230,7 +239,7 @@ const AddUserForm = ({ addUser, close }) => {
                 >
                   <input
                     type="radio"
-                    name="user-type"
+                    name="userType"
                     value="client"
                     checked={selectedOption === "client"}
                     onChange={() => setSelectedOption("client")}
@@ -250,10 +259,14 @@ const AddUserForm = ({ addUser, close }) => {
                   INDIVIDUAL
                 </p>
               </div>
-
+              <div className=" w-[25%]">
+                <p>
+                  <Divider my="md" label="OR" labelPosition="center" />
+                </p>
+              </div>
               <div>
                 <label
-                  className={`bg-gray-50 shadow-md hover:bg-gray-100 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
+                  className={`bg-gray-50 shadow-md hover:bg-green-100 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
                     selectedOption === "provider"
                       ? "ring-2 ring-offset-2 ring-primary"
                       : ""
@@ -261,7 +274,7 @@ const AddUserForm = ({ addUser, close }) => {
                 >
                   <input
                     type="radio"
-                    name="user-type"
+                    name="userType"
                     value="provider"
                     checked={selectedOption === "provider"}
                     onChange={() => setSelectedOption("provider")}
@@ -271,16 +284,27 @@ const AddUserForm = ({ addUser, close }) => {
                     <VscOrganization className="text-4xl text-gray-800" />
                   </h3>
                 </label>
-                <p className="font-semibold text-gray-500">CORPORATE</p>
+                <p
+                  className={`font-semibold ${
+                    selectedOption === "provider"
+                      ? "text-primary"
+                      : "text-gray-800"
+                  }`}
+                >
+                  CORPORATE
+                </p>
               </div>
             </div>
           )}
         </Stepper.Step>
 
-        <Stepper.Step label="IDentification" description="upload user ID">
-          <Group className="py-2 my-2 flex justify-around">
+        <Stepper.Step
+          label="Additional Info"
+          description="Identification, Education & Skills"
+        >
+          <Group className="py-2 my-2 max-w-full">
             <NativeSelect
-              className="w-[30%]"
+              className="ml-16 w-[30%]"
               radius="lg"
               label="ID Type"
               clearable
@@ -298,7 +322,7 @@ const AddUserForm = ({ addUser, close }) => {
               name="idType"
             />
             <TextInput
-              className="w-[30%]"
+              className="ml-40 w-[30%]"
               label="ID Number"
               placeholder="ID"
               required
@@ -307,8 +331,71 @@ const AddUserForm = ({ addUser, close }) => {
               name="idNumber"
             />
           </Group>
+          {/* Additional INfo, Education, Skills etc */}
+          <Group className="ml-16 space-x-6">
+            <MultiSelect
+              label="Select or Add Skill"
+              className="w-[50%]"
+              required
+              data={skillsSet}
+              placeholder="Skills"
+              searchable
+              maxSelectedValues={3}
+              description="you can add a max of 3 skill sets"
+              creatable
+              getCreateLabel={(query) => `+ add ${query} as a skill`}
+              onCreate={(query) => {
+                const item = { value: query, label: query };
+                setSkillsSet((current) => [...current, item]);
+                return item;
+              }}
+            />
+
+            <TextInput
+              className="w-[40%]"
+              label="Highest Education"
+              description="highest form of training / education attained"
+              required
+              // value={userData.firstName}
+              // onChange={handleInputChange}
+              name="education"
+            />
+          </Group>
+
+          <Group className="py-2 my-2 max-w-full">
+            <TextInput
+              className="ml-16 w-[30%]"
+              label="Referee Full Name"
+              placeholder="Rockson Doe"
+              required
+              // value={userData.firstName}
+              // onChange={handleInputChange}
+              name="refName"
+            />
+            <TextInput
+              className="ml-40 w-[30%]"
+              label="Referee's Contact"
+              placeholder="050 729-5961"
+              required
+              type="tel"
+              // value={userData.phone}
+              // onChange={handleInputChange}
+              name="refContact"
+            />
+          </Group>
+          <Group className="ml-16 space-x-6">
+            <TextInput
+              className="w-[30%]"
+              label="Relationship of referee"
+              placeholder="Supervisor"
+              required
+              // value={userData.lastName}
+              // onChange={handleInputChange}
+              name="refRelation"
+            />
+          </Group>
         </Stepper.Step>
-        <Stepper.Step label="Final step" description="Get full access">
+        <Stepper.Step label="Uploads" description="IDs and Attachments">
           Step 3 content: Get full access
         </Stepper.Step>
         <Stepper.Completed>
@@ -321,7 +408,13 @@ const AddUserForm = ({ addUser, close }) => {
           Back
         </Button>
         {ProviderSelected ? (
-          <Button onClick={nextStep}>Next step</Button>
+          <Button
+            disabled={!selectedOption}
+            rightIcon={<IconArrowNarrowRight size="1rem" />}
+            onClick={nextStep}
+          >
+            Next Step
+          </Button>
         ) : (
           <Button type="submit">
             {isLoading ? <Loader size={24} /> : "Add User"}
