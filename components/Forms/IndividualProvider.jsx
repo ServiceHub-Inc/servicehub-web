@@ -25,7 +25,7 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
           ]}
           value={userData.idType}
           // onChange={(value) => console.log(value)}
-          onChange={handleInputChange}
+          // onChange={handleInputChange}
           name="idType"
         />
         <TextInput
@@ -33,8 +33,8 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
           label="ID Number"
           placeholder="ID"
           required
-          value={userData.idNumber}
-          onChange={handleInputChange}
+          // value={userData.idNumber}
+          // onChange={handleInputChange}
           name="idNumber"
         />
       </Group>

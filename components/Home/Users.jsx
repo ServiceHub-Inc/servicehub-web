@@ -24,6 +24,9 @@ import {
 } from "@mantine/core";
 import { modals, openModal } from "@mantine/modals";
 import {
+  IconSelector,
+  IconChevronDown,
+  IconChevronUp,
   IconUserPlus,
   IconSun,
   IconMoonStars,
@@ -268,14 +271,22 @@ export default function UsersComponent() {
   const [sortOrder, setSortOrder] = useState("desc");
 
   //filtering
-  const filteredData = activePageData.filter((user) => {
-    // Join all the properties of the user object into a single string
-    const userValues = Object.values(user).join(" ").toLowerCase();
+  const filteredData = activePageData.filter((user) =>
+    JSON.stringify(user).toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
-    // Check if the search query is present in any of the properties
-    return userValues.includes(searchQuery.toLowerCase());
-  });
+  //Highlight Text function
+  const highlightedText = (text, searchQuery) => {
+    const regex = new RegExp(searchQuery, "gi");
+    return text.replace(regex, (match) => `<mark>${match}</mark>`);
+  };
 
+  const Icon = sortedData
+    ? reversed
+      ? IconChevronUp
+      : IconChevronDown
+    : IconSelector;
+  //Sorting
   const sortedData = filteredData.sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
@@ -324,27 +335,51 @@ export default function UsersComponent() {
         <div className="px-4">
           <Button
             leftIcon={<IconUserPlus size={16} />}
-            variant="outline"
+            variant="subtle"
             color="green"
             onClick={openAddUserModal}
-            className="text-sm"
+            className="text-sm border-b-2 border-b-slate-700"
           >
-            ADD
+            ADD USER
           </Button>
         </div>
 
         {/* Table Starts here */}
-        <Table highlightOnHover>
+        <Table highlightOnHover className="py-4 my-4">
           <thead>
-            <tr>
+            <tr className="bg-green-100 bg-opacity-25">
               <th>Image</th>
-              <th onClick={() => setSortField("firstName")}>First Name</th>
-              <th onClick={() => setSortField("lastName")}>Last Name</th>
-              <th onClick={() => setSortField("userRole")}>User Type</th>
-              <th onClick={() => setSortField("idType")}>ID Type/Number</th>
+              <th
+                className="hover:bg-green-50 px-2 cursor-pointer"
+                onClick={() => setSortField("firstName")}
+              >
+                First Name
+              </th>
+              <th
+                className="hover:bg-green-50 px-2"
+                onClick={() => setSortField("lastName")}
+              >
+                Last Name
+              </th>
+              <th
+                className="hover:bg-green-50 px-2"
+                onClick={() => setSortField("idType")}
+              >
+                ID Type/Number
+              </th>
               <th onClick={() => setSortField("email")}>Email</th>
-              <th onClick={() => setSortField("registeredAt")}>Reg Date</th>
-              <th>Verified</th>
+              <th
+                className="hover:bg-green-50 px-2"
+                onClick={() => setSortField("registeredAt")}
+              >
+                Reg Date
+              </th>
+              <th
+                className="hover:bg-green-50 px-2"
+                onClick={() => setSortField("verified")}
+              >
+                Verified
+              </th>
               <th>User Details</th>
             </tr>
           </thead>
@@ -368,21 +403,16 @@ export default function UsersComponent() {
                       </Avatar>
                       <div>
                         <Text fz="sm" fw={500}>
-                          {user.firstName}
+                          {user.lastName}
                         </Text>
-                        <Text
-                          fz="xs"
-                          c="dimmed"
-                          className="text-gray-500 opacity-30"
-                        >
-                          {user.email}
+                        <Text fz="xs" c="dimmed" className="text-gray-300">
+                          {user.userRole}
                         </Text>
                       </div>
                     </Group>
                   </td>
                   <td>{user.firstName}</td>
                   <td>{user.lastName}</td>
-                  <td>{user.userRole}</td>
                   <td>{user.idType}</td>
                   <td>{user.email} </td>
 

@@ -5,7 +5,7 @@ import { IconUserExclamation } from "@tabler/icons";
 const CorporateProvider = ({ userData, handleInputChange }) => {
   return (
     <>
-      <Group className="py-2 my-2 max-w-full">
+      {/* <Group className="py-2 my-2 max-w-full">
         <NativeSelect
           className="ml-16 w-[30%]"
           label="ID Type"
@@ -32,7 +32,7 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           onChange={handleInputChange}
           name=""
         />
-      </Group>
+      </Group> */}
       <Group className="py-2 my-2 max-w-full">
         <TextInput
           className="ml-16 w-[30%]"
@@ -75,6 +75,38 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           maw={400}
           mx="auto"
           name="companyDob"
+        />
+      </Group>
+      <Group className="py-2 my-2 max-w-full">
+        <TextInput
+          className="ml-16 w-[30%]"
+          label="Corporate Liaison Name"
+          placeholder="Frank Thomas"
+          required
+          // value={userData.firstName}
+          // onChange={handleInputChange}
+          name="liaisonName"
+        />
+        <TextInput
+          className="ml-32 w-[30%]"
+          label="Corporate Liaison Contact"
+          placeholder=""
+          required
+          type="tel"
+          // value={userData.phone}
+          // onChange={handleInputChange}
+          name="liaisonPhone"
+        />
+      </Group>
+      <Group className="py-2 my-2 max-w-full">
+        <TextInput
+          className="ml-16 w-[30%]"
+          label="Business Registration Number"
+          placeholder=""
+          required
+          // value={userData.firstName}
+          // onChange={handleInputChange}
+          name="businessRegno"
         />
       </Group>
     </>

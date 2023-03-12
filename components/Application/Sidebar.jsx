@@ -148,7 +148,7 @@ const mainLinksMockdata = [
   { icon: IconSettings, label: "Settings" },
 ];
 
-const linksMockdata = ["Users", "Services"];
+const linksMockdata = ["Users"];
 
 export function SideNav() {
   const router = useRouter();

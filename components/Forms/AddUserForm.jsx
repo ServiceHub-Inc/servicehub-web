@@ -21,6 +21,7 @@ import {
   IconPhoto,
   IconX,
   IconArrowNarrowRight,
+  IconArrowNarrowLeft,
 } from "@tabler/icons";
 import { VscOrganization, VscPerson } from "react-icons/vsc";
 import UserUploads from "./UserUploads";
@@ -65,6 +66,7 @@ const AddUserForm = ({ addUser, close }) => {
     city: "",
     userRole: "",
     image: null,
+    verified: false,
     //INdividual Provider Fields
     individual: {
       idType: "",
@@ -344,7 +346,10 @@ const AddUserForm = ({ addUser, close }) => {
           description="Identification, Education & Skills"
         >
           {selectedOption === "client" ? (
-            <IndividualProvider userData handleInputChange />
+            <IndividualProvider
+              userData={userData}
+              handleInputChange={handleInputChange}
+            />
           ) : null}
           {selectedOption === "provider" ? (
             <CorporateProvider userData handleInputChange />
@@ -364,7 +369,11 @@ const AddUserForm = ({ addUser, close }) => {
 
       <Group position="center" mt="xl">
         {active !== 0 ? (
-          <Button variant="default" onClick={prevStep}>
+          <Button
+            leftIcon={<IconArrowNarrowLeft size="1rem" />}
+            variant="default"
+            onClick={prevStep}
+          >
             Back
           </Button>
         ) : null}
