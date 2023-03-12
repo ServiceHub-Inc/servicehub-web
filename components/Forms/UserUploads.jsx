@@ -37,7 +37,6 @@ const UserUploads = (props) => {
     <>
       <Dropzone
         onDrop={(files) => {
-          console.log("accepted", files);
           setFiles(files);
         }}
         onReject={(files) => console.log("rejected files", files)}

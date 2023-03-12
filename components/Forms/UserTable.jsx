@@ -6,7 +6,7 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons";
 
-export default function UserTable({ props }) {
+export default function UserTable({ props, searchQuery, setSearchQuery }) {
   const theme = useMantineTheme();
 
   return (
@@ -28,6 +28,8 @@ export default function UserTable({ props }) {
           )}
         </ActionIcon>
       }
+      value={searchQuery}
+      onChange={(event) => setSearchQuery(event.target.value)}
       placeholder="Search..."
       rightSectionWidth={38}
       {...props}

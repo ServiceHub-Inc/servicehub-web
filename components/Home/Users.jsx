@@ -9,6 +9,7 @@ import {
   Pagination,
   ActionIcon,
   useMantineColorScheme,
+  useMantineTheme,
   Menu,
   createStyles,
   Table,
@@ -150,10 +151,7 @@ export default function UsersComponent() {
         </Text>
       ),
       labels: { confirm: "Yes, Delete", cancel: "No, Cancel" },
-      // labels: {
-      //   confirm: <Text>Delete</Text>,
-      //   cancel: "Cancel",
-      // },
+
       confirmProps: { color: "red", position: "left" },
       onCancel: () => console.log(user.firstName),
       onConfirm: () => deleteUser(user.userId),
@@ -171,9 +169,6 @@ export default function UsersComponent() {
     setSelectedUser(null);
     setIsOpen(false);
   };
-
-  ///Search functionality
-  const [searchQuery, setSearchQuery] = useState("");
 
   //Setting UserList states
   const [usersList, setUsersList] = useState(USERS);
@@ -266,6 +261,33 @@ export default function UsersComponent() {
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
+
+  ///Search functionality
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortField, setSortField] = useState("registeredAt");
+  const [sortOrder, setSortOrder] = useState("desc");
+
+  //filtering
+  const filteredData = activePageData.filter((user) => {
+    // Join all the properties of the user object into a single string
+    const userValues = Object.values(user).join(" ").toLowerCase();
+
+    // Check if the search query is present in any of the properties
+    return userValues.includes(searchQuery.toLowerCase());
+  });
+
+  const sortedData = filteredData.sort((a, b) => {
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+    if (aValue < bValue) {
+      return sortOrder === "asc" ? -1 : 1;
+    } else if (aValue > bValue) {
+      return sortOrder === "asc" ? 1 : -1;
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <div className="mt-16">
       <Container size="lg" px="xs">
@@ -290,8 +312,13 @@ export default function UsersComponent() {
             </ActionIcon>
           </p>
         </div>
+
+        {/* SEarch Field */}
         <div className=" items-center px-10 max-w-md mx-auto">
-          <UserTable />
+          <UserTable
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
         </div>
 
         <div className="px-4">
@@ -306,42 +333,39 @@ export default function UsersComponent() {
           </Button>
         </div>
 
-        {/* SEarch Field */}
-        {/* <div className="py-2 my-2">
-                          <TextInput
-                              placeholder="Search..."
-                              value={searchQuery}
-                              onChange={(event) => setSearchQuery(event.target.value)}
-                          />
-                </div> */}
-
+        {/* Table Starts here */}
         <Table highlightOnHover>
           <thead>
             <tr>
               <th>Image</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>User Type</th>
-              <th>ID Type/Number</th>
-              <th>email</th>
-              <th>Reg Date</th>
+              <th onClick={() => setSortField("firstName")}>First Name</th>
+              <th onClick={() => setSortField("lastName")}>Last Name</th>
+              <th onClick={() => setSortField("userRole")}>User Type</th>
+              <th onClick={() => setSortField("idType")}>ID Type/Number</th>
+              <th onClick={() => setSortField("email")}>Email</th>
+              <th onClick={() => setSortField("registeredAt")}>Reg Date</th>
               <th>Verified</th>
               <th>User Details</th>
             </tr>
           </thead>
           <tbody>
             {
-              activePageData.map((user) => (
+              sortedData.map((user) => (
                 <tr key={user.userId}>
                   <td>
                     <Group spacing="sm">
                       <Avatar
                         size={32}
-                        src={user.avatar}
+                        color="green"
+                        src={user.image ? user.image : null}
                         radius="xl"
+                        alt={user.firstName}
                         onClick={() => setSelectedUser(user)}
                         className="hover:shadow-md transition duration-150 ease-in-out cursor-pointer"
-                      />
+                      >
+                        {user.firstName.charAt(0)}
+                        {user.lastName.charAt(0)}
+                      </Avatar>
                       <div>
                         <Text fz="sm" fw={500}>
                           {user.firstName}
@@ -450,7 +474,7 @@ export default function UsersComponent() {
                     withBorder
                   >
                     <Avatar
-                      src={selectedUser.avatar}
+                      src={selectedUser.image}
                       alt={selectedUser.firstName}
                       radius="xl"
                       className="shadow-md hover:shadow-lg"

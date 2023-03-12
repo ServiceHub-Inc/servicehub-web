@@ -6,13 +6,13 @@ import {
   Stepper,
   Divider,
   Group,
-  MultiSelect,
   Text,
-  Select,
   Loader,
   NativeSelect,
   useMantineTheme,
   FileInput,
+  Avatar,
+  Image,
 } from "@mantine/core";
 import { faker } from "@faker-js/faker";
 import {
@@ -23,7 +23,6 @@ import {
   IconArrowNarrowRight,
 } from "@tabler/icons";
 import { VscOrganization, VscPerson } from "react-icons/vsc";
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import UserUploads from "./UserUploads";
 import IndividualProvider from "./IndividualProvider";
 import CorporateProvider from "./CorporateProvider";
@@ -31,30 +30,33 @@ import CorporateProvider from "./CorporateProvider";
 const AddUserForm = ({ addUser, close }) => {
   const theme = useMantineTheme();
 
+  ///----------------------------------------STATES BLOCK----------------------------------//
+
   //Skills Set and State
   const [skillsSet, setSkillsSet] = useState([
     { value: "coding", label: "Coding" },
   ]);
 
-  const [selectedOption, setSelectedOption] = useState("");
-  //Stepper States
+  //Form Stepper States
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
 
+  //SeTting Select Option State
+  const [selectedOption, setSelectedOption] = useState("");
+
+  //Setting Loading State
   const [isLoading, setIsLoading] = useState(false);
 
   //Getting Input Ref
   const ref = useRef(null);
 
-  const [ProviderSelected, setProviderSelected] = useState(false);
-
-  // Setting UserData State
-  const [userData, setUserData] = useState({
-    avatar: faker.image.avatar(),
-    // idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
+  //INitializing formData
+  const initialFormData = {
+    //Basic Form Fields
+    idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
     firstName: "",
     lastName: "",
     email: "",
@@ -62,13 +64,40 @@ const AddUserForm = ({ addUser, close }) => {
     address: "",
     city: "",
     userRole: "",
-    idType: "",
-    idNumber: "",
     image: null,
-  });
+    //INdividual Provider Fields
+    individual: {
+      idType: "",
+      idNumber: "",
+      skills: [],
+      education: "",
+      refName: "",
+      refPhone: "",
+      refRelation: "",
+      idUploads: [],
+      docUploads: [],
+    },
+    //Corporate Provider Fields
+    corporate: {
+      idType: "",
+      idNumber: "",
+      corpName: "",
+      corpEmail: "",
+      corpPhone: "",
+      corpDate: "",
+      corpIdUPload: [],
+      corpDoc: [],
+    },
+  };
 
+  // Setting UserData State
+  const [userData, setUserData] = useState(initialFormData);
+
+  //Setting User Provider State
+  const [ProviderSelected, setProviderSelected] = useState(false);
+
+  //Checking if user's a Provider
   useEffect(() => {
-    //Checking if user's a Provider
     const IsProvider = () => {
       if (userData.userRole === "provider") {
         setProviderSelected(true);
@@ -79,9 +108,9 @@ const AddUserForm = ({ addUser, close }) => {
     IsProvider();
   }, [userData.userRole]);
 
+  ///Handling Form Input Change............
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
     if (name === "image") {
       setUserData({ ...userData, [name]: event.target.files[0] });
     } else {
@@ -89,7 +118,22 @@ const AddUserForm = ({ addUser, close }) => {
     }
   };
 
-  // Handle Form Submit
+  //Handling Form Image
+  const handleFileInput = (value) => {
+    const imageUrl = URL.createObjectURL(value);
+    setUserData({ ...userData, image: imageUrl });
+  };
+
+  //Cleaning Up ObjectURL with UseEffect
+  // useEffect(() => {
+  //   if (userData.image) {
+  //     URL.revokeObjectURL(userData.image);
+  //   }
+  // }, [userData.image]);
+
+  //
+  //
+  // Handling Form Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -98,18 +142,7 @@ const AddUserForm = ({ addUser, close }) => {
     addUser(user);
 
     // Resetting the form and loading state
-    setUserData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      address: "",
-      city: "",
-      userRole: "",
-      idType: "",
-      idNumber: "",
-      image: null,
-    });
+    setUserData(initialFormData);
     setIsLoading(false);
     close();
   };
@@ -162,7 +195,6 @@ const AddUserForm = ({ addUser, close }) => {
               onChange={handleInputChange}
               name="email"
             />
-
             <TextInput
               className="w-[30%]"
               label="Phone"
@@ -225,7 +257,7 @@ const AddUserForm = ({ addUser, close }) => {
               className="w-[30%]"
               accept="image/*"
               // value={userData.image}
-              onChange={() => console.log(ref.current)}
+              onChange={(value) => handleFileInput(value)}
               required
               name="image"
               id="image"
@@ -331,9 +363,11 @@ const AddUserForm = ({ addUser, close }) => {
       </Stepper>
 
       <Group position="center" mt="xl">
-        <Button variant="default" onClick={prevStep}>
-          Back
-        </Button>
+        {active !== 0 ? (
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
+        ) : null}
         {ProviderSelected ? (
           <Button
             disabled={!selectedOption}
