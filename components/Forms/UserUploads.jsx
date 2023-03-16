@@ -1,5 +1,9 @@
 import { useRef, useState } from "react";
 import {
+  FileInput,
+  FileInputProps,
+  Box,
+  Center,
   Group,
   Text,
   useMantineTheme,
@@ -41,7 +45,7 @@ const UserUploads = (props) => {
         }}
         onReject={(files) => console.log("rejected files", files)}
         maxSize={5 * 1024 ** 2}
-        accept={{ IMAGE_MIME_TYPE, PDF_MIME_TYPE }}
+        accept={IMAGE_MIME_TYPE}
         {...props}
       >
         <Group
@@ -92,6 +96,16 @@ const UserUploads = (props) => {
       >
         {previews}
       </SimpleGrid>
+
+      <Box maw={320} className="py-4 my-2">
+        <FileInput
+          label="Upload Other Docs"
+          description="either PDF, or Docx file"
+          placeholder="Multiple"
+          multiple
+          icon={<IconUpload size={rem(14)} />}
+        />
+      </Box>
     </>
   );
 };
