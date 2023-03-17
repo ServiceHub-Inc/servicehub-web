@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import {
   TextInput,
@@ -13,6 +14,7 @@ import {
   FileInput,
   Avatar,
   Image,
+  clsx,
 } from "@mantine/core";
 import { faker } from "@faker-js/faker";
 import {
@@ -64,32 +66,33 @@ const AddUserForm = ({ addUser, close }) => {
     phone: "",
     address: "",
     city: "",
-    userRole: "",
+    userRole: "ADMIN",
+    password: "12345",
     image: null,
     verified: false,
-    //INdividual Provider Fields
-    individual: {
-      idType: "",
-      idNumber: "",
-      skills: [],
-      education: "",
-      refName: "",
-      refPhone: "",
-      refRelation: "",
-      idUploads: [],
-      docUploads: [],
-    },
-    //Corporate Provider Fields
-    corporate: {
-      idType: "",
-      idNumber: "",
-      corpName: "",
-      corpEmail: "",
-      corpPhone: "",
-      corpDate: "",
-      corpIdUPload: [],
-      corpDoc: [],
-    },
+    // //INdividual Provider Fields
+    // individual: {
+    //   idType: "",
+    //   idNumber: "",
+    //   skills: [],
+    //   education: "",
+    //   refName: "",
+    //   refPhone: "",
+    //   refRelation: "",
+    //   idUploads: [],
+    //   docUploads: [],
+    // },
+    // //Corporate Provider Fields
+    // corporate: {
+    //   idType: "",
+    //   idNumber: "",
+    //   corpName: "",
+    //   corpEmail: "",
+    //   corpPhone: "",
+    //   corpDate: "",
+    //   corpIdUPload: [],
+    //   corpDoc: [],
+    // },
   };
 
   // Setting UserData State
@@ -122,8 +125,8 @@ const AddUserForm = ({ addUser, close }) => {
 
   //Handling Form Image
   const handleFileInput = (value) => {
-    const imageUrl = URL.createObjectURL(value);
-    setUserData({ ...userData, image: imageUrl });
+    //const imageUrl = URL.createObjectURL(value);
+    setUserData({ ...userData, image: value });
   };
 
   //Cleaning Up ObjectURL with UseEffect
@@ -135,22 +138,44 @@ const AddUserForm = ({ addUser, close }) => {
 
   //
   //
+
   // Handling Form Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const userId = uuidv4(); // Generate unique ID
-    const user = { userId, ...userData }; // Combine ID with form data
-    addUser(user);
+    try {
+      // const response = await fetch("http://localhost:3008/create-user", {
+      //   method: "POST",
+      //   body: userData,
+      // });
+      const response = await axios.post(
+        "http://localhost:3008/create-user",
+        userData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      console.log(userData);
+      // if (!response.ok) {
+      //   throw new Error("Failed to submit form");
+      // }
 
-    // Resetting the form and loading state
-    setUserData(initialFormData);
-    setIsLoading(false);
-    close();
+      // const json = await response.json();
+
+      // Resetting the form and loading state
+      setUserData(initialFormData);
+      setIsLoading(false);
+      close();
+      console.log("User Added", response.data);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      // Display error message to user
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} enctype="multipart/form-data">
       <Stepper
         active={active}
         onStepClick={setActive}
@@ -243,10 +268,10 @@ const AddUserForm = ({ addUser, close }) => {
               required
               icon={<IconUserExclamation size="1rem" color="green" />}
               data={[
-                { value: "admin", label: "Admin" },
-                { value: "client", label: "Client" },
-                { value: "provider", label: "Provider" },
-                { value: "staff", label: "Staff" },
+                { value: "ADMIN", label: "Admin" },
+                { value: "CLIENT", label: "Client" },
+                { value: "PROVIDER", label: "Provider" },
+                { value: "STAFF", label: "Staff" },
               ]}
               value={userData.userRole}
               // onChange={(value) => console.log(value)}
@@ -258,15 +283,13 @@ const AddUserForm = ({ addUser, close }) => {
               radius="lg"
               className="w-[30%]"
               accept="image/*"
-              // value={userData.image}
-              onChange={(value) => handleFileInput(value)}
+              onChange={(value) => setUserData({ ...userData, image: value })}
               required
               name="image"
               id="image"
               label="User's Photo"
               placeholder="upload photo"
               icon={<IconUpload size="1rem" color="green" />}
-              // onChange={handleFileUpload}
             />
           </Group>
 

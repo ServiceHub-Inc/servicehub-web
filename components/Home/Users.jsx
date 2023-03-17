@@ -43,27 +43,6 @@ import { faker } from "@faker-js/faker";
 import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
 
-//Creating a Dummy Data with Faker
-export const USERS = [];
-export function createRandomUser() {
-  return {
-    userId: faker.datatype.uuid(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-    phone: faker.phone.number("(###) ###-####"),
-    city: faker.address.city(),
-    address: faker.address.streetAddress(),
-    avatar: faker.image.avatar(),
-    registeredAt: faker.date.past(),
-    idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
-    userRole: faker.helpers.arrayElement(["Client", "Provider", "Staff"]),
-  };
-}
-Array.from({ length: 3 }).forEach(() => {
-  USERS.push(createRandomUser());
-});
-
 //Checking if user is approved
 //const approved=1;
 
@@ -132,8 +111,6 @@ const items = [
 ));
 
 export default function UsersComponent() {
-  const users = USERS;
-
   //Delete User Confirmation.
   const DeleteModal = (user) =>
     modals.openConfirmModal({
@@ -157,7 +134,7 @@ export default function UsersComponent() {
 
       confirmProps: { color: "red", position: "left" },
       onCancel: () => console.log(user.firstName),
-      onConfirm: () => deleteUser(user.userId),
+      onConfirm: () => deleteUser(user._id),
     });
 
   const [selectedUser, setSelectedUser] = useState(null);
@@ -174,14 +151,25 @@ export default function UsersComponent() {
   };
 
   //Setting UserList states
-  const [usersList, setUsersList] = useState(USERS);
+  const [usersList, setUsersList] = useState([]);
 
-  //Getting users List from LocalStorage
-  useEffect(() => {
-    const storedUsersList = localStorage.getItem("usersList");
-    if (storedUsersList) {
-      setUsersList(JSON.parse(storedUsersList));
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:3008/users");
+      if (!response.ok) {
+        throw new Error("Error fetching users");
+      }
+      const users = await response.json();
+      setUsersList(users);
+      localStorage.setItem("usersList", JSON.stringify(users));
+    } catch (err) {
+      console.error(`Error fetching users: ${err.message}`);
+      // Handle error
     }
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   //Adding user function
@@ -197,17 +185,30 @@ export default function UsersComponent() {
   };
 
   // Function to remove/Delete a user from the list
-  const deleteUser = (userId) => {
-    setUsersList(usersList.filter((user) => user.userId !== userId));
+  const deleteUser = async (_id) => {
+    try {
+      const response = await fetch(`http://localhost:3008/user/${_id}`, {
+        method: "DELETE",
+      });
 
-    // Remove user from local storage
-    const userData = localStorage.getItem("usersList");
-    if (userData) {
-      const parsedUserData = JSON.parse(userData);
-      const updatedUserData = parsedUserData.filter(
-        (user) => user.userId !== userId,
-      );
-      localStorage.setItem("usersList", JSON.stringify(updatedUserData));
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Error deleting user");
+      }
+
+      // Remove user from usersList state and local storage
+      setUsersList(usersList.filter((user) => user._id !== _id));
+      const userData = localStorage.getItem("usersList");
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        const updatedUserData = parsedUserData.filter(
+          (user) => user._id !== _id,
+        );
+        localStorage.setItem("usersList", JSON.stringify(updatedUserData));
+      }
+    } catch (err) {
+      console.error(`Error deleting user: ${err.message}`);
+      // Handle error
     }
   };
 
@@ -385,8 +386,8 @@ export default function UsersComponent() {
           </thead>
           <tbody>
             {
-              sortedData.map((user) => (
-                <tr key={user.userId}>
+              sortedData.map((user, index) => (
+                <tr key={index.toString()}>
                   <td>
                     <Group spacing="sm">
                       <Avatar
@@ -416,7 +417,7 @@ export default function UsersComponent() {
                   <td>{user.idType}</td>
                   <td>{user.email} </td>
 
-                  <td>{moment(user.registeredAt).format("MMMM Do YYYY")}</td>
+                  <td>{moment(user.createdAt).format("MMMM Do YYYY")}</td>
                   <td>
                     <span className="text-primary">
                       <IconCircleCheck />
@@ -553,7 +554,7 @@ export default function UsersComponent() {
                           {selectedUser.idType}
                         </li>
                         <li className="mb-1 text-gray-600">
-                          {moment(selectedUser.registeredAt).format(
+                          {moment(selectedUser.createdAt).format(
                             "MMMM Do YYYY",
                           )}
                         </li>
