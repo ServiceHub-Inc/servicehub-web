@@ -143,7 +143,9 @@ const AddUserForm = ({ addUser, close }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+    addUser(userData);
     try {
+      //-----------------Using Fetch------------------//
       // const response = await fetch("http://localhost:3008/create-user", {
       //   method: "POST",
       //   body: userData,
@@ -155,7 +157,6 @@ const AddUserForm = ({ addUser, close }) => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
-      console.log(userData);
       // if (!response.ok) {
       //   throw new Error("Failed to submit form");
       // }

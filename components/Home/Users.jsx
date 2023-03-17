@@ -39,7 +39,6 @@ import {
 } from "@tabler/icons";
 import UserModal from "../utils/Modal";
 import AddUserForm from "../Forms/AddUserForm";
-import { faker } from "@faker-js/faker";
 import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
 
@@ -172,6 +171,10 @@ export default function UsersComponent() {
     fetchUsers();
   }, []);
 
+  //
+  // useEffect(() => {
+  //   handleAddUser();
+  // }, []);
   //Adding user function
   const handleAddUser = (newUser) => {
     setUsersList([newUser, ...usersList]);
@@ -387,13 +390,17 @@ export default function UsersComponent() {
           <tbody>
             {
               sortedData.map((user, index) => (
-                <tr key={index.toString()}>
+                <tr key={user._id}>
                   <td>
                     <Group spacing="sm">
                       <Avatar
                         size={32}
                         color="green"
-                        src={user.image ? user.image : null}
+                        src={
+                          user.image
+                            ? `http://localhost:3008/${user.imageUrl}`
+                            : null
+                        }
                         radius="xl"
                         alt={user.firstName}
                         onClick={() => setSelectedUser(user)}
@@ -505,7 +512,7 @@ export default function UsersComponent() {
                     withBorder
                   >
                     <Avatar
-                      src={selectedUser.image}
+                      src={selectedUser.imageUrl}
                       alt={selectedUser.firstName}
                       radius="xl"
                       className="shadow-md hover:shadow-lg"
