@@ -70,18 +70,18 @@ const AddUserForm = ({ addUser, close }) => {
     password: "12345",
     image: null,
     verified: false,
-    // //INdividual Provider Fields
-    // individual: {
-    //   idType: "",
-    //   idNumber: "",
-    //   skills: [],
-    //   education: "",
-    //   refName: "",
-    //   refPhone: "",
-    //   refRelation: "",
-    //   idUploads: [],
-    //   docUploads: [],
-    // },
+    //INdividual Provider Fields
+    individual: {
+      idType: "",
+      idNumber: "",
+      skills: [],
+      education: "",
+      refName: "",
+      refPhone: "",
+      refRelation: "",
+      idUploads: [],
+      docUploads: [],
+    },
     // //Corporate Provider Fields
     // corporate: {
     //   idType: "",
@@ -104,7 +104,7 @@ const AddUserForm = ({ addUser, close }) => {
   //Checking if user's a Provider
   useEffect(() => {
     const IsProvider = () => {
-      if (userData.userRole === "provider") {
+      if (userData.userRole === "PROVIDER") {
         setProviderSelected(true);
       } else {
         setProviderSelected(false);
