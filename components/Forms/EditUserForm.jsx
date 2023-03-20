@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { TextInput, Button, Group, NativeSelect, Loader } from '@mantine/core';
-import { IconUserExclamation } from '@tabler/icons';
+import { useState } from "react";
+import { TextInput, Button, Group, NativeSelect, Loader } from "@mantine/core";
+import { IconUserExclamation } from "@tabler/icons";
 
 const EditUserForm = ({ user, updateUser, close }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -99,17 +99,17 @@ const EditUserForm = ({ user, updateUser, close }) => {
           required
           icon={<IconUserExclamation size="1rem" />}
           data={[
-            { value: 'admin', label: 'Admin' },
-            { value: 'client', label: 'Client' },
-            { value: 'provider', label: 'Provider' },
-            { value: 'staff', label: 'Staff' },
+            { value: "admin", label: "Admin" },
+            { value: "client", label: "Client" },
+            { value: "provider", label: "Provider" },
+            { value: "staff", label: "Staff" },
           ]}
           value={userData.userRole}
           onChange={handleInputChange}
           name="userRole"
         />
         <Button type="submit" variant="outline" color="blue" fullWidth>
-          {isLoading ? <Loader size={24} /> : 'Update User'}
+          {isLoading ? <Loader size={24} /> : "Update User"}
         </Button>
       </Group>
     </form>

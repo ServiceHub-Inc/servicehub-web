@@ -396,11 +396,7 @@ export default function UsersComponent() {
                       <Avatar
                         size={32}
                         color="green"
-                        src={
-                          user.image
-                            ? `http://localhost:3008/${user.imageUrl}`
-                            : null
-                        }
+                        src={user.image ? user.imageUrl : null}
                         radius="xl"
                         alt={user.firstName}
                         onClick={() => setSelectedUser(user)}
