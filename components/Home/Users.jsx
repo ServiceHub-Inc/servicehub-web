@@ -19,8 +19,14 @@ import {
   Text,
   List,
   Anchor,
+  Rating,
 } from "@mantine/core";
 import { modals, openModal } from "@mantine/modals";
+import {
+  MdOutlineMarkEmailRead,
+  MdPhoneIphone,
+  MdLocationPin,
+} from "react-icons/md";
 import {
   IconSelector,
   IconChevronDown,
@@ -39,6 +45,7 @@ import UserModal from "../utils/Modal";
 import AddUserForm from "../Forms/AddUserForm";
 import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
+import EditUserForm from "../Forms/EditUserForm";
 
 //Checking if user is approved
 //const approved=1;
@@ -173,6 +180,7 @@ export default function UsersComponent() {
   // useEffect(() => {
   //   handleAddUser();
   // }, []);
+
   //Adding user function
   const handleAddUser = (newUser) => {
     setUsersList([newUser, ...usersList]);
@@ -181,8 +189,13 @@ export default function UsersComponent() {
   };
 
   //"Updating User function"
-  const updateUser = (user) => {
-    setUsersList([user, ...usersList]);
+  const handleUpdateUser = (updatedUser, id) => {
+    const usersListFromStorage = JSON.parse(localStorage.getItem("usersList"));
+    const updatedUsersList = usersListFromStorage.map((user) =>
+      user._id === id ? updatedUser : user,
+    );
+    setUsersList(updatedUsersList);
+    localStorage.setItem("usersList", JSON.stringify(updatedUsersList));
   };
 
   // Function to remove/Delete a user from the list
@@ -245,6 +258,39 @@ export default function UsersComponent() {
 
   //-----------------------------ADD USER MODAL ENDS HERE--------------------------------//
 
+  //------------------------------EDIT USER MODAL---------------------------//
+  const openEditUserModal = (user) => {
+    const id = modals.open({
+      classNames: {
+        header: "text-center bg-primary m-3",
+        title:
+          "text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
+        body: " border border-solid border-gray-200 rounded-md p-6",
+        close: "text-red-700  text-4xl hover:text-red-800",
+      },
+      title: (
+        <Text
+          ta="center"
+          className="text-center w-full rounded-md text-white font-bold"
+        >
+          {`Edit ${user.firstName}'s Details`}
+        </Text>
+      ),
+
+      size: "90%",
+      children: (
+        <>
+          <EditUserForm
+            updateUser={handleUpdateUser}
+            user={user}
+            close={modals.closeAll}
+          />
+        </>
+      ),
+    });
+  };
+
+  //-----------------------------Edit USER MODAL ENDS HERE--------------------------------//
   //For DAtA test Purposes--------------Merging Generated Users and Added USers//
 
   //---------------------- PAGINATION BLOCK-----------------------//
@@ -394,7 +440,7 @@ export default function UsersComponent() {
                       <Avatar
                         size={32}
                         color="green"
-                        src={user.image ? user.imageUrl : null}
+                        src={user.imageUrl ? user.imageUrl : null}
                         radius="xl"
                         alt={user.firstName}
                         onClick={() => setSelectedUser(user)}
@@ -453,7 +499,10 @@ export default function UsersComponent() {
                           >
                             View
                           </Menu.Item>
-                          <Menu.Item icon={<IconEdit size={14} />}>
+                          <Menu.Item
+                            onClick={() => openEditUserModal(user)}
+                            icon={<IconEdit size={14} />}
+                          >
                             Edit
                           </Menu.Item>
                           <Menu.Divider />
@@ -500,7 +549,7 @@ export default function UsersComponent() {
                     inline
                     size={16}
                     offset={7}
-                    label={selectedUser.userRole}
+                    label={selectedUser.userRole.toLowerCase()}
                     position="bottom-end"
                     color="green"
                     withBorder
@@ -510,38 +559,59 @@ export default function UsersComponent() {
                       alt={selectedUser.firstName}
                       radius="xl"
                       className="shadow-md hover:shadow-lg"
-                      size={68}
+                      size={72}
                     />
                   </Indicator>
-                  <div className="ml-6">
+                  <div className="ml-6 flex items-center flex-col space-y-0">
                     <h2 className="text-3xl font-bold text-primary">
                       {selectedUser.firstName} {selectedUser.lastName}
                     </h2>
+                    <p className="text-center">
+                      <Rating defaultValue={3} size="xs" readOnly />
+                    </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 ">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-1">
                   <div>
                     <p className="text-xl font-medium mb-1 text-gray-500">
                       <Divider
-                        label="Contact Information"
+                        label="Basic Information"
                         labelPosition="center"
                         my="sm"
                       />
                     </p>
                     <p className="text-md list-none ml-0">
                       <li className="mb-1 text-gray-600 ">
-                        {selectedUser.email}
+                        <div className="flex items-center ">
+                          <span>
+                            <MdOutlineMarkEmailRead className="text-primary" />
+                          </span>
+                          <span className="ml-2"> {selectedUser.email}</span>
+                        </div>
                       </li>
-                      <li className="mb-1 text-gray-600">
-                        {selectedUser.phone}
+                      <li className="mb-1 text-gray-600 ">
+                        <div className="flex items-center ">
+                          <span>
+                            <MdPhoneIphone className="text-primary" />
+                          </span>
+                          <span className="ml-2"> {selectedUser.phone}</span>
+                        </div>
                       </li>
-                      <li className="text-gray-600">
-                        {selectedUser.address} | {selectedUser.city}
+                      <li className="mb-1 text-gray-600 ">
+                        <div className="flex items-center ">
+                          <span>
+                            <MdLocationPin className="text-primary" />
+                          </span>
+                          <span className="ml-2">
+                            {" "}
+                            {selectedUser.address} | {selectedUser.city}
+                          </span>
+                        </div>
                       </li>
                     </p>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <p className="text-xl font-medium mb-1 text-gray-500">
                       <Divider
                         label="Other Info"
@@ -564,7 +634,7 @@ export default function UsersComponent() {
                         </li>
                       </p>
                     </Paper>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </UserModal>

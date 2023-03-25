@@ -54,7 +54,11 @@ const UserUploads = (props) => {
         <Group
           position="center"
           spacing="xl"
-          style={{ minHeight: rem(220), pointerEvents: "none" }}
+          style={{
+            minHeight: rem(150),
+            minWidth: rem(150),
+            pointerEvents: "none",
+          }}
         >
           <Dropzone.Accept>
             <IconUpload

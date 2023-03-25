@@ -1,38 +1,15 @@
 import { useState } from "react";
-import { Group, NativeSelect, TextInput, MultiSelect } from "@mantine/core";
+import {
+  Group,
+  NativeSelect,
+  TextInput,
+  Textarea,
+  MultiSelect,
+} from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { IconUserExclamation } from "@tabler/icons";
 const CorporateProvider = ({ userData, handleInputChange }) => {
   return (
     <>
-      {/* <Group className="py-2 my-2 max-w-full">
-        <NativeSelect
-          className="ml-16 w-[30%]"
-          label="ID Type"
-          clearable
-          // description="Select user role"
-          required
-          icon={<IconUserExclamation size="1rem" color="green" />}
-          data={[
-            { value: "GhCard", label: "Ghana-Card" },
-            { value: "voterID", label: "Voter ID" },
-            { value: "NHIS", label: "NHIS" },
-          ]}
-          value={userData.idType}
-          // onChange={(value) => console.log(value)}
-          onChange={handleInputChange}
-          name=""
-        />
-        <TextInput
-          className="ml-32 w-[30%]"
-          label="ID Number"
-          placeholder="ID"
-          required
-          value={userData.idNumber}
-          onChange={handleInputChange}
-          name=""
-        />
-      </Group> */}
       <Group className="py-2 my-2 max-w-full">
         <TextInput
           className="ml-16 w-[30%]"
@@ -41,7 +18,7 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           required
           // value={userData.firstName}
           // onChange={handleInputChange}
-          name="refName"
+          name="companyName"
         />
         <TextInput
           className="ml-32 w-[35%]"
@@ -51,7 +28,7 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           type=""
           // value={userData.phone}
           // onChange={handleInputChange}
-          name="refContact"
+          name="companyEmail"
         />
       </Group>
       <Group className="py-2 my-2 max-w-full">
@@ -80,6 +57,15 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
       <Group className="py-2 my-2 max-w-full">
         <TextInput
           className="ml-16 w-[30%]"
+          label="Business Registration Number"
+          placeholder=""
+          required
+          // value={userData.firstName}
+          // onChange={handleInputChange}
+          name="businessRegno"
+        />
+        <TextInput
+          className="ml-32 w-[30%]"
           label="Corporate Liaison Name"
           placeholder="Frank Thomas"
           required
@@ -87,8 +73,10 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           // onChange={handleInputChange}
           name="liaisonName"
         />
+      </Group>
+      <Group className="py-2 my-2 max-w-full">
         <TextInput
-          className="ml-32 w-[30%]"
+          className="ml-16 w-[30%]"
           label="Corporate Liaison Contact"
           placeholder=""
           required
@@ -97,16 +85,15 @@ const CorporateProvider = ({ userData, handleInputChange }) => {
           // onChange={handleInputChange}
           name="liaisonPhone"
         />
-      </Group>
-      <Group className="py-2 my-2 max-w-full">
+
         <TextInput
-          className="ml-16 w-[30%]"
-          label="Business Registration Number"
-          placeholder=""
+          className="ml-32 w-[30%]"
+          label="Location"
+          placeholder="Independence Ave."
           required
           // value={userData.firstName}
           // onChange={handleInputChange}
-          name="businessRegno"
+          name="companyLocation"
         />
       </Group>
     </>

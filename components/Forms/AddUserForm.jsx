@@ -28,8 +28,9 @@ import {
 import { VscOrganization, VscPerson } from "react-icons/vsc";
 import UserUploads from "./UserUploads";
 import IndividualProvider from "./individual/IndividualProvider";
-import CorporateProvider from "./CorporateProvider";
+import CorporateProvider from "./corporate/CorporateProvider";
 import IndividualTwo from "./individual/IndividualTwo";
+import CorporateTwo from "./corporate/CorporateTwo";
 
 const AddUserForm = ({ addUser, close }) => {
   const theme = useMantineTheme();
@@ -283,7 +284,7 @@ const AddUserForm = ({ addUser, close }) => {
               required
               name="image"
               id="image"
-              label="User's Profile Photo"
+              label="User's Profile Photo / Logo"
               placeholder="upload photo"
               icon={<IconUpload size="1rem" color="green" />}
             />
@@ -363,7 +364,7 @@ const AddUserForm = ({ addUser, close }) => {
         {/* --------------------------------STAGE TWO-----------INDIVIDUAL PROVIDERS */}
         {ProviderSelected && selectedOption === "individual" ? (
           <Stepper.Step
-            label="Additional Info"
+            label="Individual Info"
             description="Identification & Referee"
           >
             <IndividualProvider
@@ -375,7 +376,7 @@ const AddUserForm = ({ addUser, close }) => {
 
         {ProviderSelected && selectedOption === "individual" ? (
           <Stepper.Step
-            label="Additional Info"
+            label="Individual Info"
             description="Education & Skills"
           >
             <div>
@@ -390,11 +391,16 @@ const AddUserForm = ({ addUser, close }) => {
         {/* ----------------------------STAGE TWO--------------CORPORATE PROVIDER */}
 
         {ProviderSelected && selectedOption === "corporate" ? (
-          <Stepper.Step
-            label="Additional Info"
-            description="Identification & Referee"
-          >
+          <Stepper.Step label="Corporate Info" description="Identification">
             <CorporateProvider
+              userData={userData}
+              handleInputChange={handleInputChange}
+            />
+          </Stepper.Step>
+        ) : null}
+        {ProviderSelected && selectedOption === "corporate" ? (
+          <Stepper.Step label="Corporate Info" description="Experiences">
+            <CorporateTwo
               userData={userData}
               handleInputChange={handleInputChange}
             />
@@ -402,12 +408,13 @@ const AddUserForm = ({ addUser, close }) => {
         ) : null}
 
         {/* ---------------UPLOADS STEP----------------------------- */}
-
-        <Stepper.Step label="Uploads" description="IDs and Attachments">
-          <div className="py-2 my-2">
-            <UserUploads />
-          </div>
-        </Stepper.Step>
+        {ProviderSelected ? (
+          <Stepper.Step label="Uploads" description="IDs and Attachments">
+            <div className="py-2 my-2">
+              <UserUploads />
+            </div>
+          </Stepper.Step>
+        ) : null}
 
         {/* ------------------------------FINAL STEPS--------------------------------- */}
         <Stepper.Completed>
