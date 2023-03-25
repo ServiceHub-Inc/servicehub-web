@@ -1,5 +1,4 @@
 import Features from "../components/Home/Features";
-import UsersComponent from "../components/Home/Users";
 
 const Services = () => {
   return (

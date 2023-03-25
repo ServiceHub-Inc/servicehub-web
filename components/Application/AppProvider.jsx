@@ -16,9 +16,11 @@ import { SideNav } from "./Sidebar";
 
 const AppProvider = ({ children }) => {
   const router = Router.useRouter();
+  const { name } = router.query;
   const showComponents =
     window.location.pathname !== "/login/" &&
-    window.location.pathname !== "/register/";
+    window.location.pathname !== "/register/" &&
+    window.location.pathname !== `/profile/${name}/`;
 
   const showDashboard = window.location.pathname !== "/" && showComponents;
 
