@@ -234,7 +234,7 @@ export default function UsersComponent() {
         </Text>
       ),
 
-      size: "75%",
+      size: "90%",
       children: (
         <>
           <AddUserForm addUser={handleAddUser} close={modals.closeAll} />

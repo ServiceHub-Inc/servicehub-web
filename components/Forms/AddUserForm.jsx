@@ -27,8 +27,9 @@ import {
 } from "@tabler/icons";
 import { VscOrganization, VscPerson } from "react-icons/vsc";
 import UserUploads from "./UserUploads";
-import IndividualProvider from "./IndividualProvider";
+import IndividualProvider from "./individual/IndividualProvider";
 import CorporateProvider from "./CorporateProvider";
+import IndividualTwo from "./individual/IndividualTwo";
 
 const AddUserForm = ({ addUser, close }) => {
   const theme = useMantineTheme();
@@ -43,7 +44,7 @@ const AddUserForm = ({ addUser, close }) => {
   //Form Stepper States
   const [active, setActive] = useState(0);
   const nextStep = () =>
-    setActive((current) => (current < 3 ? current + 1 : current));
+    setActive((current) => (current < 4 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
 
@@ -66,7 +67,7 @@ const AddUserForm = ({ addUser, close }) => {
     phone: "",
     address: "",
     city: "",
-    userRole: "ADMIN",
+    userRole: "CLIENT",
     password: "12345",
     image: null,
     verified: false,
@@ -176,18 +177,15 @@ const AddUserForm = ({ addUser, close }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} enctype="multipart/form-data">
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
       <Stepper
         active={active}
         onStepClick={setActive}
         breakpoint="sm"
         allowNextStepsSelect={false}
       >
-        <Stepper.Step
-          label="User Information"
-          description="Fill in user details"
-        >
-          <Group className="max-w-full mx-auto flex justify-around">
+        <Stepper.Step label="Personal Info" description="Basic User Bio">
+          <Group className="max-w-full mx-auto flex justify-around pt-2 mb-3">
             <TextInput
               className="w-[30%]"
               label="First Name"
@@ -211,7 +209,7 @@ const AddUserForm = ({ addUser, close }) => {
             />
           </Group>
 
-          <Group className="max-w-full mx-auto flex justify-around">
+          <Group className="max-w-full mx-auto flex justify-around mb-3">
             <TextInput
               className="w-[30%]"
               radius="lg"
@@ -236,7 +234,7 @@ const AddUserForm = ({ addUser, close }) => {
             />
           </Group>
 
-          <Group className="py-2 flex justify-around">
+          <Group className="flex justify-around">
             <TextInput
               className="w-[30%]"
               label="Address"
@@ -264,15 +262,12 @@ const AddUserForm = ({ addUser, close }) => {
               className="w-[30%]"
               radius="lg"
               label="User Role"
-              clearable
               // description="Select user role"
               required
               icon={<IconUserExclamation size="1rem" color="green" />}
               data={[
-                { value: "ADMIN", label: "Admin" },
                 { value: "CLIENT", label: "Client" },
                 { value: "PROVIDER", label: "Provider" },
-                { value: "STAFF", label: "Staff" },
               ]}
               value={userData.userRole}
               // onChange={(value) => console.log(value)}
@@ -288,7 +283,7 @@ const AddUserForm = ({ addUser, close }) => {
               required
               name="image"
               id="image"
-              label="User's Photo"
+              label="User's Profile Photo"
               placeholder="upload photo"
               icon={<IconUpload size="1rem" color="green" />}
             />
@@ -299,7 +294,7 @@ const AddUserForm = ({ addUser, close }) => {
               <div>
                 <label
                   className={`bg-gray-50 shadow-md hover:bg-green-100 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
-                    selectedOption === "client"
+                    selectedOption === "individual"
                       ? "ring-2 ring-offset-2 ring-green-400"
                       : ""
                   }`}
@@ -307,9 +302,9 @@ const AddUserForm = ({ addUser, close }) => {
                   <input
                     type="radio"
                     name="userType"
-                    value="client"
-                    checked={selectedOption === "client"}
-                    onChange={() => setSelectedOption("client")}
+                    value="individual"
+                    checked={selectedOption === "individual"}
+                    onChange={() => setSelectedOption("individual")}
                     className="hidden"
                   />
                   <h3 className="text-white font-semibold text-2xl">
@@ -318,7 +313,7 @@ const AddUserForm = ({ addUser, close }) => {
                 </label>
                 <p
                   className={`font-semibold ${
-                    selectedOption === "client"
+                    selectedOption === "individual"
                       ? "text-primary"
                       : "text-gray-800"
                   }`}
@@ -334,7 +329,7 @@ const AddUserForm = ({ addUser, close }) => {
               <div>
                 <label
                   className={`bg-gray-50 shadow-md hover:bg-green-100 active:bg-green-800 w-16 h-16 rounded-full hover:shadow-2xl transition duration-150 ease-in-out text-center justify-center flex flex-col items-center cursor-pointer focus:ring-2 focus:ring-green-400 ${
-                    selectedOption === "provider"
+                    selectedOption === "corporate"
                       ? "ring-2 ring-offset-2 ring-primary"
                       : ""
                   }`}
@@ -342,9 +337,9 @@ const AddUserForm = ({ addUser, close }) => {
                   <input
                     type="radio"
                     name="userType"
-                    value="provider"
-                    checked={selectedOption === "provider"}
-                    onChange={() => setSelectedOption("provider")}
+                    value="corporate"
+                    checked={selectedOption === "corporate"}
+                    onChange={() => setSelectedOption("corporate")}
                     className="hidden"
                   />
                   <h3 className="text-white font-semibold text-xl">
@@ -353,7 +348,7 @@ const AddUserForm = ({ addUser, close }) => {
                 </label>
                 <p
                   className={`font-semibold ${
-                    selectedOption === "provider"
+                    selectedOption === "corporate"
                       ? "text-primary"
                       : "text-gray-800"
                   }`}
@@ -365,25 +360,56 @@ const AddUserForm = ({ addUser, close }) => {
           )}
         </Stepper.Step>
 
-        <Stepper.Step
-          label="Additional Info"
-          description="Identification, Education & Skills"
-        >
-          {selectedOption === "client" ? (
+        {/* --------------------------------STAGE TWO-----------INDIVIDUAL PROVIDERS */}
+        {ProviderSelected && selectedOption === "individual" ? (
+          <Stepper.Step
+            label="Additional Info"
+            description="Identification & Referee"
+          >
             <IndividualProvider
               userData={userData}
               handleInputChange={handleInputChange}
             />
-          ) : null}
-          {selectedOption === "provider" ? (
-            <CorporateProvider userData handleInputChange />
-          ) : null}
-        </Stepper.Step>
+          </Stepper.Step>
+        ) : null}
+
+        {ProviderSelected && selectedOption === "individual" ? (
+          <Stepper.Step
+            label="Additional Info"
+            description="Education & Skills"
+          >
+            <div>
+              <IndividualTwo
+                userData={userData}
+                handleInputChange={handleInputChange}
+              />
+            </div>
+          </Stepper.Step>
+        ) : null}
+
+        {/* ----------------------------STAGE TWO--------------CORPORATE PROVIDER */}
+
+        {ProviderSelected && selectedOption === "corporate" ? (
+          <Stepper.Step
+            label="Additional Info"
+            description="Identification & Referee"
+          >
+            <CorporateProvider
+              userData={userData}
+              handleInputChange={handleInputChange}
+            />
+          </Stepper.Step>
+        ) : null}
+
+        {/* ---------------UPLOADS STEP----------------------------- */}
+
         <Stepper.Step label="Uploads" description="IDs and Attachments">
-          <div className="py-2 my-4">
+          <div className="py-2 my-2">
             <UserUploads />
           </div>
         </Stepper.Step>
+
+        {/* ------------------------------FINAL STEPS--------------------------------- */}
         <Stepper.Completed>
           <div className="py-1 my-1">
             <p className="text-center font-medium text-lg">Review & Submit</p>
@@ -413,7 +439,7 @@ const AddUserForm = ({ addUser, close }) => {
             }
             onClick={nextStep}
           >
-            {active === 3 ? "Submit" : "Next Step"}
+            {active === 4 ? "Finish" : "Next Step"}
           </Button>
         ) : (
           <Button type="submit">

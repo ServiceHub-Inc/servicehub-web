@@ -39,6 +39,9 @@ const UserUploads = (props) => {
   });
   return (
     <>
+      <Text fw={500} className="py-1">
+        Upload photos of ID
+      </Text>
       <Dropzone
         onDrop={(files) => {
           setFiles(files);

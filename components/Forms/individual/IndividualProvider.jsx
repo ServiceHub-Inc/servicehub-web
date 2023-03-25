@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Group, NativeSelect, TextInput, MultiSelect } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { IconUserExclamation } from "@tabler/icons";
 
 const IndividualProvider = ({ userData, handleInputChange }) => {
@@ -12,7 +13,6 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
       <Group className="py-2 my-2 max-w-full">
         <NativeSelect
           className="ml-14 w-[30%]"
-          radius="lg"
           label="ID Type"
           clearable
           // description="Select user role"
@@ -23,7 +23,7 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
             { value: "voterID", label: "Voter ID" },
             { value: "NHIS", label: "NHIS" },
           ]}
-          value={userData.idType}
+          // value={userData.idType}
           // onChange={(value) => console.log(value)}
           // onChange={handleInputChange}
           name="idType"
@@ -38,34 +38,21 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
           name="idNumber"
         />
       </Group>
-      {/* Additional INfo, Education, Skills etc */}
       <Group className="py-2 my-2 max-w-full">
-        <MultiSelect
-          label="Select or Add Skill"
-          className="ml-14 w-[45%]"
+        <DateInput
+          className="ml-14 w-[30%]"
+          label="Date of Birth"
+          placeholder="birth date..."
           required
-          data={skillsSet}
-          placeholder="Skills"
-          searchable
-          maxSelectedValues={3}
-          description="you can add a max of 3 skill sets"
-          creatable
-          getCreateLabel={(query) => `+ add ${query} as a skill`}
-          onCreate={(query) => {
-            const item = { value: query, label: query };
-            setSkillsSet((current) => [...current, item]);
-            return item;
-          }}
+          maw={400}
+          name="individalDob"
         />
-
         <TextInput
-          className="ml-10 w-[30%]"
-          label="Highest Education"
-          description="highest form of training / education attained"
-          required
-          // value={userData.firstName}
-          // onChange={handleInputChange}
-          name="education"
+          className="ml-40 w-[30%]"
+          label="Location"
+          placeholder="location"
+          description="your services location"
+          name="individualLocation"
         />
       </Group>
 
