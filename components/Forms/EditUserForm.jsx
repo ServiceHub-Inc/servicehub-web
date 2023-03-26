@@ -246,9 +246,9 @@ const EditUserForm = ({ user, updateUser, close }) => {
             />
           </Group>
 
-          <Group className="py-2 my-2 max-w-full flex justify-start ">
+          <Group className="py-2 my-2 max-w-full ">
             <NativeSelect
-              className="ml-36 w-[30%]"
+              className="ml-44 pl-2 w-[30%]"
               radius="lg"
               label="User Role"
               // description="Select user role"

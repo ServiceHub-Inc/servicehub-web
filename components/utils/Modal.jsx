@@ -11,6 +11,7 @@ const UserModal = ({ title, isOpen, handleClose, children }) => {
           header: "shadow-md",
           title: "text-primary text-xl font-bold",
           close: "text-red-700",
+          body: "px-0",
         }}
         size="70%"
         transition="fade"

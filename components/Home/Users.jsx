@@ -46,6 +46,7 @@ import AddUserForm from "../Forms/AddUserForm";
 import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
 import EditUserForm from "../Forms/EditUserForm";
+import { UserCardImage } from "../utils/ProfileCard";
 
 //Checking if user is approved
 //const approved=1;
@@ -380,6 +381,8 @@ export default function UsersComponent() {
           />
         </div>
 
+        {/*  */}
+
         <div className="px-4">
           <Button
             leftIcon={<IconUserPlus size={16} />}
@@ -543,75 +546,90 @@ export default function UsersComponent() {
               isOpen={true}
               handleClose={handleClose}
             >
-              <div className="px-8 py-6">
-                <div className="flex items-center justify-center mb-6">
-                  <Indicator
-                    inline
-                    size={16}
-                    offset={7}
-                    label={selectedUser.userRole.toLowerCase()}
-                    position="bottom-end"
-                    color="green"
-                    withBorder
-                  >
-                    <Avatar
-                      src={selectedUser.imageUrl}
-                      alt={selectedUser.firstName}
-                      radius="xl"
-                      className="shadow-md hover:shadow-lg"
-                      size={72}
-                    />
-                  </Indicator>
-                  <div className="ml-6 flex items-center flex-col space-y-0">
+              <div className="pb-6 px-0 mx-0">
+                <div className="relative h-40">
+                  <div
+                    className="absolute top-0 left-0 w-full h-full bg-cover bg-center "
+                    style={{
+                      backgroundImage: `url('https://plus.unsplash.com/premium_photo-1661765242257-5539e1d1e644?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGJsYWNrJTIwd29ya2Vyc3xlbnwwfDB8MHx8&auto=format&fit=crop&w=600&q=60')`,
+                    }}
+                  ></div>
+                  <div className="absolute top-0 left-0 w-full h-full backdrop-filter backdrop-blur-sm"></div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                    <Indicator
+                      inline
+                      size={18}
+                      offset={16}
+                      label={selectedUser.userRole.toLowerCase()}
+                      position="bottom-end"
+                      color="green"
+                      withBorder
+                    >
+                      <Avatar
+                        src={selectedUser.imageUrl}
+                        alt={selectedUser.firstName}
+                        radius={120}
+                        mx="auto"
+                        mt={-15}
+                        className="shadow-md hover:shadow-2xl"
+                        size={120}
+                      />
+                    </Indicator>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center mb-4 mt-6 pt-2">
+                  <div className="ml-4 pt-2 flex items-center flex-col space-y-0">
                     <h2 className="text-3xl font-bold text-primary">
                       {selectedUser.firstName} {selectedUser.lastName}
                     </h2>
-                    <p className="text-center">
+                    <span className="text-center">
                       <Rating defaultValue={3} size="xs" readOnly />
-                    </p>
+                    </span>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-1">
-                  <div>
-                    <p className="text-xl font-medium mb-1 text-gray-500">
-                      <Divider
-                        label="Basic Information"
-                        labelPosition="center"
-                        my="sm"
-                      />
-                    </p>
-                    <p className="text-md list-none ml-0">
-                      <li className="mb-1 text-gray-600 ">
-                        <div className="flex items-center ">
-                          <span>
-                            <MdOutlineMarkEmailRead className="text-primary" />
-                          </span>
-                          <span className="ml-2"> {selectedUser.email}</span>
-                        </div>
-                      </li>
-                      <li className="mb-1 text-gray-600 ">
-                        <div className="flex items-center ">
-                          <span>
-                            <MdPhoneIphone className="text-primary" />
-                          </span>
-                          <span className="ml-2"> {selectedUser.phone}</span>
-                        </div>
-                      </li>
-                      <li className="mb-1 text-gray-600 ">
-                        <div className="flex items-center ">
-                          <span>
-                            <MdLocationPin className="text-primary" />
-                          </span>
-                          <span className="ml-2">
-                            {" "}
-                            {selectedUser.address} | {selectedUser.city}
-                          </span>
-                        </div>
-                      </li>
-                    </p>
-                  </div>
 
-                  {/* <div>
+                <Paper className="px-6">
+                  <div className="grid grid-cols-1 gap-8 sm:grid-cols-1">
+                    <div>
+                      <p className="text-xl font-medium mb-1 text-gray-500">
+                        <Divider
+                          label="Basic Information"
+                          labelPosition="center"
+                          my="sm"
+                        />
+                      </p>
+                      <p className="text-md list-none ml-0">
+                        <li className="mb-1 text-gray-600 ">
+                          <div className="flex items-center ">
+                            <span>
+                              <MdOutlineMarkEmailRead className="text-primary" />
+                            </span>
+                            <span className="ml-2"> {selectedUser.email}</span>
+                          </div>
+                        </li>
+                        <li className="mb-1 text-gray-600 ">
+                          <div className="flex items-center ">
+                            <span>
+                              <MdPhoneIphone className="text-primary" />
+                            </span>
+                            <span className="ml-2"> {selectedUser.phone}</span>
+                          </div>
+                        </li>
+                        <li className="mb-1 text-gray-600 ">
+                          <div className="flex items-center ">
+                            <span>
+                              <MdLocationPin className="text-primary" />
+                            </span>
+                            <span className="ml-2">
+                              {" "}
+                              {selectedUser.address} | {selectedUser.city}
+                            </span>
+                          </div>
+                        </li>
+                      </p>
+                    </div>
+
+                    {/* <div>
                     <p className="text-xl font-medium mb-1 text-gray-500">
                       <Divider
                         label="Other Info"
@@ -635,7 +653,8 @@ export default function UsersComponent() {
                       </p>
                     </Paper>
                   </div> */}
-                </div>
+                  </div>
+                </Paper>
               </div>
             </UserModal>
           )}
