@@ -19,7 +19,7 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
           required
           icon={<IconUserExclamation size="1rem" color="green" />}
           data={[
-            { value: "GhCard", label: "Ghana-Card" },
+            { value: "GhCard", label: "National ID (Ghana Card)" },
             { value: "voterID", label: "Voter ID" },
             { value: "NHIS", label: "NHIS" },
           ]}
@@ -77,9 +77,9 @@ const IndividualProvider = ({ userData, handleInputChange }) => {
           name="refContact"
         />
       </Group>
-      <Group className="ml-14 space-x-6">
+      <Group className="py-2 my-2 max-w-full">
         <TextInput
-          className="w-[30%]"
+          className="ml-14 w-[30%]"
           label="Relationship of referee"
           placeholder="Supervisor"
           required

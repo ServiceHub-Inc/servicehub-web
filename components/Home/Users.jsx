@@ -20,6 +20,8 @@ import {
   List,
   Anchor,
   Rating,
+  Tooltip,
+  Popover,
 } from "@mantine/core";
 import { modals, openModal } from "@mantine/modals";
 import {
@@ -27,6 +29,7 @@ import {
   MdPhoneIphone,
   MdLocationPin,
 } from "react-icons/md";
+import { SiGooglemessages } from "react-icons/si";
 import {
   IconSelector,
   IconChevronDown,
@@ -40,12 +43,14 @@ import {
   IconTrash,
   IconCircleCheck,
   IconEdit,
+  IconBrandTelegram,
 } from "@tabler/icons";
 import UserModal from "../utils/Modal";
 import AddUserForm from "../Forms/AddUserForm";
 import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
 import EditUserForm from "../Forms/EditUserForm";
+import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { UserCardImage } from "../utils/ProfileCard";
 
 //Checking if user is approved
@@ -578,13 +583,74 @@ export default function UsersComponent() {
                   </div>
                 </div>
                 <div className="flex items-center justify-center mb-4 mt-6 pt-2">
-                  <div className="ml-4 pt-2 flex items-center flex-col space-y-0">
-                    <h2 className="text-3xl font-bold text-primary">
+                  <div className="ml-4 pt-2 flex items-center flex-col">
+                    <span className=" pt-3 text-3xl font-bold text-primary">
                       {selectedUser.firstName} {selectedUser.lastName}
-                    </h2>
-                    <span className="text-center">
+                    </span>
+                    <span className="text-center pt-3">
                       <Rating defaultValue={3} size="xs" readOnly />
                     </span>
+                    <div className="flex items-center space-x-14 py-1">
+                      <p className="flex flex-col justify-center items-center ">
+                        <BsSend className="text-lg text-green-700 hover:text-xl hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
+                        <Tooltip
+                          label={`send ${selectedUser.lastName} an email`}
+                          radius="lg"
+                          styles={{
+                            fontSize: 12,
+                            maxWidth: 200,
+                            padding: "6px 12px",
+                          }}
+                          color="green"
+                          withArrow
+                          position="left"
+                        >
+                          <Text
+                            ta="center"
+                            c="dimmed"
+                            className="text-base cursor-pointer hover:text-primary transition ease-in-out duration-150  accent-teal-200 pt-1"
+                          >
+                            Send email
+                          </Text>
+                        </Tooltip>
+                      </p>
+                      <Text
+                        ta="center"
+                        fz="lg"
+                        fw={700}
+                        className="text-primary"
+                      >
+                        •
+                      </Text>
+                      <p className="flex flex-col justify-center items-center">
+                        <SiGooglemessages className="text-xl text-green-700  hover:text-2xl hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
+                        <Text
+                          ta="center"
+                          c="dimmed"
+                          className="text-base cursor-pointer hover:text-primary transition ease-in-out duration-150  accent-teal-200 pt-1"
+                        >
+                          Chat
+                        </Text>
+                      </p>
+                      <Text
+                        ta="center"
+                        fz="lg"
+                        fw={700}
+                        className="text-primary"
+                      >
+                        •
+                      </Text>
+                      <p className="flex flex-col justify-center items-center">
+                        <BsFillShareFill className="text-lg hover:text-xl text-blue-500 hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
+                        <Text
+                          ta="center"
+                          c="dimmed"
+                          className="text-base cursor-pointer hover:text-primary transition ease-in-out duration-150  accent-teal-200 pt-1"
+                        >
+                          Share
+                        </Text>
+                      </p>
+                    </div>
                   </div>
                 </div>
 

@@ -26,7 +26,7 @@ const IndividualTwo = ({ userData, handleInputChange }) => {
   ]);
   return (
     <>
-      <Group className="py-2 my-2 max-w-full">
+      <Group className="py-2 my-2 max-w-full mx-auto">
         <MultiSelect
           label="Language Spoken"
           className="ml-14 w-[45%]"
@@ -46,7 +46,7 @@ const IndividualTwo = ({ userData, handleInputChange }) => {
         />
 
         <TextInput
-          className="ml-10 w-[25%]"
+          className="ml-10 w-[45%]"
           label="Years of experience "
           description="years of experience in chosen field"
           required
@@ -57,7 +57,7 @@ const IndividualTwo = ({ userData, handleInputChange }) => {
       </Group>
 
       {/* Additional INfo, Education, Skills etc */}
-      <Group className="py-2 my-2 max-w-full">
+      <Group className="py-2 my-2 max-w-full mx-auto">
         <MultiSelect
           label="Select or Add Skills"
           className="ml-14 w-[45%]"
@@ -77,7 +77,7 @@ const IndividualTwo = ({ userData, handleInputChange }) => {
         />
 
         <TextInput
-          className="ml-10 w-[30%]"
+          className="ml-10 w-[45%]"
           label="Highest Education"
           description="highest form of training / education attained"
           required
