@@ -45,6 +45,7 @@ import {
   IconTrash,
   IconCircleCheck,
   IconEdit,
+  IconExternalLink,
   IconBrandTelegram,
 } from "@tabler/icons";
 import UserModal from "../utils/Modal";
@@ -725,6 +726,14 @@ export default function UsersComponent() {
                   </div> */}
                   </div>
                 </Paper>
+              </div>
+              <div className="flex justify-center ">
+                <Button
+                  variant="outline"
+                  leftIcon={<IconExternalLink size="0.9rem" />}
+                >
+                  Full Profile View
+                </Button>
               </div>
             </UserModal>
           )}

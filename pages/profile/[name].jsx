@@ -25,6 +25,7 @@ import {
   Tooltip,
   Popover,
 } from "@mantine/core";
+import { MdLocationPin } from "react-icons/md";
 import AppFooter from "../../components/Application/AppFooter";
 import AppHeader from "../../components/Application/AppHeader";
 const SharedProfile = ({ name, bio, avatarUrl }) => {
@@ -33,7 +34,7 @@ const SharedProfile = ({ name, bio, avatarUrl }) => {
       <AppHeader />
       <main className="">
         {/* <ProfileCard /> */}
-        <section className="relative block h-[28rem]">
+        <section className="relative block h-[30rem]">
           <div
             className="absolute top-0 w-full h-full bg-center bg-cover"
             style={{
@@ -73,13 +74,23 @@ const SharedProfile = ({ name, bio, avatarUrl }) => {
                 <div className="px-6">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                      <div className="relative">
-                        <img
-                          alt="..."
-                          src="https://images.unsplash.com/photo-1585890483046-9461ebc1dace?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFmcmljYW4lMjBhbWVyaWNhbiUyMHdvbWFufGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
-                          className="shadow-xl rounded-full h-32  border-none"
+                      <div className="relative ">
+                        <Avatar
+                          src="https://images.unsplash.com/photo-1523673671576-35ff54e94bae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8ODl8fGFmcmljYW4lMjBhbWVyaWNhbiUyMHdvbWFufGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+                          alt="Profile"
+                          radius={200}
+                          mx="auto"
+                          mt={-10}
+                          className="shadow-xl hover:shadow-2xl absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-none border-white"
+                          size={158}
                         />
                       </div>
+                      {/* <img
+                          alt="..."
+                          src="https://images.unsplash.com/photo-1585890483046-9461ebc1dace?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGFmcmljYW4lMjBhbWVyaWNhbiUyMHdvbWFufGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+                          className="shadow-2xl rounded-full h-32  absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-none"
+                        />
+                      </div> */}
                     </div>
                     <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                       <div className="py-6 px-3 mt-32 sm:mt-0">
@@ -115,17 +126,17 @@ const SharedProfile = ({ name, bio, avatarUrl }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-center mt-12">
+                  <div className="text-center mt-6">
                     <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-700 ">
                       Frank Laud
                     </h3>
-                    <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                      <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-400"></i>{" "}
+                    <div className="sm:text-sm text-xs leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase">
+                      <MdLocationPin className=" mr-2  text-xs sm:text-lg text-primary opacity-50" />
                       Akompi Street, Accra - GH
                     </div>
                     <div className="mb-2 text-gray-600 mt-6">
-                      <i className="fas fa-briefcase mr-2 text-lg text-gray-400"></i>
-                      Solution Manager - franklaud@gmail.com
+                      <MdLocationPin className=" mr-2  text-xs sm:text-lg text-primary opacity-50" />
+                      franklaud@gmail.com
                     </div>
                     <div className="mb-2 text-gray-600">
                       <i className="fas fa-university mr-2 text-lg text-gray-400"></i>
