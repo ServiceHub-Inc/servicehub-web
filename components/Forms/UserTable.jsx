@@ -30,7 +30,7 @@ export default function UserTable({ props, searchQuery, setSearchQuery }) {
       }
       value={searchQuery}
       onChange={(event) => setSearchQuery(event.target.value)}
-      placeholder="Search..."
+      placeholder="Search Users..."
       rightSectionWidth={38}
       {...props}
     />

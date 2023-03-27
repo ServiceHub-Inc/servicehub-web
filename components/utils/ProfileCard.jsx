@@ -46,7 +46,7 @@ const userDetails = {
 
 const { image, avatar, name, job, stats } = userDetails;
 
-export function UserCardImage() {
+export function ProfileCard() {
   const { classes, theme } = useStyles();
 
   const items = stats.map((stat) => (
@@ -62,7 +62,7 @@ export function UserCardImage() {
 
   return (
     <Card withBorder padding="xl" radius="md" className={classes.card}>
-      <Card.Section sx={{ backgroundImage: `url(${image})`, height: 140 }} />
+      <Card.Section sx={{ backgroundImage: `url(${image})`, height: 260 }} />
       <Avatar
         src={avatar}
         size={80}
@@ -80,15 +80,6 @@ export function UserCardImage() {
       <Group mt="md" position="center" spacing={30}>
         {items}
       </Group>
-      <Button
-        fullWidth
-        radius="md"
-        mt="xl"
-        size="md"
-        color={theme.colorScheme === "dark" ? undefined : "dark"}
-      >
-        Follow
-      </Button>
     </Card>
   );
 }

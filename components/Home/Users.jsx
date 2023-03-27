@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import {
   Avatar,
@@ -28,6 +28,8 @@ import {
   MdOutlineMarkEmailRead,
   MdPhoneIphone,
   MdLocationPin,
+  MdVerified,
+  MdVerifiedUser,
 } from "react-icons/md";
 import { SiGooglemessages } from "react-icons/si";
 import {
@@ -52,6 +54,7 @@ import Breadcrumb from "../utils/BreadCrumbs";
 import EditUserForm from "../Forms/EditUserForm";
 import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { UserCardImage } from "../utils/ProfileCard";
+import TableDataProp from "../Forms/DataProp";
 
 //Checking if user is approved
 //const approved=1;
@@ -388,20 +391,20 @@ export default function UsersComponent() {
 
         {/*  */}
 
-        <div className="px-4">
+        <div className="px-4 flex justify-between items-center pt-4">
           <Button
             leftIcon={<IconUserPlus size={16} />}
-            variant="subtle"
+            variant="light"
             color="green"
             onClick={openAddUserModal}
-            className="text-sm border-b-2 border-b-slate-700"
+            className="text-sm border-b-2 border-b-green-700"
           >
             ADD USER
           </Button>
+          <TableDataProp />
         </div>
-
         {/* Table Starts here */}
-        <Table highlightOnHover className="py-4 my-4">
+        <Table highlightOnHover className="pb-4 ">
           <thead>
             <tr className="bg-green-100 bg-opacity-25">
               <th>Image</th>
@@ -584,23 +587,24 @@ export default function UsersComponent() {
                 </div>
                 <div className="flex items-center justify-center mb-4 mt-6 pt-2">
                   <div className="ml-4 pt-2 flex items-center flex-col">
-                    <span className=" pt-3 text-3xl font-bold text-primary">
-                      {selectedUser.firstName} {selectedUser.lastName}
+                    <span className="pt-4 items-center">
+                      <span className="text-3xl font-bold text-primary">
+                        {selectedUser.firstName} {selectedUser.lastName}{" "}
+                      </span>
+                      <span>
+                        <MdVerified className="text-xl  text-blue-400" />
+                      </span>
                     </span>
                     <span className="text-center pt-3">
                       <Rating defaultValue={3} size="xs" readOnly />
                     </span>
-                    <div className="flex items-center space-x-14 py-1">
+
+                    <div className="flex items-center space-x-14 pt-4">
                       <p className="flex flex-col justify-center items-center ">
                         <BsSend className="text-lg text-green-700 hover:text-xl hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
                         <Tooltip
                           label={`send ${selectedUser.lastName} an email`}
                           radius="lg"
-                          styles={{
-                            fontSize: 12,
-                            maxWidth: 200,
-                            padding: "6px 12px",
-                          }}
                           color="green"
                           withArrow
                           position="left"
@@ -616,7 +620,7 @@ export default function UsersComponent() {
                       </p>
                       <Text
                         ta="center"
-                        fz="lg"
+                        fz="xl"
                         fw={700}
                         className="text-primary"
                       >
@@ -725,16 +729,24 @@ export default function UsersComponent() {
             </UserModal>
           )}
         </div>
-        <div className="py-2 my-1">
-          <Pagination
-            value={activePage}
-            onChange={handlePageChange}
-            position="center"
-            total={perPage}
-            color="green"
-            className="text-primary"
-            size="sm"
-          />
+        <div className="py-2 my-1 mx-4 flex  items-center justify-between ">
+          <span>
+            <Text size="sm" c="dimmed">
+              Showing <span className=" font-semibold">1 to 5</span> of{" "}
+              <span className="text-primary font-semibold">50</span> entries
+            </Text>{" "}
+          </span>
+          <span className="">
+            <Pagination
+              value={activePage}
+              onChange={handlePageChange}
+              position="center"
+              total={perPage}
+              color="green"
+              className="text-primary"
+              size="sm"
+            />
+          </span>
         </div>
       </Container>
     </div>
