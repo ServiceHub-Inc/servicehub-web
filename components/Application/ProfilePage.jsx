@@ -83,13 +83,13 @@ const ProfilePage = () => {
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                     <div className="py-6 px-3 mt-32 sm:mt-0">
-                      <Button>Connect</Button>
+                      <Button className="text-primary">Connect</Button>
                     </div>
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-1">
                     <div className="flex justify-center py-4 lg:pt-4 pt-8">
                       <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        <span className="text-xl font-bold block uppercase tracking-wide text-gray-600">
                           22
                         </span>
                         <span className="text-sm text-gray-400">Requests</span>
