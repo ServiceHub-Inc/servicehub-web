@@ -7,6 +7,9 @@ import {
   Button,
   rem,
 } from "@mantine/core";
+import { MdStar, MdAssistWalker } from "react-icons/md";
+import { SiHandshake } from "react-icons/si";
+import { GiPlayerPrevious } from "react-icons/gi";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -23,23 +26,26 @@ const useStyles = createStyles((theme) => ({
 
 const userDetails = {
   image:
-    "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2VydmljZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
   avatar:
-    "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80",
+    "https://images.unsplash.com/photo-1512314889357-e157c22f938d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHNlcnZpY2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60",
   name: "Frank Thomas",
-  job: "Fullstack engineer",
+  job: "Individual Provider",
   stats: [
     {
-      value: "34K",
-      label: "Followers",
+      value: "4",
+      label: "Requested",
+      icon: <MdAssistWalker />,
     },
     {
-      value: "187",
-      label: "Follows",
+      value: "5",
+      label: "Provided",
+      icon: <GiPlayerPrevious />,
     },
     {
-      value: "1.6K",
-      label: "Posts",
+      value: "10",
+      label: "Engaged",
+      icon: <SiHandshake />,
     },
   ],
 };
@@ -54,15 +60,26 @@ export function ProfileCard() {
       <Text ta="center" fz="lg" fw={500}>
         {stat.value}
       </Text>
-      <Text ta="center" fz="sm" c="dimmed">
-        {stat.label}
-      </Text>
+      <div className="flex items-center">
+        {stat.icon}
+        <Text ta="center" fz="sm" c="dimmed" ml={1}>
+          {stat.label}
+        </Text>
+      </div>
     </div>
   ));
 
   return (
     <Card withBorder padding="xl" radius="md" className={classes.card}>
-      <Card.Section sx={{ backgroundImage: `url(${image})`, height: 260 }} />
+      <Card.Section
+        sx={{
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: 160,
+        }}
+      />
+      <span className="w-full h-[45%] top-0 left-0 absolute opacity-25 bg-primary"></span>
       <Avatar
         src={avatar}
         size={80}
@@ -71,13 +88,19 @@ export function ProfileCard() {
         mt={-30}
         className={classes.avatar}
       />
-      <Text ta="center" fz="lg" fw={500} mt="sm">
+      <Text ta="center" fz="xl" fw={500} mt="sm">
         {name}
       </Text>
-      <Text ta="center" fz="sm" c="dimmed">
-        {job}
-      </Text>
-      <Group mt="md" position="center" spacing={30}>
+
+      <div className="flex justify-center items-center space-x-3">
+        <Text ta="center" fz="sm" c="dimmed">
+          {job}
+        </Text>
+        <span className="text-sm font-semibold flex items-center">
+          <MdStar className="text-amber-400 text-base " /> 3.5
+        </span>
+      </div>
+      <Group mt="md" fw={500} c="green" position="center" spacing={30}>
         {items}
       </Group>
     </Card>

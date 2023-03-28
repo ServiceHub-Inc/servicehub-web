@@ -8,6 +8,7 @@ import {
   Pagination,
   ActionIcon,
   useMantineColorScheme,
+  CopyButton,
   useMantineTheme,
   Menu,
   createStyles,
@@ -17,12 +18,14 @@ import {
   Container,
   Group,
   Text,
+  rem,
   List,
   Anchor,
   Rating,
   Tooltip,
   Popover,
 } from "@mantine/core";
+import { useClipboard } from "@mantine/hooks";
 import { modals, openModal } from "@mantine/modals";
 import {
   MdOutlineMarkEmailRead,
@@ -30,7 +33,11 @@ import {
   MdLocationPin,
   MdVerified,
   MdVerifiedUser,
+  MdSportsScore,
+  MdScoreboard,
+  MdStars,
 } from "react-icons/md";
+import { BsStarHalf } from "react-icons/bs";
 import { SiGooglemessages } from "react-icons/si";
 import {
   IconSelector,
@@ -54,8 +61,9 @@ import UserTable from "../Forms/UserTable";
 import Breadcrumb from "../utils/BreadCrumbs";
 import EditUserForm from "../Forms/EditUserForm";
 import { BsSend, BsFillShareFill } from "react-icons/bs";
-import { UserCardImage } from "../utils/ProfileCard";
+import { MdContentCopy } from "react-icons/md";
 import TableDataProp from "../Forms/DataProp";
+import Link from "next/link";
 
 //Checking if user is approved
 //const approved=1;
@@ -357,6 +365,7 @@ export default function UsersComponent() {
     }
   });
 
+  const clipboard = useClipboard({ timeout: 500 });
   return (
     <div className="mt-16">
       <Container size="lg" px="xs">
@@ -596,12 +605,17 @@ export default function UsersComponent() {
                         <MdVerified className="text-xl  text-blue-400" />
                       </span>
                     </span>
+                    <span className="pt-1">
+                      <Text c="dimmed" className="opacity-50 uppercase text-xs">
+                        Individual Provider
+                      </Text>
+                    </span>
                     <span className="text-center pt-3">
                       <Rating defaultValue={3} size="xs" readOnly />
                     </span>
 
-                    <div className="flex items-center space-x-14 pt-4">
-                      <p className="flex flex-col justify-center items-center ">
+                    <div className="flex items-center space-x-14 pt-3">
+                      <span className="flex flex-col justify-center items-center ">
                         <BsSend className="text-lg text-green-700 hover:text-xl hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
                         <Tooltip
                           label={`send ${selectedUser.lastName} an email`}
@@ -618,7 +632,7 @@ export default function UsersComponent() {
                             Send email
                           </Text>
                         </Tooltip>
-                      </p>
+                      </span>
                       <Text
                         ta="center"
                         fz="xl"
@@ -627,7 +641,7 @@ export default function UsersComponent() {
                       >
                         •
                       </Text>
-                      <p className="flex flex-col justify-center items-center">
+                      <span className="flex flex-col justify-center items-center">
                         <SiGooglemessages className="text-xl text-green-700  hover:text-2xl hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
                         <Text
                           ta="center"
@@ -636,7 +650,7 @@ export default function UsersComponent() {
                         >
                           Chat
                         </Text>
-                      </p>
+                      </span>
                       <Text
                         ta="center"
                         fz="lg"
@@ -645,95 +659,180 @@ export default function UsersComponent() {
                       >
                         •
                       </Text>
-                      <p className="flex flex-col justify-center items-center">
-                        <BsFillShareFill className="text-lg hover:text-xl text-blue-500 hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
-                        <Text
-                          ta="center"
-                          c="dimmed"
-                          className="text-base cursor-pointer hover:text-primary transition ease-in-out duration-150  accent-teal-200 pt-1"
-                        >
-                          Share
-                        </Text>
-                      </p>
+                      <Menu
+                        transitionProps={{
+                          transition: "rotate-left",
+                          duration: 150,
+                        }}
+                        width={200}
+                        shadow="md"
+                      >
+                        <Menu.Target>
+                          <span className="flex flex-col justify-center items-center">
+                            <BsFillShareFill className="text-lg hover:text-xl text-blue-500 hover:text-primary cursor-pointer transition ease-in-out duration-150  " />
+                            <Text
+                              ta="center"
+                              c="dimmed"
+                              className="text-base cursor-pointer hover:text-primary transition ease-in-out duration-150  accent-teal-200 pt-1"
+                            >
+                              Share
+                            </Text>
+                          </span>
+                        </Menu.Target>
+
+                        <Menu.Dropdown>
+                          <CopyButton value="http://localhost:3000/profile/maxwell/">
+                            {({ copied, copy }) => (
+                              <Menu.Item
+                                icon={<MdContentCopy size={rem(14)} />}
+                              >
+                                <Text
+                                  color={copied ? "teal" : "blue"}
+                                  onClick={copy}
+                                >
+                                  {copied ? "Copied" : "Copy Link"}
+                                </Text>
+                              </Menu.Item>
+                            )}
+                          </CopyButton>
+
+                          <Menu.Item
+                            icon={<IconExternalLink size={rem(14)} />}
+                            component="a"
+                            href="http://localhost:3000/profile/maxwell/"
+                            target="_blank"
+                          >
+                            Open in new tab
+                          </Menu.Item>
+                        </Menu.Dropdown>
+                      </Menu>
                     </div>
                   </div>
                 </div>
 
                 <Paper className="px-6">
-                  <div className="grid grid-cols-1 gap-8 sm:grid-cols-1">
+                  <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                     <div>
-                      <p className="text-xl font-medium mb-1 text-gray-500">
+                      <span className="text-xl font-medium mb-1 text-gray-500">
                         <Divider
                           label="Basic Information"
+                          color="green"
                           labelPosition="center"
                           my="sm"
                         />
-                      </p>
-                      <p className="text-md list-none ml-0">
-                        <li className="mb-1 text-gray-600 ">
-                          <div className="flex items-center ">
-                            <span>
-                              <MdOutlineMarkEmailRead className="text-primary" />
-                            </span>
-                            <span className="ml-2"> {selectedUser.email}</span>
-                          </div>
-                        </li>
-                        <li className="mb-1 text-gray-600 ">
-                          <div className="flex items-center ">
-                            <span>
-                              <MdPhoneIphone className="text-primary" />
-                            </span>
-                            <span className="ml-2"> {selectedUser.phone}</span>
-                          </div>
-                        </li>
-                        <li className="mb-1 text-gray-600 ">
-                          <div className="flex items-center ">
-                            <span>
-                              <MdLocationPin className="text-primary" />
-                            </span>
-                            <span className="ml-2">
-                              {" "}
-                              {selectedUser.address} | {selectedUser.city}
-                            </span>
-                          </div>
-                        </li>
-                      </p>
+                      </span>
+                      <div className="flex items-center justify-start">
+                        <p className="text-md list-none ml-0">
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex items-center ">
+                              <span>
+                                <MdOutlineMarkEmailRead className="text-primary" />
+                              </span>
+                              <span className="ml-2 text-gray-400">
+                                {selectedUser.email}
+                              </span>
+                            </div>
+                          </li>
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex items-center ">
+                              <span>
+                                <MdPhoneIphone className="text-primary" />
+                              </span>
+                              <span className="ml-2 text-gray-400">
+                                {selectedUser.phone}
+                              </span>
+                            </div>
+                          </li>
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex items-center ">
+                              <span>
+                                <MdLocationPin className="text-primary" />
+                              </span>
+                              <span className="ml-2 text-gray-400">
+                                {selectedUser.address} | {selectedUser.city}
+                              </span>
+                            </div>
+                          </li>
+                        </p>
+                      </div>
                     </div>
 
-                    {/* <div>
-                    <p className="text-xl font-medium mb-1 text-gray-500">
-                      <Divider
-                        label="Other Info"
-                        labelPosition="right"
-                        my="sm"
-                      />
-                    </p>
-                    <Paper>
-                      <p className="text-md list-none ml-0">
-                        <li className="mb-1 text-gray-600 ">
-                          {selectedUser.idType}
-                        </li>
-                        <li className="mb-1 text-gray-600">
-                          {moment(selectedUser.createdAt).format(
-                            "MMMM Do YYYY",
-                          )}
-                        </li>
-                        <li className="text-gray-600">
-                          {selectedUser.userRole}
-                        </li>
-                      </p>
-                    </Paper>
-                  </div> */}
+                    <div>
+                      <span className="text-xl font-medium mb-1 text-gray-500">
+                        <Divider
+                          label="Profile Highlight"
+                          color="green"
+                          labelPosition="right"
+                          my="sm"
+                        />
+                      </span>
+                      <Paper shadow="lg" p="xs" radius="md" className="px-8">
+                        <p className="text-md  list-none ml-0">
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex justify-between ">
+                              <div className="flex">
+                                <span>
+                                  <MdSportsScore className="text-xl text-primary" />
+                                </span>
+                                <span className="ml-2 text-sm">
+                                  Customer Service Quiz Score
+                                </span>
+                              </div>
+                              <div className="text-primary font-semibold">
+                                98%
+                              </div>
+                            </div>
+                          </li>
+
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex justify-between ">
+                              <div className="flex">
+                                <span>
+                                  <MdScoreboard className="text-lg text-primary" />
+                                </span>
+                                <span className="ml-2 text-sm">
+                                  Services Executed
+                                </span>
+                              </div>
+                              <div className="text-primary font-semibold">
+                                50
+                              </div>
+                            </div>
+                          </li>
+
+                          <li className="mb-1 text-gray-600 ">
+                            <div className="flex justify-between ">
+                              <div className="flex">
+                                <span>
+                                  <MdStars className="text-lg text-primary" />
+                                </span>
+                                <span className="ml-2 text-sm">
+                                  Average Rating
+                                </span>
+                              </div>
+                              <div className="text-amber-400 font-semibold">
+                                <BsStarHalf /> 3.5
+                              </div>
+                            </div>
+                          </li>
+                        </p>
+                      </Paper>
+                    </div>
                   </div>
                 </Paper>
               </div>
+
               <div className="flex justify-center ">
-                <Button
-                  variant="outline"
-                  leftIcon={<IconExternalLink size="0.9rem" />}
-                >
-                  Full Profile View
-                </Button>
+                <Link href={`/users/${selectedUser._id}/`}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    leftIcon={<IconExternalLink size="0.9rem" />}
+                    compact
+                  >
+                    Full Profile View
+                  </Button>
+                </Link>
               </div>
             </UserModal>
           )}
