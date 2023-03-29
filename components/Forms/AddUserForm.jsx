@@ -145,7 +145,6 @@ const AddUserForm = ({ addUser, close }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    addUser(userData);
     try {
       //-----------------Using Fetch------------------//
       // const response = await fetch("http://localhost:3008/create-user", {
@@ -162,14 +161,18 @@ const AddUserForm = ({ addUser, close }) => {
       // if (!response.ok) {
       //   throw new Error("Failed to submit form");
       // }
-
       // const json = await response.json();
+
+      //adding user to global user context
 
       // Resetting the form and loading state
       setUserData(initialFormData);
       setIsLoading(false);
+
+      //Closing modal after adding user
       close();
       console.log("User Added", response.data);
+      addUser(response.data);
     } catch (error) {
       console.error(error);
       setIsLoading(false);

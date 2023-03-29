@@ -5,17 +5,20 @@ import PropTypes from "prop-types";
 import ScrollToTop from "../components/utils/ScrollToTop";
 import LoadingProvider from "../components/Application/LoadingProvider";
 import { LoginProvider } from "../lib/contexts/LoginContext";
+import UsersContextProvider from "../lib/contexts/UserContext";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <LoginProvider>
-      <LoadingProvider>
-        <AppProvider>
-          <ScrollToTop />
+    <UsersContextProvider>
+      <LoginProvider>
+        <LoadingProvider>
+          <AppProvider>
+            <ScrollToTop />
             <Component {...pageProps} />
-        </AppProvider>
-      </LoadingProvider>
-    </LoginProvider>
+          </AppProvider>
+        </LoadingProvider>
+      </LoginProvider>
+    </UsersContextProvider>
   );
 };
 
@@ -25,4 +28,3 @@ App.propTypes = {
 };
 
 export default App;
-

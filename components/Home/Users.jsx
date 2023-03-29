@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import moment from "moment";
 import {
   Avatar,
@@ -53,7 +53,6 @@ import {
   IconCircleCheck,
   IconEdit,
   IconExternalLink,
-  IconBrandTelegram,
 } from "@tabler/icons";
 import UserModal from "../utils/Modal";
 import AddUserForm from "../Forms/AddUserForm";
@@ -64,7 +63,7 @@ import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
 import TableDataProp from "../Forms/DataProp";
 import Link from "next/link";
-
+import { useUsersContext } from "../../lib/hooks/useUsersContext";
 //Checking if user is approved
 //const approved=1;
 
@@ -173,7 +172,10 @@ export default function UsersComponent() {
   };
 
   //Setting UserList states
-  const [usersList, setUsersList] = useState([]);
+  // const [usersList, setUsersList] = useState([]);
+
+  // Using Context Api and destructing from global user Context
+  const { users, dispatch } = useUsersContext();
 
   const fetchUsers = async () => {
     try {
@@ -181,9 +183,12 @@ export default function UsersComponent() {
       if (!response.ok) {
         throw new Error("Error fetching users");
       }
-      const users = await response.json();
-      setUsersList(users);
-      localStorage.setItem("usersList", JSON.stringify(users));
+      const json = await response.json();
+
+      //Dispatching a Set user action!
+      dispatch({ type: "SET_USERS", payload: json });
+
+      // localStorage.setItem("usersList", JSON.stringify(users));
     } catch (err) {
       console.error(`Error fetching users: ${err.message}`);
       // Handle error
@@ -194,16 +199,11 @@ export default function UsersComponent() {
     fetchUsers();
   }, []);
 
-  //
-  // useEffect(() => {
-  //   handleAddUser();
-  // }, []);
-
   //Adding user function
   const handleAddUser = (newUser) => {
-    setUsersList([newUser, ...usersList]);
+    dispatch({ type: "ADD_USERS", payload: newUser });
     //Setting users to LocalStorage
-    localStorage.setItem("usersList", JSON.stringify([newUser, ...usersList]));
+    // localStorage.setItem("usersList", JSON.stringify([newUser, ...usersList]));
   };
 
   //"Updating User function"
@@ -315,11 +315,11 @@ export default function UsersComponent() {
   //Pagination
   const [activePage, setPage] = useState(1);
   const limit = 5;
-  const perPage = Math.ceil(usersList.length / limit);
+  const perPage = Math.ceil(users?.length / limit);
 
   const startIndex = (activePage - 1) * limit;
   const endIndex = startIndex + limit;
-  const activePageData = usersList.slice(startIndex, endIndex); // Splicing Data PerPage
+  const activePageData = users?.slice(startIndex, endIndex); // Splicing Data PerPage
 
   //Handling Page Change
   const handlePageChange = (newPage) => {
@@ -337,7 +337,7 @@ export default function UsersComponent() {
   const [sortOrder, setSortOrder] = useState("desc");
 
   //filtering
-  const filteredData = activePageData.filter((user) =>
+  const filteredData = activePageData?.filter((user) =>
     JSON.stringify(user).toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
@@ -353,7 +353,7 @@ export default function UsersComponent() {
       : IconChevronDown
     : IconSelector;
   //Sorting
-  const sortedData = filteredData.sort((a, b) => {
+  const sortedData = filteredData?.sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
     if (aValue < bValue) {
@@ -454,7 +454,7 @@ export default function UsersComponent() {
           </thead>
           <tbody>
             {
-              sortedData.map((user, index) => (
+              sortedData?.map((user, index) => (
                 <tr key={user._id}>
                   <td>
                     <Group spacing="sm">
@@ -722,7 +722,7 @@ export default function UsersComponent() {
                         />
                       </span>
                       <div className="flex items-center justify-start">
-                        <p className="text-md list-none ml-0">
+                        <div className="text-md list-none ml-0">
                           <li className="mb-1 text-gray-600 ">
                             <div className="flex items-center ">
                               <span>
@@ -753,7 +753,7 @@ export default function UsersComponent() {
                               </span>
                             </div>
                           </li>
-                        </p>
+                        </div>
                       </div>
                     </div>
 
@@ -767,7 +767,7 @@ export default function UsersComponent() {
                         />
                       </span>
                       <Paper shadow="lg" p="xs" radius="md" className="px-8">
-                        <p className="text-md  list-none ml-0">
+                        <div className="text-md  list-none ml-0">
                           <li className="mb-1 text-gray-600 ">
                             <div className="flex justify-between ">
                               <div className="flex">
@@ -815,7 +815,7 @@ export default function UsersComponent() {
                               </div>
                             </div>
                           </li>
-                        </p>
+                        </div>
                       </Paper>
                     </div>
                   </div>

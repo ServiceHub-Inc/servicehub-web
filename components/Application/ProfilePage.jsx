@@ -141,11 +141,7 @@ const ProfilePage = () => {
                         clean and safe environment for all employees and
                         visitors. With an eye for detail and a strong work
                         ethic, I am committed to ensuring that ServiceHub
-                        remains a welcoming and productive space. I am always
-                        willing to go above and beyond to meet the needs of my
-                        colleagues and clients, and I am excited to continue
-                        contributing to the success of this dynamic
-                        organization.
+                        remains a welcoming and productive space.
                       </Blockquote>
 
                       <a
