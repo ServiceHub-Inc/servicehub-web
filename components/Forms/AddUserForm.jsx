@@ -100,6 +100,9 @@ const AddUserForm = ({ addUser, close }) => {
   // Setting UserData State
   const [userData, setUserData] = useState(initialFormData);
 
+  //Setting Error State
+  const [errors, setErrors] = useState([]);
+
   //Setting User Provider State
   const [ProviderSelected, setProviderSelected] = useState(false);
 
@@ -175,9 +178,10 @@ const AddUserForm = ({ addUser, close }) => {
       //Closing modal after adding user
       close();
     } catch (error) {
-      console.error(error);
       setIsLoading(false);
+      console.error(error);
       // Display error message to user
+      setErrors(error?.response?.data?.error);
     }
   };
 
@@ -285,7 +289,7 @@ const AddUserForm = ({ addUser, close }) => {
               className="w-[30%]"
               accept="image/*"
               onChange={(value) => setUserData({ ...userData, image: value })}
-              required
+              required={true}
               name="image"
               id="image"
               label="User's Profile Photo / Logo"
@@ -428,7 +432,11 @@ const AddUserForm = ({ addUser, close }) => {
         </Stepper.Completed>
       </Stepper>
 
-      <Group position="center" mt="xl">
+      <Group position="center">
+        <Text className="text-danger text-sm">{errors}</Text>
+      </Group>
+
+      <Group position="center" mt="sm">
         {active !== 0 ? (
           <Button
             leftIcon={<IconArrowNarrowLeft size="1rem" />}
