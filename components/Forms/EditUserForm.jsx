@@ -31,9 +31,13 @@ import IndividualProvider from "./individual/IndividualProvider";
 import CorporateProvider from "./corporate/CorporateProvider";
 import IndividualTwo from "./individual/IndividualTwo";
 import CorporateTwo from "./corporate/CorporateTwo";
+import { useUsersContext } from "../../lib/hooks/useUsersContext";
 
 const EditUserForm = ({ user, updateUser, close }) => {
   const theme = useMantineTheme();
+
+  //State and Dispatch from users context Hook
+  const { state, dispatch } = useUsersContext();
 
   ///----------------------------------------STATES BLOCK----------------------------------//
 
@@ -62,6 +66,7 @@ const EditUserForm = ({ user, updateUser, close }) => {
   const initialFormData = {
     //Basic Form Fields
     idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
+    _id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -143,7 +148,6 @@ const EditUserForm = ({ user, updateUser, close }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    updateUser(userData, user._id);
     try {
       const response = await fetch(`http://localhost:3008/user/${user._id}`, {
         method: "PATCH",
@@ -152,19 +156,24 @@ const EditUserForm = ({ user, updateUser, close }) => {
         },
         body: JSON.stringify(userData),
       });
+
+      const json = await response.json();
+
+      if (response.ok) {
+        console.log("User updated successfully");
+        updateUser(userData);
+        close();
+      }
       if (!response.ok) {
         throw new Error("Failed to submit form");
       }
-      setUserData(initialFormData);
+
       setIsLoading(false);
-      close();
-      console.log("User updated successfully");
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} encType="multipart/form-data">
       <Stepper

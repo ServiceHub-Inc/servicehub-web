@@ -169,10 +169,11 @@ const AddUserForm = ({ addUser, close }) => {
       setUserData(initialFormData);
       setIsLoading(false);
 
-      //Closing modal after adding user
-      close();
       console.log("User Added", response.data);
       addUser(response.data);
+
+      //Closing modal after adding user
+      close();
     } catch (error) {
       console.error(error);
       setIsLoading(false);

@@ -201,19 +201,14 @@ export default function UsersComponent() {
 
   //Adding user function
   const handleAddUser = (newUser) => {
-    dispatch({ type: "ADD_USERS", payload: newUser });
+    dispatch({ type: "ADD_USER", payload: newUser });
     //Setting users to LocalStorage
     // localStorage.setItem("usersList", JSON.stringify([newUser, ...usersList]));
   };
 
   //"Updating User function"
-  const handleUpdateUser = (updatedUser, id) => {
-    const usersListFromStorage = JSON.parse(localStorage.getItem("usersList"));
-    const updatedUsersList = usersListFromStorage.map((user) =>
-      user._id === id ? updatedUser : user,
-    );
-    setUsersList(updatedUsersList);
-    localStorage.setItem("usersList", JSON.stringify(updatedUsersList));
+  const handleUpdateUser = (updatedUser) => {
+    dispatch({ type: "UPDATE_USER", payload: updatedUser });
   };
 
   // Function to remove/Delete a user from the list
@@ -223,21 +218,17 @@ export default function UsersComponent() {
         method: "DELETE",
       });
 
+      const json = await response.json();
+      if (response.ok) {
+        dispatch({ type: "DELETE_USER", payload: json });
+      }
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || "Error deleting user");
       }
 
       // Remove user from usersList state and local storage
-      setUsersList(usersList.filter((user) => user._id !== _id));
-      const userData = localStorage.getItem("usersList");
-      if (userData) {
-        const parsedUserData = JSON.parse(userData);
-        const updatedUserData = parsedUserData.filter(
-          (user) => user._id !== _id,
-        );
-        localStorage.setItem("usersList", JSON.stringify(updatedUserData));
-      }
     } catch (err) {
       console.error(`Error deleting user: ${err.message}`);
       // Handle error
