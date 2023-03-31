@@ -1,15 +1,19 @@
+import { useState, createContext, useCallback, useEffect } from "react";
 // import LogRocket from 'logrocket';
 import PropTypes from "prop-types";
 import React from "react";
 import Cookies from "universal-cookie";
 // import apiFetcher from '../api/apiFetcher';
 
-export const LoginContext = React.createContext();
+export const LoginContext = createContext();
 
 const cookies = new Cookies();
 export function LoginProvider({ children }) {
-  const [loginData, setLoginData] = React.useState({});
-  const setLoginState = React.useCallback(
+  //
+
+  const [loginData, setLoginData] = useState({});
+  //
+  const setLoginState = useCallback(
     ({ logout, token, loginType, profile: prof, tokenValidity }) => {
       const profile = { ...prof };
       if (logout) {
@@ -68,10 +72,10 @@ export function LoginProvider({ children }) {
       //   ...profile,
       // });
     },
-    []
+    [],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const token = cookies.get("accessor");
     const savedData = JSON.parse(localStorage.getItem("context"));
     if (token && !loginData?.loginType) {
@@ -117,7 +121,7 @@ export function LoginProvider({ children }) {
       ...loginData,
       setLoginState,
     }),
-    [loginData, setLoginState]
+    [loginData, setLoginState],
   );
   return (
     <LoginContext.Provider value={loginMemo}>{children}</LoginContext.Provider>

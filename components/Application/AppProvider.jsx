@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import {
@@ -7,22 +8,30 @@ import {
   AppShell,
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
-import { SideNav } from "./Sidebar";
+import { SideNav } from "./Dashboard/Sidebar";
 
 const AppProvider = ({ children }) => {
-  const router = Router.useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [currentPath, setCurrentPath] = useState("");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setCurrentPath(router.pathname);
+  }, [router]);
+
   const { name } = router.query;
   const showComponents =
     window.location.pathname !== "/login/" &&
-    window.location.pathname !== "/register/" &&
-    window.location.pathname !== `/profile/${name}/`;
+    window.location.pathname !== "/register/";
 
-  const showDashboard = window.location.pathname !== "/" && showComponents;
+  const showDashboard =
+    (window.location.pathname === "/dashboard/") & isLoggedIn;
 
   const error = {
     fontSize: "12px",

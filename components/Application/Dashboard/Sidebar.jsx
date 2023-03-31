@@ -17,7 +17,7 @@ import {
   IconSettings,
   IconLayoutDashboard,
 } from "@tabler/icons";
-import { Logo } from "./AppHeader";
+import { Logo } from "../AppHeader";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {

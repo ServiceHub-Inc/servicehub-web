@@ -41,7 +41,7 @@ function Login({ isAdmin, router }) {
   const redirectUrl = React.useMemo(
     () => decode(router?.query?.next),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   console.log(redirectUrl);
@@ -63,15 +63,15 @@ function Login({ isAdmin, router }) {
       method: "POST",
       data,
     });
-    const { message, statusCode, data: responseData, code } = res;
+    const { message, statusCode, _doc, code } = res;
     console.log(res);
     if (statusCode === 200) {
-      if (code === "000") {
-        notify.success({ message, title: "Login Success" });
+      if (statusCode === 200 && _doc) {
+        notify.success({ title: "Login Success", message: "Great!" });
         setLoginState({
-          token: responseData.access_token,
-          loginType: isAdmin ? "admin" : "user",
-          profile: responseData.user,
+          token: _doc.remember_token,
+          loginType: _doc.role,
+          profile: _doc,
         });
 
         const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard";
@@ -84,10 +84,12 @@ function Login({ isAdmin, router }) {
       setPageLoading(false);
       notify.error({
         title: "Login Failed",
-        message,
+        message: res.error,
       });
       return;
     }
+
+    // LOGIN FAILED
     setPageLoading(false);
     notify.error({
       title: "Login Failed",

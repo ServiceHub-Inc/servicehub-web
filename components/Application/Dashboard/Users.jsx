@@ -54,16 +54,16 @@ import {
   IconEdit,
   IconExternalLink,
 } from "@tabler/icons";
-import UserModal from "../utils/Modal";
-import AddUserForm from "../Forms/AddUserForm";
-import UserTable from "../Forms/UserTable";
-import Breadcrumb from "../utils/BreadCrumbs";
-import EditUserForm from "../Forms/EditUserForm";
+import UserModal from "../../utils/Modal";
+import AddUserForm from "../../Forms/AddUserForm";
+import UserTable from "../../Forms/UserTable";
+import Breadcrumb from "../../utils/BreadCrumbs";
+import EditUserForm from "../../Forms/EditUserForm";
 import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
-import TableDataProp from "../Forms/DataProp";
+import TableDataProp from "../../Forms/DataProp";
 import Link from "next/link";
-import { useUsersContext } from "../../lib/hooks/useUsersContext";
+import { useUsersContext } from "../../../lib/hooks/useUsersContext";
 import Head from "next/head";
 //Checking if user is approved
 //const approved=1;

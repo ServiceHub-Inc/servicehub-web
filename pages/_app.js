@@ -9,16 +9,16 @@ import UsersContextProvider from "../lib/contexts/UserContext";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <UsersContextProvider>
-      <LoginProvider>
-        <LoadingProvider>
+    <LoginProvider>
+      <LoadingProvider>
+        <UsersContextProvider>
           <AppProvider>
             <ScrollToTop />
             <Component {...pageProps} />
           </AppProvider>
-        </LoadingProvider>
-      </LoginProvider>
-    </UsersContextProvider>
+        </UsersContextProvider>
+      </LoadingProvider>
+    </LoginProvider>
   );
 };
 
