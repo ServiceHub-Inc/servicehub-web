@@ -1,19 +1,19 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
+import { LoginContext } from "./contexts/LoginContext";
 
 const withAuth = (Component) => {
   const Auth = (props) => {
     const router = useRouter();
-    //const { isLoggedIn } = useContext(LoginContext);
-    const isLoggedIn = false;
+    const { loggedIn } = useContext(LoginContext);
 
     useEffect(() => {
-      if (!isLoggedIn) {
+      if (!loggedIn) {
         router.push("/login");
       }
-    }, [isLoggedIn, router]);
+    }, [loggedIn, router]);
 
-    if (!isLoggedIn) {
+    if (!loggedIn) {
       return null;
     }
 

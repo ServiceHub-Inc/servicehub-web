@@ -13,9 +13,13 @@ export function LoginProvider({ children }) {
 
   const [loginData, setLoginData] = useState({});
   //
+  const [tokenValidity, setTokenValidity] = useState(Date.now() + 3600 * 1000);
+
+  //
   const setLoginState = useCallback(
     ({ logout, token, loginType, profile: prof, tokenValidity }) => {
       const profile = { ...prof };
+
       if (logout) {
         localStorage.clear();
         cookies.remove("accessor");
@@ -63,16 +67,28 @@ export function LoginProvider({ children }) {
 
       localStorage.setItem("context", JSON.stringify({ loginType, profile }));
       setLoginData({
-        // token,
+        token,
         loginType,
         profile,
-        // tokenValidity,
+        tokenValidity: Date.now() + 3600 * 1000,
       });
+      setTokenValidity(Date.now() + 3600 * 1000);
       // LogRocket.identify(profile.id, {
       //   ...profile,
       // });
     },
     [],
+  );
+
+  const loggedIn = !!loginData.loginType;
+
+  const loginMemo = React.useMemo(
+    () => ({
+      ...loginData,
+      setLoginState,
+      loggedIn,
+    }),
+    [loginData, setLoginState, loggedIn],
   );
 
   useEffect(() => {
@@ -82,6 +98,14 @@ export function LoginProvider({ children }) {
       if (savedData?.loginType) setLoginState({ token, ...savedData });
       // return null;
     }
+    const tokenValidity = cookies.get("tokenValidity");
+    if (token && new Date(tokenValidity) < new Date()) {
+      // Token has expired, log the user out
+      setLoginState({ logout: true });
+      // Redirect the user to the login page
+      window.location.href = "/login";
+    }
+
     // const {  loginType, profile } = loginData;
     // if ( !profile || !loginType ) return null;
     // function logoutListener() {
@@ -116,13 +140,6 @@ export function LoginProvider({ children }) {
     // return () => document.removeEventListener('logout', logoutListener);
   }, [loginData, setLoginState]);
 
-  const loginMemo = React.useMemo(
-    () => ({
-      ...loginData,
-      setLoginState,
-    }),
-    [loginData, setLoginState],
-  );
   return (
     <LoginContext.Provider value={loginMemo}>{children}</LoginContext.Provider>
   );

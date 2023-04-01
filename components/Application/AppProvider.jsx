@@ -128,7 +128,7 @@ const AppProvider = ({ children }) => {
             <div className="h-screen ">
               <AppShell
                 header={showComponents && <AppHeader />}
-                navbar={showDashboard && <SideNav />}
+                // navbar={showDashboard && <SideNav />}
                 footer={showComponents && <AppFooter />}
               >
                 <div
