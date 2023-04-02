@@ -7,9 +7,6 @@ import {
   UnstyledButton,
   Tooltip,
   Title,
-  Stack,
-  rem,
-  NavLink,
 } from "@mantine/core";
 import {
   IconChartDots2,
@@ -19,8 +16,6 @@ import {
   IconNotification,
   IconSettings,
   IconLayoutDashboard,
-  IconLogout,
-  IconSwitchHorizontal,
 } from "@tabler/icons";
 import { Logo } from "../AppHeader";
 
@@ -143,10 +138,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const mainLinksData = [
-  { icon: IconLayoutDashboard, label: "Dashboard", subLinks: "Dash" },
-  { icon: IconUsers, label: "Users", subLinks: "The users" },
-  { icon: IconFriends, label: "Services", subLinks: "service 1" },
+const mainLinksMockdata = [
+  { icon: IconLayoutDashboard, label: "Dashboard" },
+  { icon: IconUsers, label: "Users" },
+  { icon: IconFriends, label: "Services" },
   { icon: IconNotification, label: "Notifications" },
   { icon: IconReportAnalytics, label: "Reporting" },
   { icon: IconChartDots2, label: "Analytics" },
@@ -165,12 +160,12 @@ export function SideNav() {
   const [activeLink, setActiveLink] = useState("Dashboard");
   let links;
 
-  const mainLinks = mainLinksData.map((link) => (
+  const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
       label={link.label}
       position="right"
-      color="lime"
       withArrow
+      transitionDuration={0}
       key={link.label}
     >
       <UnstyledButton
@@ -184,7 +179,8 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  if (active == "Dashboard")
+  if(active == "Dashboard")
+
     links = dashSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
@@ -201,7 +197,7 @@ export function SideNav() {
       </Link>
     ));
 
-  if (active == "Users")
+  if(active == "Users")
     links = userSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
@@ -249,12 +245,15 @@ export function SideNav() {
           <Title order={4} className={classes.title}>
             {active}
           </Title>
-          {/* {subLinks} */}
-          <ul className="list-none">
-            <Link href="#">
-              <li>{active}</li>
+          {links}
+          {/* <ul className="list-none">
+            <Link href="/users">
+              <li>Users</li>
             </Link>
-          </ul>
+            <Link href="/services">
+              <li>Services</li>
+            </Link>
+          </ul> */}
         </div>
       </Navbar.Section>
     </Navbar>
