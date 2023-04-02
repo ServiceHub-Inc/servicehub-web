@@ -214,7 +214,7 @@ export function SideNav() {
       </Link>
     ));
 
-    if(active == "Dashboard")
+    if(active == "Admin")
 
     links = adminSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
