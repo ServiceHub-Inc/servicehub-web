@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { LoginContext } from "../../../lib/contexts/LoginContext";
 import {
   createStyles,
   Navbar,
   UnstyledButton,
   Tooltip,
   Title,
+  Stack,
+  NavLink,
 } from "@mantine/core";
 import {
   IconChartDots2,
@@ -16,6 +19,8 @@ import {
   IconNotification,
   IconSettings,
   IconLayoutDashboard,
+  IconSwitchHorizontal,
+  IconLogout,
 } from "@tabler/icons";
 import { Logo } from "../AppHeader";
 
@@ -139,7 +144,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const mainLinksMockdata = [
-  { icon: IconLayoutDashboard, label: "Dashboard" },
+  { icon: IconLayoutDashboard, label: "Home" },
   { icon: IconUsers, label: "Users" },
   { icon: IconFriends, label: "Services" },
   { icon: IconNotification, label: "Notifications" },
@@ -148,16 +153,30 @@ const mainLinksMockdata = [
   { icon: IconSettings, label: "Settings" },
 ];
 
+//Footer Links
+const footerData = [{ icon: IconLogout, label: "LogOut" }];
+
+//SubLinks
 const userSubLinks = ["Users", "Banned", "Verification"];
-const dashSubLinks = ["Dashboard"];
+const dashSubLinks = ["Home"];
 const servicesSubLinks = ["Services", "Requests", "Providers", "Types"];
 const adminSubLinks = ["Admins"];
 
-export function SideNav() {
+export function SideNav({ activeItem }) {
+  //Getting Login State
+  const { setLoginState } = useContext(LoginContext);
+
+  //Logout Function
+  const handleLogout = () => {
+    setLoginState({ logout: true });
+    // redirect to login page
+    window.location.href = "/login";
+  };
+
   const router = useRouter();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Dashboard");
-  const [activeLink, setActiveLink] = useState("Dashboard");
+  const [active, setActive] = useState(activeItem || "Home");
+  const [activeLink, setActiveLink] = useState(activeItem || "Home");
   let links;
 
   const mainLinks = mainLinksMockdata.map((link) => (
@@ -165,7 +184,7 @@ export function SideNav() {
       label={link.label}
       position="right"
       withArrow
-      transitionDuration={0}
+      color="green"
       key={link.label}
     >
       <UnstyledButton
@@ -179,9 +198,27 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  if (active == "Dashboard")
+  const footerLink = footerData.map((link) => (
+    <Tooltip
+      label={link.label}
+      position="right"
+      withArrow
+      color="red"
+      key={link.label}
+    >
+      <UnstyledButton
+        onClick={handleLogout}
+        className={cx(classes.mainLink, {
+          [classes.mainLinkActive]: link.label === active,
+        })}
+      >
+        <link.icon className="text-red-700 hover:text-red-600" stroke={1.5} />
+      </UnstyledButton>
+    </Tooltip>
+  ));
+  if (active == "Home")
     links = dashSubLinks.map((link) => (
-      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+      <Link href={`/dashboard/home`} key={link}>
         <a
           className={cx(classes.link, {
             [classes.linkActive]: activeLink === link,
@@ -244,15 +281,11 @@ export function SideNav() {
             {active}
           </Title>
           {links}
-          {/* <ul className="list-none">
-            <Link href="/users">
-              <li>Users</li>
-            </Link>
-            <Link href="/services">
-              <li>Services</li>
-            </Link>
-          </ul> */}
         </div>
+      </Navbar.Section>
+
+      <Navbar.Section grow className={classes.wrapper}>
+        <div className="pt-4">{footerLink}</div>
       </Navbar.Section>
     </Navbar>
   );

@@ -16,6 +16,7 @@ import {
 } from "@mantine/core";
 import { SideNav } from "../../components/Application/Dashboard/Sidebar";
 import Breadcrumb from "../../components/utils/BreadCrumbs";
+import Home from "./home";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -72,39 +73,32 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const items = [
-  { title: "Dashboard", href: "#" },
-  // { title: "Users", href: "#" },
-].map((item, index) => (
-  <Anchor href={item.href} key={index}>
-    {item.title}
-  </Anchor>
-));
+const Pages = ({ children, title }) => {
+  const breadcrumbs = [
+    { title: "Dashboard", href: "/dashboard" },
+    { title: title, href: "/dashboard/users" },
+  ].map((item, index) => (
+    <Anchor href={item.href} key={index}>
+      {item.title}
+    </Anchor>
+  ));
 
-const Pages = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
-  const { setLoginState } = useContext(LoginContext);
-
-  const handleLogout = () => {
-    setLoginState({ logout: true });
-    // redirect to login page
-    window.location.href = "/login";
-  };
 
   return (
     <>
       <Head>
         <title>ServiceHub | Dashboard</title>
       </Head>
-      <div className="mx-auto p-8 w-full">
-        <SideNav />
+      <div className="mx-auto py-8 w-full">
+        <SideNav activeItem={title || "Home"} />
         <main className="mt-16">
-          <Container size="lg" px="xs">
+          <Container size="xl">
             <div className="flex items-center justify-between">
-              <Breadcrumb items={items} />
+              <Breadcrumb items={breadcrumbs} />
               <Title order={3} className="text-gray-500 text-center mb-2">
-                Dashboard
+                {title}
               </Title>
               {/* Dark mode Switch */}
               <p className="flex justify-end mr-10">
@@ -122,11 +116,8 @@ const Pages = () => {
                 </ActionIcon>
               </p>
             </div>
-
-            <section>
-              <h1>Dasssss</h1>
-              <Button onClick={handleLogout}>Logout</Button>
-            </section>
+            {/* Dashboard Pages */}
+            <div>{children}</div>
           </Container>
         </main>
       </div>

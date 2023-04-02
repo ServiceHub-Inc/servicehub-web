@@ -1,11 +1,13 @@
+import Pages from ".";
 import UsersComponent from "../../components/Application/Dashboard/Users";
+import withAuth from "../../lib/withAuth";
 
 const Users = () => {
   return (
-    <div className="mx-auto p-8 w-full">
+    <Pages title="Users">
       <UsersComponent />
-    </div>
+    </Pages>
   );
 };
 
-export default Users;
+export default withAuth(Users);

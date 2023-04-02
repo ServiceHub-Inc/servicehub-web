@@ -57,7 +57,7 @@ export function ProfileCard() {
 
   const items = stats.map((stat) => (
     <div key={stat.label}>
-      <Text ta="center" fz="lg" fw={500}>
+      <Text ta="center" fz="md" fw={500}>
         {stat.value}
       </Text>
       <div className="flex items-center">
@@ -79,7 +79,7 @@ export function ProfileCard() {
           height: 160,
         }}
       />
-      <span className="w-full h-[45%] top-0 left-0 absolute opacity-25 bg-primary"></span>
+      <span className="w-full h-[40%] top-0 left-0 absolute opacity-25 bg-primary"></span>
       <Avatar
         src={avatar}
         size={80}
@@ -100,7 +100,7 @@ export function ProfileCard() {
           <MdStar className="text-amber-400 text-base " /> 3.5
         </span>
       </div>
-      <Group mt="md" fw={500} c="green" position="center" spacing={30}>
+      <Group mt="sm" fw={500} c="green" position="center" spacing={25}>
         {items}
       </Group>
     </Card>
