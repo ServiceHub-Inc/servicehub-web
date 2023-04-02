@@ -179,8 +179,7 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  if(active == "Dashboard")
-
+  if (active == "Dashboard")
     links = dashSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
@@ -197,7 +196,7 @@ export function SideNav() {
       </Link>
     ));
 
-  if(active == "Users")
+  if (active == "Users")
     links = userSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
@@ -214,8 +213,7 @@ export function SideNav() {
       </Link>
     ));
 
-    if(active == "Dashboard")
-
+  if (active == "Dashboard")
     links = adminSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
