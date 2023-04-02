@@ -153,15 +153,16 @@ const mainLinksData = [
   { icon: IconSettings, label: "Settings" },
 ];
 
-const linksData = ["Users", "Services"];
-//const subLinks = ["Users", "Toys"];
+const userSubLinks = ["Users", "Banned", "Verification"];
+const dashSubLinks = ["Dashboard"];
+const servicesSubLinks = ["Services", "Requests", "Providers", "Types"];
 
 export function SideNav() {
   const router = useRouter();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("Dashboard");
   const [activeLink, setActiveLink] = useState("Dashboard");
-  const [activeSubLink, setActiveSubLink] = useState("");
+  let links;
 
   const mainLinks = mainLinksData.map((link) => (
     <Tooltip
@@ -182,21 +183,39 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  const subLinks = mainLinksData.map((link, index) => (
-    <Link href={""} key={index}>
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]: activeLink === link.subLinks,
-        })}
-        onClick={(e) => {
-          setActiveLink(link.subLinks);
-        }}
-        // }}
-      >
-        {link.subLinks}
-      </a>
-    </Link>
-  ));
+  if (active == "Dashboard")
+    links = dashSubLinks.map((link) => (
+      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
+
+  if (active == "Users")
+    links = userSubLinks.map((link) => (
+      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
 
   return (
     <Navbar width={{ base: 300 }} height={661} p="xs" className="fixed left-0">
