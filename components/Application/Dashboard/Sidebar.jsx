@@ -151,6 +151,7 @@ const mainLinksMockdata = [
 const userSubLinks = ["Users", "Banned", "Verification"];
 const dashSubLinks = ["Dashboard"];
 const servicesSubLinks = ["Services", "Requests", "Providers", "Types"];
+const adminSubLinks = ["Admins"];
 
 export function SideNav() {
   const router = useRouter();
@@ -198,6 +199,24 @@ export function SideNav() {
 
   if(active == "Users")
     links = userSubLinks.map((link) => (
+      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
+
+    if(active == "Dashboard")
+
+    links = adminSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a
           className={cx(classes.link, {
