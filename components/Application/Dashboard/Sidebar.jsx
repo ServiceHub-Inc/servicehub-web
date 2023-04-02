@@ -148,13 +148,16 @@ const mainLinksMockdata = [
   { icon: IconSettings, label: "Settings" },
 ];
 
-const linksMockdata = ["Users"];
+const userSubLinks = ["Users", "Banned", "Verification"];
+const dashSubLinks = ["Dashboard"];
+const servicesSubLinks = ["Services", "Requests", "Providers", "Types"];
 
 export function SideNav() {
   const router = useRouter();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Dashboard");
-  const [activeLink, setActiveLink] = useState("Users");
+  const [activeLink, setActiveLink] = useState("Dashboard");
+  let links;
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -175,21 +178,40 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  const links = linksMockdata.map((link) => (
-    <Link href={`/${link.toLowerCase()}`} key={link}>
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]: activeLink === link,
-        })}
-        onClick={(e) => {
-          setActiveLink(link);
-        }}
-        // }}
-      >
-        {link}
-      </a>
-    </Link>
-  ));
+  if(active == "Dashboard")
+
+    links = dashSubLinks.map((link) => (
+      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
+
+  if(active == "Users")
+    links = userSubLinks.map((link) => (
+      <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
 
   return (
     <Navbar width={{ base: 300 }} height={661} p="xs" className="fixed left-0">
