@@ -7,6 +7,9 @@ import {
   UnstyledButton,
   Tooltip,
   Title,
+  Stack,
+  rem,
+  NavLink,
 } from "@mantine/core";
 import {
   IconChartDots2,
@@ -16,6 +19,8 @@ import {
   IconNotification,
   IconSettings,
   IconLayoutDashboard,
+  IconLogout,
+  IconSwitchHorizontal,
 } from "@tabler/icons";
 import { Logo } from "../AppHeader";
 
@@ -138,30 +143,32 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const mainLinksMockdata = [
-  { icon: IconLayoutDashboard, label: "Dashboard" },
-  { icon: IconUsers, label: "Users" },
-  { icon: IconFriends, label: "Services" },
+const mainLinksData = [
+  { icon: IconLayoutDashboard, label: "Dashboard", subLinks: "Dash" },
+  { icon: IconUsers, label: "Users", subLinks: "The users" },
+  { icon: IconFriends, label: "Services", subLinks: "service 1" },
   { icon: IconNotification, label: "Notifications" },
   { icon: IconReportAnalytics, label: "Reporting" },
   { icon: IconChartDots2, label: "Analytics" },
   { icon: IconSettings, label: "Settings" },
 ];
 
-const linksMockdata = ["Users"];
+const linksData = ["Users", "Services"];
+//const subLinks = ["Users", "Toys"];
 
 export function SideNav() {
   const router = useRouter();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Dashboard");
-  const [activeLink, setActiveLink] = useState("Users");
+  const [active, setActive] = useState("");
+  const [activeLink, setActiveLink] = useState("Dashboard");
+  const [activeSubLink, setActiveSubLink] = useState("");
 
-  const mainLinks = mainLinksMockdata.map((link) => (
+  const mainLinks = mainLinksData.map((link) => (
     <Tooltip
       label={link.label}
       position="right"
+      color="lime"
       withArrow
-      transitionDuration={0}
       key={link.label}
     >
       <UnstyledButton
@@ -175,18 +182,18 @@ export function SideNav() {
     </Tooltip>
   ));
 
-  const links = linksMockdata.map((link) => (
-    <Link href={`/${link.toLowerCase()}`} key={link}>
+  const subLinks = mainLinksData.map((link, index) => (
+    <Link href={""} key={index}>
       <a
         className={cx(classes.link, {
-          [classes.linkActive]: activeLink === link,
+          [classes.linkActive]: activeLink === link.subLinks,
         })}
         onClick={(e) => {
-          setActiveLink(link);
+          setActiveLink(link.subLinks);
         }}
         // }}
       >
-        {link}
+        {link.subLinks}
       </a>
     </Link>
   ));
@@ -204,15 +211,12 @@ export function SideNav() {
           <Title order={4} className={classes.title}>
             {active}
           </Title>
-          {links}
-          {/* <ul className="list-none">
-            <Link href="/users">
-              <li>Users</li>
+          {/* {subLinks} */}
+          <ul className="list-none">
+            <Link href="#">
+              <li>{active}</li>
             </Link>
-            <Link href="/services">
-              <li>Services</li>
-            </Link>
-          </ul> */}
+          </ul>
         </div>
       </Navbar.Section>
     </Navbar>
