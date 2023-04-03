@@ -8,8 +8,6 @@ import {
   UnstyledButton,
   Tooltip,
   Title,
-  Stack,
-  NavLink,
 } from "@mantine/core";
 import {
   IconChartDots2,
@@ -98,12 +96,9 @@ const useStyles = createStyles((theme) => ({
   },
 
   logo: {
-    boxSizing: "border-box",
     display: "flex",
     justifyContent: "center",
-    height: 25,
-    paddingTop: theme.spacing.md,
-    marginBottom: theme.spacing.xl,
+    paddingBottom: theme.spacing.sm,
   },
 
   link: {
@@ -267,15 +262,14 @@ export function SideNav({ activeItem }) {
       </Link>
     ));
 
+  //width={{ base: 300 }} p="xs"
   return (
-    <Navbar width={{ base: 300 }} height={661} p="xs" className="fixed left-0">
+    <Navbar width={{ base: 300 }} p="xs" className="w-[20%]">
+      <div className={classes.logo}>
+        <Logo type="mark" size={10} />
+      </div>
       <Navbar.Section grow className={classes.wrapper}>
-        <div className={classes.aside}>
-          {/* <div className={classes.logo}>
-            <Logo type="mark" size={20} />
-          </div> */}
-          {mainLinks}
-        </div>
+        <div className={classes.aside}>{mainLinks}</div>
         <div className={classes.main}>
           <Title order={4} className={classes.title}>
             {active}
@@ -283,7 +277,6 @@ export function SideNav({ activeItem }) {
           {links}
         </div>
       </Navbar.Section>
-
       <Navbar.Section grow className={classes.wrapper}>
         <div className="pt-4">{footerLink}</div>
       </Navbar.Section>

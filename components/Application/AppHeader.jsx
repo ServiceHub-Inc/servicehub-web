@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react"
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useWindowScroll, useDisclosure } from "@mantine/hooks";
 import { ChevronDown } from "tabler-icons-react";
-import logo from "../../public/images/logo-1.webp";
+import logo from "../../public/images/logo.png";
 
 const HEADER_HEIGHT = 60;
 
@@ -148,20 +148,18 @@ export default function AppHeader() {
           gutter={1}
         >
           <Menu.Target>
-              <a
-                  href={link.link}
-                  className={classes.link}
-                  onClick={(event) => event.preventDefault()}
-                >
-                  <Center>
-                    <span className={classes.linkLabel}>{link.label}</span>
-                    <ChevronDown size={12} />
-                  </Center>
-                </a>
+            <a
+              href={link.link}
+              className={classes.link}
+              onClick={(event) => event.preventDefault()}
+            >
+              <Center>
+                <span className={classes.linkLabel}>{link.label}</span>
+                <ChevronDown size={12} />
+              </Center>
+            </a>
           </Menu.Target>
-            <Menu.Dropdown>
-              {menuItems}
-            </Menu.Dropdown>
+          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
         </Menu>
       );
     }

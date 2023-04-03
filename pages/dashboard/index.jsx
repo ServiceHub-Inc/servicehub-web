@@ -17,6 +17,7 @@ import {
 import { SideNav } from "../../components/Application/Dashboard/Sidebar";
 import Breadcrumb from "../../components/utils/BreadCrumbs";
 import Home from "./home";
+import { HeaderTabs } from "./Navbar";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -91,9 +92,11 @@ const Pages = ({ children, title }) => {
       <Head>
         <title>ServiceHub | Dashboard</title>
       </Head>
-      <div className="mx-auto py-8 w-full">
+      <HeaderTabs />
+      <div className=" w-full block">
         <SideNav activeItem={title || "Home"} />
-        <main className="mt-16">
+
+        <main className="mt-4">
           <Container size="xl">
             <div className="flex items-center justify-between">
               <Breadcrumb items={breadcrumbs} />
