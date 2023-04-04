@@ -365,7 +365,7 @@ export default function UsersComponent() {
 
         {/*  */}
 
-        <div className="px-4 flex justify-between items-center pt-4">
+        <div className="pr-4 flex justify-between items-center pt-4">
           <Button
             leftIcon={<IconUserPlus size={16} />}
             variant="light"

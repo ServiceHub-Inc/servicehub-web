@@ -52,9 +52,9 @@ const Dashboard = ({ children, title }) => {
             background:
               theme.colorScheme === "dark"
                 ? theme.colors.dark[8]
-                : theme.colors.gray[0],
-            padding: "4px",
-            margin: "4px",
+                : theme.colors.white,
+            padding: "1px",
+            margin: "1px",
           },
         }}
         navbarOffsetBreakpoint="sm"
@@ -80,11 +80,12 @@ const Dashboard = ({ children, title }) => {
         //     </Aside>
         //   </MediaQuery>
         // }
-        footer={
-          <Footer height={60} p="md">
-            Application footer
-          </Footer>
-        }
+
+        // footer={
+        //   <Footer height={60} p="md">
+        //     Application footer
+        //   </Footer>
+        // }
         header={
           <Header height={{ base: 63 }} className="">
             <div className="hidden sm:block">
@@ -108,11 +109,11 @@ const Dashboard = ({ children, title }) => {
         }
       >
         {/* Main DashBoard Items Content */}
-        <main className="px-4">
+        <main className="px-2">
           <Container size="xl">
-            <div className="flex items-center justify-between mx-6">
+            <div className="flex items-center justify-between mr-12">
               <Breadcrumb items={breadcrumbs} />
-              <Title order={3} className="text-gray-500 text-center mb-2">
+              <Title order={3} className="text-gray-500 text-center mb-2 mr-12">
                 {title}
               </Title>
               {/* Dark mode Switch */}
