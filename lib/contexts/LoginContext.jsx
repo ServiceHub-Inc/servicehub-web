@@ -27,7 +27,7 @@ export function LoginProvider({ children }) {
         setLoginData({});
         return;
       }
-      console.log("setLoginState", {
+      console.log("LoginState", {
         token,
         loginType,
         profile,

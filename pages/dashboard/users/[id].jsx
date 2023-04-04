@@ -19,7 +19,7 @@ const Profile = () => {
   return (
     <Pages title="Profile">
       <section>
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <Paper
             shadow="md"
             p="md"

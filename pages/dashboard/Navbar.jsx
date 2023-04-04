@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   createStyles,
   Container,
@@ -19,19 +19,14 @@ import {
   IconChevronDown,
 } from "@tabler/icons";
 import { Logo } from "../../components/Application/AppHeader";
+import { LoginContext } from "../../lib/contexts/LoginContext";
 
 const useStyles = createStyles((theme) => ({
   header: {
-    paddingTop: theme.spacing.xs,
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[6]
         : theme.colors.gray[0],
-    borderBottom: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? "transparent" : theme.colors.gray[2]
-    }`,
-    marginBottom: rem(1),
-    display: "block",
   },
 
   mainSection: {
@@ -111,7 +106,7 @@ const details = {
     name: "Frank Thomas",
     email: "frank@servicehub.com",
     image:
-      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80",
+      "https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmxhY2slMjB3b21hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
   },
   tabs: [
     "Services",
@@ -134,43 +129,40 @@ export function HeaderTabs({}) {
     </Tabs.Tab>
   ));
 
+  //Getting Login State
+  const { setLoginState, token, profile } = useContext(LoginContext);
+
+  console.log(token);
+  //Logout Function
+  const handleLogout = () => {
+    setLoginState({ logout: true });
+    // redirect to login page
+    window.location.href = "/login";
+  };
+
   return (
     <div className={classes.header}>
-      <Container className={classes.mainSection}>
-        <Group className="flex items-center justify-end">
-          {/* <Logo /> */}
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            className={classes.burger}
-            size="sm"
-          />
-
-          <Menu
-            width={260}
-            position="bottom-end"
-            transitionProps={{ transition: "pop-top-right" }}
-            onClose={() => setUserMenuOpened(false)}
-            onOpen={() => setUserMenuOpened(true)}
-            withinPortal
-          >
+      <Container className="py-1 mx-4 max-w-full">
+        <Group className="flex items-center justify-between">
+          <Logo />
+          <Menu>
             <Menu.Target>
               <UnstyledButton
                 className={cx(classes.user, {
                   [classes.userActive]: userMenuOpened,
                 })}
               >
-                <Group spacing={8} className="mx-10">
+                <Group spacing={8} className="mx-4">
                   <Avatar
                     src={details.user.image}
-                    alt={details.user.name}
+                    alt={profile.firstName}
                     radius="xl"
                     size={25}
                   />
-                  <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-                    {details.user.name}
+                  <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={2}>
+                    {profile.firstName}
                   </Text>
-                  <IconChevronDown size={rem(12)} stroke={1.5} />
+                  <IconChevronDown size={rem(15)} stroke={1.5} />
                 </Group>
               </UnstyledButton>
             </Menu.Target>
@@ -218,7 +210,10 @@ export function HeaderTabs({}) {
               >
                 Change account
               </Menu.Item>
-              <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>
+              <Menu.Item
+                icon={<IconLogout size="0.9rem" stroke={1.5} />}
+                onClick={handleLogout}
+              >
                 Logout
               </Menu.Item>
 

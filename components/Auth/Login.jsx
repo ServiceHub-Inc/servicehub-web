@@ -74,7 +74,7 @@ function Login({ isAdmin, router }) {
           profile: _doc,
         });
 
-        const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard";
+        const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard/home";
         const url = redirectUrl || defaultUrl;
         console.log(redirectUrl);
         window.location.assign(url);

@@ -1,12 +1,12 @@
-import Pages from ".";
 import UsersComponent from "../../components/Application/Dashboard/Users";
 import withAuth from "../../lib/withAuth";
+import Dashboard from ".";
 
 const Users = () => {
   return (
-    <Pages title="Users">
+    <Dashboard title="Users">
       <UsersComponent />
-    </Pages>
+    </Dashboard>
   );
 };
 

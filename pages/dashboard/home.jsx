@@ -1,15 +1,11 @@
-import Pages from ".";
 import withAuth from "../../lib/withAuth";
+import Dashboard from ".";
 const Home = () => {
   return (
     <>
-      <Pages title="Home">
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-        <h1>Dashboard</h1>
-      </Pages>
+      <Dashboard title="Home">
+        <h1>Dashboard Item Goes here</h1>
+      </Dashboard>
     </>
   );
 };

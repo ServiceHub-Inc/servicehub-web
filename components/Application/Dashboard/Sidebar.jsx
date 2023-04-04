@@ -8,6 +8,7 @@ import {
   UnstyledButton,
   Tooltip,
   Title,
+  Divider,
 } from "@mantine/core";
 import {
   IconChartDots2,
@@ -17,10 +18,8 @@ import {
   IconNotification,
   IconSettings,
   IconLayoutDashboard,
-  IconSwitchHorizontal,
   IconLogout,
 } from "@tabler/icons";
-import { Logo } from "../AppHeader";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -51,8 +50,8 @@ const useStyles = createStyles((theme) => ({
 
   mainLink: {
     width: 44,
-    height: 44,
-    borderRadius: theme.radius.lg,
+    height: 50,
+    borderRadius: "15px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -81,13 +80,12 @@ const useStyles = createStyles((theme) => ({
   },
 
   title: {
-    boxSizing: "border-box",
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    display: "flex",
+    // display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: theme.fn.primaryColor(),
-    marginBottom: theme.spacing.xl,
+    marginBottom: theme.spacing.md,
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     padding: theme.spacing.md,
@@ -112,7 +110,7 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[7],
     // padding: "4px",
     fontSize: theme.fontSizes.sm,
-    marginLeft: theme.spacing.md,
+    paddingLeft: theme.spacing.md,
     // marginRight: theme.spacing.md,
     fontWeight: 500,
     // height: 50,
@@ -122,7 +120,7 @@ const useStyles = createStyles((theme) => ({
       backgroundColor:
         theme.colorScheme === "dark"
           ? theme.colors.dark[5]
-          : theme.colors.gray[1],
+          : theme.colors.green[0],
       color: theme.colorScheme === "dark" ? theme.white : theme.black,
     },
   },
@@ -130,7 +128,7 @@ const useStyles = createStyles((theme) => ({
   linkActive: {
     "&, &:hover": {
       borderLeft: "4px solid",
-      paddingLeft: theme.spacing.sm,
+      paddingLeft: theme.spacing.md,
       borderLeftColor: theme.fn.primaryColor(),
       // backgroundColor: theme.fn.primaryColor(),
       color: theme.fn.primaryColor(),
@@ -262,24 +260,20 @@ export function SideNav({ activeItem }) {
       </Link>
     ));
 
-  //width={{ base: 300 }} p="xs"
   return (
-    <Navbar width={{ base: 300 }} p="xs" className="w-[20%]">
-      <div className={classes.logo}>
-        <Logo type="mark" size={10} />
+    <Navbar.Section grow className={classes.wrapper}>
+      <div className={classes.aside}>
+        <span>{mainLinks}</span>
+
+        <span className="mt-12"> {footerLink}</span>
       </div>
-      <Navbar.Section grow className={classes.wrapper}>
-        <div className={classes.aside}>{mainLinks}</div>
-        <div className={classes.main}>
-          <Title order={4} className={classes.title}>
-            {active}
-          </Title>
-          {links}
-        </div>
-      </Navbar.Section>
-      <Navbar.Section grow className={classes.wrapper}>
-        <div className="pt-4">{footerLink}</div>
-      </Navbar.Section>
-    </Navbar>
+
+      <div className={classes.main}>
+        <Title order={4} className={classes.title}>
+          {active}
+        </Title>
+        {links}
+      </div>
+    </Navbar.Section>
   );
 }
