@@ -18,6 +18,7 @@ import {
   IconNotification,
   IconSettings,
   IconLayoutDashboard,
+  IconUserCircle,
   IconLogout,
 } from "@tabler/icons";
 
@@ -143,6 +144,7 @@ const mainLinksMockdata = [
   { icon: IconNotification, label: "Notifications" },
   { icon: IconReportAnalytics, label: "Reporting" },
   { icon: IconChartDots2, label: "Analytics" },
+  { icon: IconUserCircle, label: "Admins" },
   { icon: IconSettings, label: "Settings" },
 ];
 
@@ -243,7 +245,7 @@ export function SideNav({ activeItem }) {
       </Link>
     ));
 
-  if (active == "Admin")
+  if (active == "Admins")
     links = adminSubLinks.map((link) => (
       <Link href={`/dashboard/${link.toLowerCase()}`} key={link}>
         <a

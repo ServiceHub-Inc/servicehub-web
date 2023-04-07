@@ -6,17 +6,20 @@ import ScrollToTop from "../components/utils/ScrollToTop";
 import LoadingProvider from "../components/Application/LoadingProvider";
 import { LoginProvider } from "../lib/contexts/LoginContext";
 import UsersContextProvider from "../lib/contexts/UserContext";
+import AdminsContextProvider from "../lib/contexts/AdminContext";
 
 const App = ({ Component, pageProps }) => {
   return (
     <LoginProvider>
       <LoadingProvider>
-        <UsersContextProvider>
-          <AppProvider>
-            <ScrollToTop />
-            <Component {...pageProps} />
-          </AppProvider>
-        </UsersContextProvider>
+        <AdminsContextProvider>
+          <UsersContextProvider>
+            <AppProvider>
+              <ScrollToTop />
+              <Component {...pageProps} />
+            </AppProvider>
+          </UsersContextProvider>
+        </AdminsContextProvider>
       </LoadingProvider>
     </LoginProvider>
   );
