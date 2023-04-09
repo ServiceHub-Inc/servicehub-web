@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import {
   TextInput,
   Button,
@@ -165,8 +164,6 @@ const AddUserForm = ({ addUser, close }) => {
       //   throw new Error("Failed to submit form");
       // }
       // const json = await response.json();
-
-      //adding user to global user context
 
       // Resetting the form and loading state
       setUserData(initialFormData);

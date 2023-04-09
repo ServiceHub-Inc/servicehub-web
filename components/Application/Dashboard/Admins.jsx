@@ -6,24 +6,17 @@ import {
   Divider,
   Paper,
   Pagination,
-  ActionIcon,
   useMantineColorScheme,
   CopyButton,
-  useMantineTheme,
   Menu,
   createStyles,
   Table,
-  Title,
   Button,
-  Container,
   Group,
   Text,
   rem,
-  List,
-  Anchor,
   Rating,
   Tooltip,
-  Popover,
 } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { modals, openModal } from "@mantine/modals";
@@ -44,8 +37,6 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconUserPlus,
-  IconSun,
-  IconMoonStars,
   IconArrowsLeftRight,
   IconEye,
   IconDotsVertical,
@@ -57,14 +48,14 @@ import {
 import UserModal from "../../utils/Modal";
 import AddAdminForm from "../../Forms/AddAdminForm";
 import UserTable from "../../Forms/UserTable";
-import Breadcrumb from "../../utils/BreadCrumbs";
-import EditUserForm from "../../Forms/EditUserForm";
 import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
 import TableDataProp from "../../Forms/DataProp";
 import Link from "next/link";
 import { useAdminsContext } from "../../../lib/hooks/useAdminsContext";
 import Head from "next/head";
+import EditAdminForm from "../../Forms/EditAdminForm";
+import config from "../../../lib/config";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -171,7 +162,6 @@ export default function AdminsComponent() {
         throw new Error("Error fetching admins");
       }
       const json = await response.json();
-      console.log(json);
       //Dispatching a set admin action!
       dispatch({ type: "SET_ADMINS", payload: json });
 
@@ -224,8 +214,6 @@ export default function AdminsComponent() {
 
   const { classes } = useStyles();
 
-  const baseUrl = `http://localhost:3008/`;
-
   //------------------------------ADD ADMIN MODAL---------------------------//
   const openAddAdminModal = () => {
     const id = modals.open({
@@ -257,7 +245,7 @@ export default function AdminsComponent() {
   //-----------------------------ADD ADMIN MODAL ENDS HERE--------------------------------//
 
   //------------------------------EDIT ADMIN MODAL---------------------------//
-  const openEditUserModal = (admin) => {
+  const openEditAdminModal = (admin) => {
     const id = modals.open({
       classNames: {
         header: "text-center bg-primary m-3",
@@ -368,7 +356,8 @@ export default function AdminsComponent() {
             variant="light"
             color="green"
             onClick={openAddAdminModal}
-            className="text-sm border-b-2 border-b-green-700">
+            className="text-sm border-b-2 border-b-green-700"
+          >
             ADD ADMIN
           </Button>
           <TableDataProp />
@@ -422,22 +411,28 @@ export default function AdminsComponent() {
                       <Avatar
                         size={32}
                         color="green"
-                        src={admin.imageUrl ? baseUrl + admin.imageUrl : null}
+                        src={
+                          admin.imageUrl
+                            ? config.baseUrl + admin.imageUrl
+                            : null
+                        }
                         radius="xl"
                         alt={admin.firstName}
                         onClick={() => setSelectedAdmin(admin)}
                         className="hover:shadow-md transition duration-150 ease-in-out cursor-pointer"
                       >
-                        {admin.firstName.charAt(0)}
-                        {admin.lastName.charAt(0)}
+                        {admin?.firstName?.charAt(0)}
+                        {admin?.lastName?.charAt(0)}
                       </Avatar>
                       <div>
                         <Text fz="sm" fw={500}>
                           {admin.lastName}
                         </Text>
-                        <Text fz="xs" c="dimmed" className="text-gray-300">
-                          
-                        </Text>
+                        <Text
+                          fz="xs"
+                          c="dimmed"
+                          className="text-gray-300"
+                        ></Text>
                       </div>
                     </Group>
                   </td>
@@ -481,7 +476,7 @@ export default function AdminsComponent() {
                             View
                           </Menu.Item>
                           <Menu.Item
-                            onClick={() => openEditUserModal(admin)}
+                            onClick={() => openEditAdminModal(admin)}
                             icon={<IconEdit size={14} />}
                           >
                             Edit
@@ -538,20 +533,23 @@ export default function AdminsComponent() {
                       inline
                       size={18}
                       offset={16}
-                      label={selectedAdmin.adminRole.toLowerCase()}
+                      label={selectedAdmin.role.toLowerCase()}
                       position="bottom-end"
                       color="green"
                       withBorder
                     >
                       <Avatar
-                        src={selectedAdmin.imageUrl}
+                        src={config.baseUrl + selectedAdmin.imageUrl}
                         alt={selectedAdmin.firstName}
                         radius={120}
                         mx="auto"
                         mt={-15}
                         className="shadow-md hover:shadow-2xl"
                         size={120}
-                      />
+                      >
+                        {selectedAdmin.firstName.charAt(0)}
+                        {selectedAdmin.lastName.charAt(0)}
+                      </Avatar>
                     </Indicator>
                   </div>
                 </div>
@@ -567,7 +565,7 @@ export default function AdminsComponent() {
                     </span>
                     <span className="pt-1">
                       <Text c="dimmed" className="opacity-50 uppercase text-xs">
-                        Individual Provider
+                        SYS ADMIN
                       </Text>
                     </span>
                     <span className="text-center pt-3">
@@ -800,8 +798,15 @@ export default function AdminsComponent() {
         <div className="py-2 my-1 mx-4 flex  items-center justify-between ">
           <span>
             <Text size="sm" c="dimmed">
-              Showing <span className=" font-semibold">{activePage} to {perPage}</span> of{" "}
-              <span className="text-primary font-semibold">{admins?.length}</span> entries
+              Showing{" "}
+              <span className=" font-semibold">
+                {activePage} to {perPage}
+              </span>{" "}
+              of{" "}
+              <span className="text-primary font-semibold">
+                {admins?.length}
+              </span>{" "}
+              entries
             </Text>{" "}
           </span>
           <span className="">

@@ -18,8 +18,9 @@ import {
   IconSwitchHorizontal,
   IconChevronDown,
 } from "@tabler/icons";
-import { Logo } from "../../components/Application/AppHeader";
+import { Logo } from "./AppHeader";
 import { LoginContext } from "../../lib/contexts/LoginContext";
+import config from "../../lib/config";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -154,7 +155,7 @@ export function HeaderTabs({}) {
               >
                 <Group spacing={8} className="mx-4">
                   <Avatar
-                    src={details.user.image}
+                    src={config.baseUrl + profile.imageUrl}
                     alt={profile.firstName}
                     radius="xl"
                     size={25}

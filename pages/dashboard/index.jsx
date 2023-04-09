@@ -1,5 +1,5 @@
 import { SideNav } from "../../components/Application/Dashboard/Sidebar";
-import { HeaderTabs } from "./Navbar";
+import { HeaderTabs } from "../../components/Application/Navbar";
 import { useState } from "react";
 import {
   AppShell,

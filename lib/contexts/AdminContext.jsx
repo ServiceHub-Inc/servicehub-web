@@ -4,30 +4,32 @@ export const adminsContext = createContext();
 
 const initialState = {};
 
-export const usersReducer = (state, action) => {
+export const adminsReducer = (state, action) => {
   switch (action.type) {
     case "SET_ADMINS":
       return {
         admins: action.payload,
       };
-    case "ADD_USER":
+    case "ADD_ADMIN":
       return {
-        users: [action.payload, ...state.users],
+        admins: [action.payload.admin, ...state.admins],
       };
-    case "DELETE_USER":
+    case "DELETE_ADMIN":
       return {
-        users: state.users.filter((user) => user._id !== action.payload._id),
+        admins: state.admins.filter(
+          (admin) => admin._id !== action.payload._id,
+        ),
       };
-    case "UPDATE_USER":
+    case "UPDATE_ADMIN":
       return {
-        users: state.users.map((user) => {
-          if (user._id === action.payload._id) {
+        admins: state.admins.map((admin) => {
+          if (admin._id === action.payload._id) {
             return {
-              ...user,
+              ...admin,
               ...action.payload,
             };
           }
-          return user;
+          return admin;
         }),
       };
     default:
@@ -36,7 +38,7 @@ export const usersReducer = (state, action) => {
 };
 
 const AdminsContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(usersReducer, {
+  const [state, dispatch] = useReducer(adminsReducer, {
     admins: null,
   });
   return (

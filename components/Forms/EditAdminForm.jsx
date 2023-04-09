@@ -1,5 +1,4 @@
-import { useState, useRef } from "react";
-import axios from "axios";
+import { useState, useRef, useEffect } from "react";
 import {
   TextInput,
   Button,
@@ -9,15 +8,20 @@ import {
   NativeSelect,
   useMantineTheme,
   FileInput,
-  Avatar,
-  Image,
-  clsx,
 } from "@mantine/core";
+import { faker } from "@faker-js/faker";
 import { IconUserExclamation, IconUpload } from "@tabler/icons";
-// import { VscOrganization, VscPerson } from "react-icons/vsc";
 
-const AddAdminForm = ({ addAdmin, close }) => {
+import { useAdminsContext } from "../../lib/hooks/useAdminsContext";
+
+const EditAdminForm = ({ admin, updateAdmin, close }) => {
   const theme = useMantineTheme();
+
+  //State and Dispatch from admins context Hook
+  const { state, dispatch } = useAdminsContext();
+
+  //Setting Error State
+  const [errors, setErrors] = useState([]);
 
   ///----------------------------------------STATES BLOCK----------------------------------//
 
@@ -25,6 +29,13 @@ const AddAdminForm = ({ addAdmin, close }) => {
   const [skillsSet, setSkillsSet] = useState([
     { value: "coding", label: "Coding" },
   ]);
+
+  //Form Stepper States
+  const [active, setActive] = useState(0);
+  const nextStep = () =>
+    setActive((current) => (current < 4 ? current + 1 : current));
+  const prevStep = () =>
+    setActive((current) => (current > 0 ? current - 1 : current));
 
   //SeTting Select Option State
   const [selectedOption, setSelectedOption] = useState("");
@@ -38,24 +49,37 @@ const AddAdminForm = ({ addAdmin, close }) => {
   //INitializing formData
   const initialFormData = {
     //Basic Form Fields
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    idType: faker.helpers.arrayElement(["Ghana-Card", "VotersID", "NHIS-Card"]),
+    _id: admin._id,
+    firstName: admin.firstName,
+    lastName: admin.lastName,
+    email: admin.email,
+    phone: admin.phone,
+    address: admin.address,
+    city: admin.city,
     role: "ADMIN",
     password: "12345",
     image: null,
     verified: false,
   };
 
-  // Setting AdminData State
+  // Setting adminData State
   const [adminData, setAdminData] = useState(initialFormData);
 
-  //Setting Error State
-  const [errors, setErrors] = useState([]);
-
-  //Setting Admin Provider State
+  //Setting admin Provider State
   const [ProviderSelected, setProviderSelected] = useState(false);
+
+  //Checking if admin's a Provider
+  useEffect(() => {
+    const IsProvider = () => {
+      if (adminData.adminRole === "PROVIDER") {
+        setProviderSelected(true);
+      } else {
+        setProviderSelected(false);
+      }
+    };
+    IsProvider();
+  }, [adminData.role]);
 
   ///Handling Form Input Change............
   const handleInputChange = (event) => {
@@ -73,45 +97,44 @@ const AddAdminForm = ({ addAdmin, close }) => {
     setAdminData({ ...adminData, image: value });
   };
 
-  // Handling Form Submit
+  //Cleaning Up ObjectURL with UseEffect
+  // useEffect(() => {
+  //   if (adminData.image) {
+  //     URL.revokeObjectURL(adminData.image);
+  //   }
+  // }, [adminData.image]);
+
+  //
+  //Handle Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      //-----------------Using Fetch------------------//
-      // const response = await fetch("http://localhost:3008/create-user", {
-      //   method: "POST",
-      //   body: adminData,
-      // });
-      const response = await axios.post(
-        "http://localhost:3008/create-admin",
-        adminData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
+      const response = await fetch(`http://localhost:3008/admin/${admin._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
-      // if (!response.ok) {
-      //   throw new Error("Failed to submit form");
-      // }
-      // const json = await response.json();
+        body: JSON.stringify(adminData),
+      });
 
-      // Resetting the form and loading state
-      setAdminData(initialFormData);
+      const json = await response.json();
+
+      if (response.ok) {
+        console.log("admin updated successfully");
+        updateAdmin(adminData);
+        close();
+      }
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
       setIsLoading(false);
-
-      console.log("Admin added successfully", response.data);
-      addAdmin(response.data);
-
-      //Closing modal after adding user
-      close();
     } catch (error) {
-      setIsLoading(false);
       console.error(error);
-      // Display error message to user
-      setErrors(error?.response?.data?.error);
+      setIsLoading(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} encType="multipart/form-data">
       <Group className="max-w-full mx-auto flex justify-around pt-2 mb-3">
@@ -168,7 +191,7 @@ const AddAdminForm = ({ addAdmin, close }) => {
           className="w-[30%]"
           radius="lg"
           label="Role"
-          // description="Select user role"
+          // description="Select admin role"
           required
           icon={<IconUserExclamation size="1rem" color="green" />}
           data={[
@@ -201,11 +224,11 @@ const AddAdminForm = ({ addAdmin, close }) => {
 
       <Group position="center" mt="sm">
         <Button type="submit">
-          {isLoading ? <Loader size={24} /> : "ADD Admin"}
+          {isLoading ? <Loader size={24} /> : "Update Admin"}
         </Button>
       </Group>
     </form>
   );
 };
 
-export default AddAdminForm;
+export default EditAdminForm;
