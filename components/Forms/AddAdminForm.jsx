@@ -9,9 +9,6 @@ import {
   NativeSelect,
   useMantineTheme,
   FileInput,
-  Avatar,
-  Image,
-  clsx,
 } from "@mantine/core";
 import { IconUserExclamation, IconUpload } from "@tabler/icons";
 // import { VscOrganization, VscPerson } from "react-icons/vsc";
@@ -20,11 +17,6 @@ const AddAdminForm = ({ addAdmin, close }) => {
   const theme = useMantineTheme();
 
   ///----------------------------------------STATES BLOCK----------------------------------//
-
-  //Skills Set and State
-  const [skillsSet, setSkillsSet] = useState([
-    { value: "coding", label: "Coding" },
-  ]);
 
   //SeTting Select Option State
   const [selectedOption, setSelectedOption] = useState("");
@@ -201,7 +193,7 @@ const AddAdminForm = ({ addAdmin, close }) => {
 
       <Group position="center" mt="sm">
         <Button type="submit">
-          {isLoading ? <Loader size={24} /> : "ADD Admin"}
+          {isLoading ? <Loader size={24} /> : "ADD ADMIN"}
         </Button>
       </Group>
     </form>

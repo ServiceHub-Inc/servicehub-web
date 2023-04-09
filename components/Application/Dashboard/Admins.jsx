@@ -425,20 +425,15 @@ export default function AdminsComponent() {
                         {admin?.lastName?.charAt(0)}
                       </Avatar>
                       <div>
-                        <Text fz="sm" fw={500}>
-                          {admin.lastName}
+                        <Text fz="xs" c="dimmed" className="text-gray-300">
+                          Sys Admin
                         </Text>
-                        <Text
-                          fz="xs"
-                          c="dimmed"
-                          className="text-gray-300"
-                        ></Text>
                       </div>
                     </Group>
                   </td>
                   <td>{admin.firstName}</td>
                   <td>{admin.lastName}</td>
-                  <td>{admin.role}</td>
+                  <td>{admin.role.toLowerCase()}</td>
                   <td>{admin.email} </td>
                   <td>{moment(admin.createdAt).format("MMMM Do YYYY")}</td>
                   <td>
