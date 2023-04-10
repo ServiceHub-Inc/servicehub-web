@@ -775,7 +775,7 @@ export default function AdminsComponent() {
                 </Paper>
               </div>
 
-              <div className="flex justify-center ">
+              {/* <div className="flex justify-center ">
                 <Link href={`/dashboard/admins/${selectedAdmin._id}/`}>
                   <Button
                     size="sm"
@@ -786,7 +786,7 @@ export default function AdminsComponent() {
                     Full Profile View
                   </Button>
                 </Link>
-              </div>
+              </div> */}
             </UserModal>
           )}
         </div>
