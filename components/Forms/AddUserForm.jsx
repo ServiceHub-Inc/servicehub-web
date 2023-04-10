@@ -30,6 +30,7 @@ import IndividualProvider from "./individual/IndividualProvider";
 import CorporateProvider from "./corporate/CorporateProvider";
 import IndividualTwo from "./individual/IndividualTwo";
 import CorporateTwo from "./corporate/CorporateTwo";
+import notify from "../../lib/notify";
 
 const AddUserForm = ({ addUser, close }) => {
   const theme = useMantineTheme();
@@ -168,6 +169,11 @@ const AddUserForm = ({ addUser, close }) => {
       // Resetting the form and loading state
       setUserData(initialFormData);
       setIsLoading(false);
+
+      //Add User Notification
+      notify.success({
+        message: `You've added a new user! ${response.data.firstName}`,
+      });
 
       console.log("User Added", response.data);
       addUser(response.data);

@@ -51,11 +51,12 @@ import UserTable from "../../Forms/UserTable";
 import { BsSend, BsFillShareFill } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
 import TableDataProp from "../../Forms/DataProp";
-import Link from "next/link";
+
 import { useAdminsContext } from "../../../lib/hooks/useAdminsContext";
 import Head from "next/head";
 import EditAdminForm from "../../Forms/EditAdminForm";
 import config from "../../../lib/config";
+import notify from "../../../lib/notify";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -169,6 +170,9 @@ export default function AdminsComponent() {
     } catch (err) {
       console.error(`Error fetching admins: ${err.message}`);
       // Handle error
+      notify.warn({
+        message: `Error Fetching Admins ${err.message} `,
+      });
     }
   };
 
@@ -179,6 +183,10 @@ export default function AdminsComponent() {
   //Adding admin function
   const handleAddAdmin = (newAdmin) => {
     dispatch({ type: "ADD_ADMIN", payload: newAdmin });
+    notify.success({
+      message: `You've Added ${newAdmin.admin.firstName} as Admin`,
+    });
+
     //Setting admins to LocalStorage
     // localStorage.setItem("adminsList", JSON.stringify([newAdmin, ...adminsList]));
   };
@@ -186,6 +194,9 @@ export default function AdminsComponent() {
   //"Updating Admin function"
   const handleUpdateAdmin = (updatedAdmin) => {
     dispatch({ type: "UPDATE_ADMIN", payload: updatedAdmin });
+    notify.success({
+      message: `You've updated ${updatedAdmin.firstName}'s details`,
+    });
   };
 
   // Function to remove/Delete a admin from the list
@@ -198,6 +209,9 @@ export default function AdminsComponent() {
       const json = await response.json();
       if (response.ok) {
         dispatch({ type: "DELETE_ADMIN", payload: json });
+        notify.warn({
+          message: `Admin Deleted Successfully!`,
+        });
       }
 
       if (!response.ok) {

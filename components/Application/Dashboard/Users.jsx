@@ -63,6 +63,7 @@ import TableDataProp from "../../Forms/DataProp";
 import Link from "next/link";
 import { useUsersContext } from "../../../lib/hooks/useUsersContext";
 import Head from "next/head";
+import notify from "../../../lib/notify";
 //Checking if user is approved
 //const approved=1;
 
@@ -199,6 +200,9 @@ export default function UsersComponent() {
   //"Updating User function"
   const handleUpdateUser = (updatedUser) => {
     dispatch({ type: "UPDATE_USER", payload: updatedUser });
+    notify.success({
+      message: `You've updated ${updatedUser.firstName}'s details`,
+    });
   };
 
   // Function to remove/Delete a user from the list
@@ -211,6 +215,9 @@ export default function UsersComponent() {
       const json = await response.json();
       if (response.ok) {
         dispatch({ type: "DELETE_USER", payload: json });
+        notify.warn({
+          message: `Delete successful!`,
+        });
       }
 
       if (!response.ok) {
