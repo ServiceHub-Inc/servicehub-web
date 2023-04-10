@@ -44,8 +44,6 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconUserPlus,
-  IconSun,
-  IconMoonStars,
   IconArrowsLeftRight,
   IconEye,
   IconDotsVertical,
@@ -53,6 +51,7 @@ import {
   IconCircleCheck,
   IconEdit,
   IconExternalLink,
+  IconCircleX,
 } from "@tabler/icons";
 import UserModal from "../../utils/Modal";
 import AddUserForm from "../../Forms/AddUserForm";
@@ -450,8 +449,16 @@ export default function UsersComponent() {
 
                   <td>{moment(user.createdAt).format("MMMM Do YYYY")}</td>
                   <td>
-                    <span className="text-primary">
-                      <IconCircleCheck />
+                    <span>
+                      {user.is_email_verified ? (
+                        <span className="text-primary">
+                          <IconCircleCheck />
+                        </span>
+                      ) : (
+                        <span className="text-danger">
+                          <IconCircleX />
+                        </span>
+                      )}
                     </span>
                     <UserModal title="User Details">hello</UserModal>
                   </td>
@@ -505,14 +512,6 @@ export default function UsersComponent() {
                         </Menu.Dropdown>
                       </Menu>
                     </div>
-                    {/* <span>
-                          <UserModal title="User Details">body</UserModal>
-                        </span> */}
-
-                    {/* <span className="px-1 mx-1"><IconTrash/></span>
-                      <span>
-                        {approved ? <IconUserCheck/> : "Not Approved" }
-                      </span> */}
                   </td>
                 </tr>
               )) //Map
