@@ -22,5 +22,5 @@
   "peacock.color": "#63ae4a",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "cSpell.words": ["Akompi", "NHIS", "Rockson", "tabler"]
+  "cSpell.words": ["Akompi", "apifetcher", "NHIS", "Rockson", "tabler", "webp"]
 }

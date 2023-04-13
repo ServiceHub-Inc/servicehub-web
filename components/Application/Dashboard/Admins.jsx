@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import moment from "moment";
 import {
   Avatar,
@@ -57,6 +57,7 @@ import Head from "next/head";
 import EditAdminForm from "../../Forms/EditAdminForm";
 import config from "../../../lib/config";
 import notify from "../../../lib/notify";
+import { LoginContext } from "../../../lib/contexts/LoginContext";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -156,9 +157,19 @@ export default function AdminsComponent() {
   // Using Context Api and destructing from global admin Context
   const { admins, dispatch } = useAdminsContext();
 
+  //Getting Login State
+  const { setLoginState, token, profile } = useContext(LoginContext);
+
+  // prettier-ignore
+  const headers = {
+    "Authorization": `Bearer ${token}`,
+  };
+
   const fetchAdmins = async () => {
     try {
-      const response = await fetch("http://localhost:3008/admins");
+      const response = await fetch(`${config.baseUrl}admins`, {
+        headers,
+      });
       if (!response.ok) {
         throw new Error("Error fetching admins");
       }
@@ -170,14 +181,16 @@ export default function AdminsComponent() {
     } catch (err) {
       console.error(`Error fetching admins: ${err.message}`);
       // Handle error
-      notify.warn({
-        message: `Error Fetching Admins ${err.message} `,
+      notify.error({
+        message: err.message,
       });
     }
   };
 
   useEffect(() => {
-    fetchAdmins();
+    if (profile) {
+      fetchAdmins();
+    }
   }, []);
 
   //Adding admin function
@@ -202,14 +215,15 @@ export default function AdminsComponent() {
   // Function to remove/Delete a admin from the list
   const deleteAdmin = async (_id) => {
     try {
-      const response = await fetch(`http://localhost:3008/admin/${_id}`, {
+      const response = await fetch(`${config.baseUrl}admin/${_id}`, {
         method: "DELETE",
+        headers,
       });
 
       const json = await response.json();
       if (response.ok) {
         dispatch({ type: "DELETE_ADMIN", payload: json });
-        notify.warn({
+        notify.success({
           message: `Admin Deleted Successfully!`,
         });
       }

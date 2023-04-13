@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import axios from "axios";
 import {
   TextInput,
@@ -11,6 +11,8 @@ import {
   FileInput,
 } from "@mantine/core";
 import { IconUserExclamation, IconUpload } from "@tabler/icons";
+import { LoginContext } from "../../lib/contexts/LoginContext";
+import config from "../../lib/config";
 // import { VscOrganization, VscPerson } from "react-icons/vsc";
 
 const AddAdminForm = ({ addAdmin, close }) => {
@@ -64,22 +66,30 @@ const AddAdminForm = ({ addAdmin, close }) => {
     //const imageUrl = URL.createObjectURL(value);
     setAdminData({ ...adminData, image: value });
   };
+  //Getting Login State
+  const { token, profile } = useContext(LoginContext);
+
+  //prettier-ignore
+  const headers = {
+    "Content-Type": "multipart/form-data" ,
+    "Authorization": `Bearer ${token}`,
+  };
 
   // Handling Form Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+
+    if (!profile) {
+      setErrors("You must be Authorized");
+      return;
+    }
     try {
-      //-----------------Using Fetch------------------//
-      // const response = await fetch("http://localhost:3008/create-user", {
-      //   method: "POST",
-      //   body: adminData,
-      // });
       const response = await axios.post(
-        "http://localhost:3008/create-admin",
+        `${config.baseUrl}create-admin`,
         adminData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: headers,
         },
       );
       // if (!response.ok) {

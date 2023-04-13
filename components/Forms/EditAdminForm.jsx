@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import {
   TextInput,
   Button,
@@ -13,6 +13,8 @@ import { faker } from "@faker-js/faker";
 import { IconUserExclamation, IconUpload } from "@tabler/icons";
 
 import { useAdminsContext } from "../../lib/hooks/useAdminsContext";
+import { LoginContext } from "../../lib/contexts/LoginContext";
+import config from "../../lib/config";
 
 const EditAdminForm = ({ admin, updateAdmin, close }) => {
   const theme = useMantineTheme();
@@ -104,17 +106,30 @@ const EditAdminForm = ({ admin, updateAdmin, close }) => {
   //   }
   // }, [adminData.image]);
 
+  //Getting Login State
+  const { token, profile } = useContext(LoginContext);
+
+  // prettier-ignore
+  const headers = {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${token}`,
+};
   //
   //Handle Submit
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+
+    //Checking if admin is authorized to perform this action
+    // if (!profile) {
+    //   setErrors("You must be Authorized");
+    //   return;
+    // }
+
     try {
-      const response = await fetch(`http://localhost:3008/admin/${admin._id}`, {
+      const response = await fetch(`${config.baseUrl}admin/${admin._id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: headers,
         body: JSON.stringify(adminData),
       });
 

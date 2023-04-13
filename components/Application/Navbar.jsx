@@ -133,7 +133,6 @@ export function HeaderTabs({}) {
   //Getting Login State
   const { setLoginState, token, profile } = useContext(LoginContext);
 
-  console.log(token);
   //Logout Function
   const handleLogout = () => {
     setLoginState({ logout: true });

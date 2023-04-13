@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useContext } from "react";
 import {
   TextInput,
   PasswordInput,
@@ -36,7 +36,7 @@ const schema = Yup.object().shape({
 });
 
 function Login({ isAdmin, router }) {
-  const [resettingPassword, setRessettingPassword] = React.useState(false);
+  const [resettingPassword, setResettingPassword] = React.useState(false);
   const [notiShown, setNotiShown] = React.useState(false);
   const redirectUrl = React.useMemo(
     () => decode(router?.query?.next),
@@ -53,8 +53,8 @@ function Login({ isAdmin, router }) {
     },
   });
   const register = form.getInputProps;
-  const { setPageLoading } = React.useContext(LoadingContext);
-  const { setLoginState } = React.useContext(LoginContext);
+  const { setPageLoading } = useContext(LoadingContext);
+  const { setLoginState } = useContext(LoginContext);
 
   const handleLogin = async (data) => {
     setPageLoading(true);
@@ -63,15 +63,16 @@ function Login({ isAdmin, router }) {
       method: "POST",
       data,
     });
-    const { message, statusCode, _doc, code } = res;
-    console.log(res);
+    const { message, statusCode, admin, token, tokenValidity, code } = res;
+
     if (statusCode === 200) {
-      if (statusCode === 200 && _doc) {
+      if (statusCode === 200 && admin) {
         notify.success({ title: "Login Success", message: "Great!" });
         setLoginState({
-          token: _doc.remember_token,
-          loginType: _doc.role,
-          profile: _doc,
+          token: token,
+          loginType: admin.role,
+          profile: admin,
+          tokenValidity,
         });
 
         const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard/home";
@@ -160,7 +161,7 @@ function Login({ isAdmin, router }) {
             <Checkbox label="Remember me" />
             <UnstyledButton
               className="text-xs text-primary"
-              onClick={() => setRessettingPassword(true)}
+              onClick={() => setResettingPassword(true)}
             >
               Forgot password?
             </UnstyledButton>

@@ -12,8 +12,7 @@ export function LoginProvider({ children }) {
   //
 
   const [loginData, setLoginData] = useState({});
-  //
-  const [tokenValidity, setTokenValidity] = useState(Date.now() + 3600 * 1000);
+  // const tokenValidity = Date.now() + 3600 * 1000;
 
   //
   const setLoginState = useCallback(
@@ -24,6 +23,7 @@ export function LoginProvider({ children }) {
         localStorage.clear();
         cookies.remove("accessor");
         cookies.remove("loginType");
+        cookies.remove("tokenValidity");
         setLoginData({});
         return;
       }
@@ -64,15 +64,24 @@ export function LoginProvider({ children }) {
           expires: new Date(tokenValidity),
         });
       }
+      if (tokenValidity) {
+        cookies.set("tokenValidity", tokenValidity, {
+          path: "/",
+          expires: new Date(tokenValidity),
+        });
+      }
 
-      localStorage.setItem("context", JSON.stringify({ loginType, profile }));
+      localStorage.setItem(
+        "Login",
+        JSON.stringify({ loginType, profile, tokenValidity }),
+      );
       setLoginData({
         token,
         loginType,
         profile,
-        tokenValidity: Date.now() + 3600 * 1000,
+        tokenValidity,
       });
-      setTokenValidity(Date.now() + 3600 * 1000);
+
       // LogRocket.identify(profile.id, {
       //   ...profile,
       // });
@@ -93,12 +102,14 @@ export function LoginProvider({ children }) {
 
   useEffect(() => {
     const token = cookies.get("accessor");
-    const savedData = JSON.parse(localStorage.getItem("context"));
+    const savedData = JSON.parse(localStorage.getItem("Login"));
+    const tokenValidity = cookies.get("tokenValidity");
+
     if (token && !loginData?.loginType) {
       if (savedData?.loginType) setLoginState({ token, ...savedData });
       // return null;
     }
-    const tokenValidity = cookies.get("tokenValidity");
+
     if (token && new Date(tokenValidity) < new Date()) {
       // Token has expired, log the user out
       setLoginState({ logout: true });
@@ -106,11 +117,11 @@ export function LoginProvider({ children }) {
       window.location.href = "/login";
     }
 
-    // const {  loginType, profile } = loginData;
-    // if ( !profile || !loginType ) return null;
+    // const { loginType, profile } = loginData;
+    // if (!profile || !loginType) return null;
     // function logoutListener() {
     //   setLoginState({ logout: true });
-    //   console.log('logout');
+    //   console.log("logout");
     // }
     // document.addEventListener('logout', logoutListener);
     // function logoutListener() {
