@@ -154,11 +154,19 @@ export function HeaderTabs({}) {
               >
                 <Group spacing={8} className="mx-4">
                   <Avatar
-                    src={config.baseUrl + profile.imageUrl}
+                    src={
+                      profile.imageUrl
+                        ? config.baseUrl + profile.imageUrl
+                        : null
+                    }
+                    color="blue"
                     alt={profile.firstName}
-                    radius="xl"
-                    size={25}
-                  />
+                    radius={32}
+                    size={32}
+                  >
+                    {profile.firstName.charAt(0)}
+                    {profile.lastName.charAt(0)}
+                  </Avatar>
                   <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={2}>
                     {profile.firstName}
                   </Text>

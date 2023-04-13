@@ -562,7 +562,11 @@ export default function AdminsComponent() {
                       withBorder
                     >
                       <Avatar
-                        src={config.baseUrl + selectedAdmin.imageUrl}
+                        src={
+                          selectedAdmin.imageUrl
+                            ? config.baseUrl + selectedAdmin.imageUrl
+                            : null
+                        }
                         alt={selectedAdmin.firstName}
                         radius={120}
                         mx="auto"

@@ -64,6 +64,7 @@ import Link from "next/link";
 import { useUsersContext } from "../../../lib/hooks/useUsersContext";
 import Head from "next/head";
 import notify from "../../../lib/notify";
+import config from "../../../lib/config";
 //Checking if user is approved
 //const approved=1;
 
@@ -170,7 +171,7 @@ export default function UsersComponent() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3008/users");
+      const response = await fetch(`${config.baseUrl}users`);
       if (!response.ok) {
         throw new Error("Error fetching users");
       }
@@ -215,7 +216,7 @@ export default function UsersComponent() {
       const json = await response.json();
       if (response.ok) {
         dispatch({ type: "DELETE_USER", payload: json });
-        notify.warn({
+        notify.success({
           message: `Delete successful!`,
         });
       }
@@ -430,7 +431,9 @@ export default function UsersComponent() {
                       <Avatar
                         size={32}
                         color="green"
-                        src={user.imageUrl ? user.imageUrl : null}
+                        src={
+                          user.imageUrl ? config.baseUrl + user.imageUrl : null
+                        }
                         radius="xl"
                         alt={user.firstName}
                         onClick={() => setSelectedUser(user)}
@@ -553,7 +556,11 @@ export default function UsersComponent() {
                       withBorder
                     >
                       <Avatar
-                        src={selectedUser.imageUrl}
+                        src={
+                          selectedUser.imageUrl
+                            ? config.baseUrl + selectedUser.imageUrl
+                            : null
+                        }
                         alt={selectedUser.firstName}
                         radius={120}
                         mx="auto"

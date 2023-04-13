@@ -3,6 +3,7 @@ import { useState, createContext, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import React from "react";
 import Cookies from "universal-cookie";
+import config from "../config";
 // import apiFetcher from '../api/apiFetcher';
 
 export const LoginContext = createContext();
@@ -10,13 +11,18 @@ export const LoginContext = createContext();
 const cookies = new Cookies();
 export function LoginProvider({ children }) {
   //
-
   const [loginData, setLoginData] = useState({});
-  // const tokenValidity = Date.now() + 3600 * 1000;
 
   //
   const setLoginState = useCallback(
-    ({ logout, token, loginType, profile: prof, tokenValidity }) => {
+    ({
+      logout,
+      token,
+      loginType,
+      profile: prof,
+      tokenValidity,
+      refreshToken,
+    }) => {
       const profile = { ...prof };
 
       if (logout) {
@@ -56,6 +62,12 @@ export function LoginProvider({ children }) {
         cookies.set("accessor", token, {
           path: "/",
           expires: new Date(tokenValidity),
+        });
+      }
+      if (refreshToken) {
+        cookies.set("refreshToken", refreshToken, {
+          path: "/",
+          expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days
         });
       }
       if (loginType) {
@@ -100,7 +112,24 @@ export function LoginProvider({ children }) {
     [loginData, setLoginState, loggedIn],
   );
 
+  async function refreshToken() {
+    const refreshToken = cookies.get("refreshToken");
+
+    const response = await fetch(`${config.baseUrl}admin/refresh-token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
+    const data = await response.json();
+    console.log(data);
+    return data;
+  }
+
   useEffect(() => {
+    const refreshTokenThreshold = 5 * 60 * 1000; // 5 minutes
+
     const token = cookies.get("accessor");
     const savedData = JSON.parse(localStorage.getItem("Login"));
     const tokenValidity = cookies.get("tokenValidity");
@@ -117,38 +146,52 @@ export function LoginProvider({ children }) {
       window.location.href = "/login";
     }
 
-    // const { loginType, profile } = loginData;
-    // if (!profile || !loginType) return null;
-    // function logoutListener() {
-    //   setLoginState({ logout: true });
-    //   console.log("logout");
-    // }
-    // document.addEventListener('logout', logoutListener);
-    // function logoutListener() {
-    //   setLoginState({ logout: true });
-    //   console.log('logout');
-    // }
-    // loginType === 'enrollment'
-    //     ? 'refreshEnrollmentToken'
-    //     : 'refreshStudentToken';
+    // Add event listeners to detect user activity
+    const onUserActivity = async () => {
+      if (loggedIn) {
+        const tokenValidity = cookies.get("tokenValidity");
 
-    // if (new Date() < new Date(tokenValidity)) return null;
+        if (new Date(tokenValidity) - Date.now() < refreshTokenThreshold) {
+          const { newToken, newTokenValidity } = await refreshToken();
 
-    // apiFetcher({ endpoint, token }).then((res) => {
-    //   console.table('token-refresh', res);
-    //   if (res.status !== '000') {
-    //     setLoginState({
-    //       logout: true,
-    //     });
-    //   }
-    //   setLoginState({
-    //     ...loginData,
-    //     token: res.token,
-    //     tokenValidity: res.token_validity,
-    //   });
-    // });
+          setLoginState({
+            ...loginData,
+            token: newToken,
+            tokenValidity: newTokenValidity,
+          });
 
-    // return () => document.removeEventListener('logout', logoutListener);
+          cookies.set("accessor", newToken, {
+            path: "/",
+            expires: new Date(newTokenValidity),
+          });
+
+          cookies.set("tokenValidity", newTokenValidity, {
+            path: "/",
+            expires: new Date(newTokenValidity),
+          });
+
+          localStorage.setItem(
+            "Login",
+            JSON.stringify({
+              ...JSON.parse(localStorage.getItem("Login")),
+              tokenValidity: newTokenValidity,
+            }),
+          );
+        }
+      }
+    };
+
+    document.addEventListener("mousemove", onUserActivity);
+    document.addEventListener("mousedown", onUserActivity);
+    document.addEventListener("keydown", onUserActivity);
+    document.addEventListener("scroll", onUserActivity);
+
+    return () => {
+      document.removeEventListener("mousemove", onUserActivity);
+      document.removeEventListener("mousedown", onUserActivity);
+      document.removeEventListener("keydown", onUserActivity);
+      document.removeEventListener("scroll", onUserActivity);
+    };
   }, [loginData, setLoginState]);
 
   return (
