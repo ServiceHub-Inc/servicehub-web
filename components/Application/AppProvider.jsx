@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import {
@@ -14,24 +14,18 @@ import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import { SideNav } from "./Dashboard/Sidebar";
+import { LoginContext } from "../../lib/contexts/LoginContext";
 
 const AppProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [currentPath, setCurrentPath] = useState("");
+  const { loggedIn } = useContext(LoginContext);
 
   const router = useRouter();
 
-  useEffect(() => {
-    setCurrentPath(router.pathname);
-  }, [router]);
+  const showDashboard = !loggedIn || window.location.pathname === "/";
 
-  const { name } = router.query;
   const showComponents =
     window.location.pathname !== "/login/" &&
     window.location.pathname !== "/register/";
-
-  const showDashboard =
-    (window.location.pathname === "/dashboard/") & isLoggedIn;
 
   const error = {
     fontSize: "12px",
@@ -127,7 +121,7 @@ const AppProvider = ({ children }) => {
           >
             <div className="h-screen ">
               <AppShell
-                // header={showComponents && <AppHeader />}
+                header={showComponents && showDashboard && <AppHeader />}
                 // navbar={showDashboard && <SideNav />}
                 footer={showComponents && <AppFooter />}
               >

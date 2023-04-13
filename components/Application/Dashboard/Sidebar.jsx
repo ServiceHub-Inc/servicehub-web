@@ -43,6 +43,7 @@ const useStyles = createStyles((theme) => ({
 
   main: {
     flex: 1,
+
     backgroundColor:
       theme.colorScheme === "dark"
         ? theme.colors.dark[6]
@@ -82,7 +83,6 @@ const useStyles = createStyles((theme) => ({
 
   title: {
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    // display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: theme.fn.primaryColor(),
@@ -261,9 +261,25 @@ export function SideNav({ activeItem }) {
         </a>
       </Link>
     ));
+  if (active == "Services")
+    links = servicesSubLinks.map((link) => (
+      <Link href={"#"} key={link}>
+        <a
+          className={cx(classes.link, {
+            [classes.linkActive]: activeLink === link,
+          })}
+          onClick={(e) => {
+            setActiveLink(link);
+          }}
+          // }}
+        >
+          {link}
+        </a>
+      </Link>
+    ));
 
   return (
-    <Navbar.Section grow className={classes.wrapper}>
+    <Navbar.Section className="flex pl-2 ">
       <div className={classes.aside}>
         <span>{mainLinks}</span>
 
