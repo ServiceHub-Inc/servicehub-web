@@ -3,11 +3,11 @@ import withAuth from "../../lib/withAuth";
 import Dashboard from ".";
 
 const Users = () => {
-  return (
-    <Dashboard title="Users">
-      <UsersComponent />
-    </Dashboard>
-  );
+	return (
+		<Dashboard title="Users">
+			<UsersComponent />
+		</Dashboard>
+	);
 };
 
 export default withAuth(Users);
