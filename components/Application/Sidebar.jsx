@@ -17,7 +17,6 @@ import {
 	IconSettings,
 	IconLayoutDashboard,
 } from "@tabler/icons";
-import { Logo } from "./AppHeader";
 
 const useStyles = createStyles((theme) => ({
 	wrapper: {
@@ -176,7 +175,12 @@ export function SideNav() {
 	));
 
 	const links = linksMockdata.map((link) => (
-		<Link href={`/${link.toLowerCase()}`} key={link}>
+		<Link
+			href={
+				link === "Dashboard" ? "/dashboard" : `/dashboard/${link.toLowerCase()}`
+			}
+			key={link}
+		>
 			<a
 				className={cx(classes.link, {
 					[classes.linkActive]: activeLink === link,
