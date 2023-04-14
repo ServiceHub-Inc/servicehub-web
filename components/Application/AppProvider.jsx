@@ -18,8 +18,8 @@ import { DashboardHeader } from "./DashboardHeader";
 const AppProvider = ({ children }) => {
 	const router = Router.useRouter();
 	const showComponents =
-		window.location.pathname !== "/login/" &&
-		window.location.pathname !== "/register/";
+		window.location.pathname !== "/auth/login" &&
+		window.location.pathname !== "/auth/register";
 
 	const showDashboard = window.location.pathname !== "/" && showComponents;
 
@@ -118,10 +118,10 @@ const AppProvider = ({ children }) => {
 						<div className="h-screen ">
 							<AppShell
 								header={
-									showComponents && window.location.pathname === "/" ? (
+									window.location.pathname === "/" ? (
 										<AppHeader />
 									) : (
-										<DashboardHeader />
+										showComponents && <DashboardHeader />
 									)
 								}
 								navbar={showDashboard && <SideNav />}
@@ -129,8 +129,8 @@ const AppProvider = ({ children }) => {
 							>
 								<div
 									className={` ${
-										window.location.pathname !== "/login/" &&
-										window.location.pathname !== "/register/"
+										window.location.pathname !== "/auth/login/" &&
+										window.location.pathname !== "/auth/register/"
 											? "min-h-screen"
 											: "min-h-[calc(100vh-150px)]"
 									}`}
