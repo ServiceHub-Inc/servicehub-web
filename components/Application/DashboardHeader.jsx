@@ -1,12 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from "react";
-import { createStyles, Text, Burger, Header } from "@mantine/core";
+import {
+	createStyles,
+	Text,
+	Burger,
+	Header,
+	Anchor,
+	Title,
+	ActionIcon,
+	useMantineColorScheme,
+} from "@mantine/core";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 // import { IconBuildingBank } from '@tabler/icons';
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../public/images/logo-1.webp";
 import UserMenu from "./HeaderAvatar";
+import Breadcrumb from "../utils/BreadCrumbs";
+import { IconMoonStars, IconSun } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
 	header: {
@@ -79,10 +90,23 @@ export function DashboardHeader() {
 	const { classes } = useStyles();
 	const [opened, { toggle }] = useDisclosure(false);
 
+	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+	const dark = colorScheme === "dark";
+
+	const items = window.location.pathname.split("/").map((item, index) => (
+		<Anchor href={item.href} key={index}>
+			{item}
+		</Anchor>
+	));
+
 	return username ? (
 		<Header className="fixed  transition-all duration-300 shadow-md px-4 lg:px-8 z-[100]">
-			<div className="flex justify-between items-center h-[65px] w-full">
-				<Logo className="mt-2" />
+			<div className="grid grid-cols-3 items-center h-[65px] w-full">
+				<Logo className="mt-2 " />
+
+				<div className="flex justify-center">
+					<Breadcrumb items={items} />
+				</div>
 
 				<Burger
 					opened={opened}
@@ -90,7 +114,24 @@ export function DashboardHeader() {
 					className={classes.burger}
 					size="sm"
 				/>
-				<UserMenu />
+				<div className="flex justify-end">
+					{/* Dark mode Switch */}
+					<p className="flex justify-end mr-10">
+						<ActionIcon
+							variant="outline"
+							color={dark ? "yellow" : "green"}
+							onClick={() => toggleColorScheme()}
+							title="Toggle color scheme"
+						>
+							{dark ? (
+								<IconSun size="1.1rem" />
+							) : (
+								<IconMoonStars size="1.1rem" />
+							)}
+						</ActionIcon>
+					</p>
+					<UserMenu />
+				</div>
 			</div>
 		</Header>
 	) : (
