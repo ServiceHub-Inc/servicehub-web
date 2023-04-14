@@ -112,7 +112,7 @@ function Login({ isAdmin, router }) {
   return (
     <div className="absolute w-full h-full my-auto mx-auto max-w-[min(100vw,450px)] lg:max-w-full lg:grid lg:grid-cols-5">
       <div className="hidden lg:block bg-top bg-no-repeat bg-cover bg-login col-span-3" />
-      <div className="lg:col-span-2 lg:px-16 mx-auto w-full">
+      <div className="lg:col-span-2 lg:px-16 mx-auto mt-auto mb-auto w-full">
         <Paper
           // className="w-full"
           component="form"
@@ -132,13 +132,15 @@ function Login({ isAdmin, router }) {
             Log in to continue:
           </Text>
 
+          {/*
           <Group grow mb="md" mt="md">
             <GoogleButton radius="xl">Google</GoogleButton>
             <FacebookButton radius="xl">Facebook</FacebookButton>
           </Group>
+          */}
 
           <Divider
-            label="Or continue with email"
+            label="Enter your email and password"
             labelPosition="center"
             my="lg"
           />
@@ -177,6 +179,7 @@ function Login({ isAdmin, router }) {
             LOGIN
           </Button>
           {/* <Divider my="lg" /> */}
+          {/*
           {!isAdmin && (
             <Text color="dimmed" size="sm" align="center" mt={5}>
               Don't have an account?{" "}
@@ -191,6 +194,7 @@ function Login({ isAdmin, router }) {
               </Link>
             </Text>
           )}
+          */}
         </Paper>
       </div>
       {/* <Modal

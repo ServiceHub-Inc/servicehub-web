@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { MdCheckCircle } from "react-icons/md";
 import image from "../../public/images/hero-image.svg";
-
+import Link from "next/link";
 const useStyles = createStyles((theme) => ({
   inner: {
     display: "flex",
@@ -113,16 +113,18 @@ export default function HeroComponent() {
           </List>
 
           <Group mt={30}>
-            <Button radius="xl" size="md" className="bg-primary text-white">
-              Provide Services
-            </Button>
+            <Link href="login">
+              <Button radius="xl" size="md" className="bg-primary text-white">
+                Login
+              </Button>
+            </Link>
             <Button
               variant="default"
               radius="xl"
               size="md"
               className="border border-primary"
             >
-              Request Services
+              Forgot Password
             </Button>
           </Group>
         </div>
