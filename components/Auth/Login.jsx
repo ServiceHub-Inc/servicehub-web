@@ -35,7 +35,7 @@ const schema = Yup.object().shape({
 	password: Yup.string().required("Password is required"),
 });
 
-function Login({ isAdmin, router }) {
+function Login({ router }) {
 	const [resettingPassword, setRessettingPassword] = React.useState(false);
 	const [notiShown, setNotiShown] = React.useState(false);
 	const redirectUrl = React.useMemo(
@@ -59,7 +59,7 @@ function Login({ isAdmin, router }) {
 	const handleLogin = async (data) => {
 		setPageLoading(true);
 		const res = await apiFetcher({
-			url: isAdmin ? "api/admin/auth/login" : "/login",
+			url: "api/admin/auth/login",
 			method: "POST",
 			data,
 		});
@@ -70,11 +70,11 @@ function Login({ isAdmin, router }) {
 				notify.success({ message, title: "Login Success" });
 				setLoginState({
 					token: responseData.access_token,
-					loginType: isAdmin ? "admin" : "user",
+					loginType: "admin",
 					profile: responseData.user,
 				});
 
-				const defaultUrl = isAdmin ? "/admin/dashboard" : "/dashboard";
+				const defaultUrl = "/admin/dashboard";
 				const url = redirectUrl || defaultUrl;
 				console.log(redirectUrl);
 				window.location.assign(url);
@@ -122,7 +122,7 @@ function Login({ isAdmin, router }) {
 					<div className="flex flex-col items-center justify-center text-gray-800">
 						<Image height={60} width={60} alt="ServiceHub Logo" src={logoSm} />
 						<Title align="center" className="mt-4 text-xl font-bold">
-							{isAdmin ? "Admin Login" : "Welcome back!"}
+							Welcome back!
 						</Title>
 					</div>
 					<Text color="dimmed" className="" size="sm" align="center" m={5}>
@@ -174,20 +174,19 @@ function Login({ isAdmin, router }) {
 						LOGIN
 					</Button>
 					{/* <Divider my="lg" /> */}
-					{!isAdmin && (
-						<Text color="dimmed" size="sm" align="center" mt={5}>
-							Don't have an account?{" "}
-							<Link href="/auth/register" passHref>
-								<Anchor component="a" pl={4} size="sm" className="text-primary">
-									<MdPersonAdd
-										size={16}
-										style={{ verticalAlign: "text-bottom", paddingBottom: 2 }}
-									/>{" "}
-									Create Account
-								</Anchor>
-							</Link>
-						</Text>
-					)}
+
+					<Text color="dimmed" size="sm" align="center" mt={5}>
+						Don't have an account?{" "}
+						<Link href="/auth/register" passHref>
+							<Anchor component="a" pl={4} size="sm" className="text-primary">
+								<MdPersonAdd
+									size={16}
+									style={{ verticalAlign: "text-bottom", paddingBottom: 2 }}
+								/>{" "}
+								Create Account
+							</Anchor>
+						</Link>
+					</Text>
 				</Paper>
 			</div>
 			{/* <Modal
@@ -207,7 +206,6 @@ function Login({ isAdmin, router }) {
 
 export default withRouter(Login);
 Login.propTypes = {
-	isAdmin: PropTypes.bool,
 	router: PropTypes.shape({
 		pathname: PropTypes.string,
 		push: PropTypes.func,
@@ -216,7 +214,4 @@ Login.propTypes = {
 			next: PropTypes.string,
 		}),
 	}).isRequired,
-};
-Login.defaultProps = {
-	isAdmin: false,
 };
