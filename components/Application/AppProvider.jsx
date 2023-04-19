@@ -13,14 +13,13 @@ import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
-import { SideNav } from "./Sidebar";
+import { SideNav } from "./Dashboard/Sidebar";
 import { DashboardHeader } from "./DashboardHeader";
 import { LoginContext } from "../../lib/contexts/LoginContext";
 
 const AppProvider = ({ children }) => {
 	const { loggedIn } = useContext(LoginContext);
 
-	const router = Router.useRouter();
 	const showComponents =
 		window.location.pathname !== "/auth/login" &&
 		window.location.pathname !== "/auth/register";
