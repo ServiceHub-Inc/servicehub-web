@@ -567,7 +567,10 @@ export default function UsersComponent() {
                         mt={-15}
                         className="shadow-md hover:shadow-2xl"
                         size={120}
-                      />
+                      >
+                        {selectedUser.firstName.charAt(0)}
+                        {selectedUser.lastName.charAt(0)}
+                      </Avatar>
                     </Indicator>
                   </div>
                 </div>
