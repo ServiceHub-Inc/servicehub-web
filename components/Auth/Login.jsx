@@ -75,7 +75,7 @@ function Login({ isAdmin, router }) {
 					tokenValidity,
 				});
 
-				const defaultUrl = "/admin/dashboard";
+				const defaultUrl = "/dashboard";
 				const url = redirectUrl || defaultUrl;
 				console.log(redirectUrl);
 				window.location.assign(url);

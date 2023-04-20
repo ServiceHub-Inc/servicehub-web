@@ -118,7 +118,8 @@ const AppProvider = ({ children }) => {
 							}
 						}
 					>
-						<div className="h-screen ">
+						<div className="w-full h-[calc(100%-60px)]">{children}</div>
+						{/* <div className="h-screen ">
 							<AppShell
 								header={
 									window.location.pathname === "/" ? (
@@ -130,18 +131,9 @@ const AppProvider = ({ children }) => {
 								navbar={showDashboard && <SideNav />}
 								footer={showComponents && <AppFooter />}
 							>
-								<div
-									className={` ${
-										window.location.pathname !== "/auth/login/" &&
-										window.location.pathname !== "/auth/register/"
-											? "min-h-screen"
-											: "min-h-[calc(100vh-150px)]"
-									}`}
-								>
-									{children}
-								</div>
+								
 							</AppShell>
-						</div>
+						</div> */}
 					</ModalsProvider>
 				</MantineProvider>
 			</ColorSchemeProvider>

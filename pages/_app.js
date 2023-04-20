@@ -9,25 +9,25 @@ import UsersContextProvider from "../lib/contexts/UserContext";
 import AdminsContextProvider from "../lib/contexts/AdminContext";
 
 const App = ({ Component, pageProps }) => {
-  return (
-    <LoginProvider>
-      <LoadingProvider>
-        <AdminsContextProvider>
-          <UsersContextProvider>
-            <AppProvider>
-              <ScrollToTop />
-              <Component {...pageProps} />
-            </AppProvider>
-          </UsersContextProvider>
-        </AdminsContextProvider>
-      </LoadingProvider>
-    </LoginProvider>
-  );
+	return (
+		<LoginProvider>
+			<LoadingProvider>
+				<AdminsContextProvider>
+					<UsersContextProvider>
+						<AppProvider>
+							<ScrollToTop />
+							<Component {...pageProps} />
+						</AppProvider>
+					</UsersContextProvider>
+				</AdminsContextProvider>
+			</LoadingProvider>
+		</LoginProvider>
+	);
 };
 
 App.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.shape({}).isRequired,
+	Component: PropTypes.elementType.isRequired,
+	pageProps: PropTypes.shape({}).isRequired,
 };
 
 export default App;

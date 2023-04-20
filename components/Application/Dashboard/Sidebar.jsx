@@ -278,7 +278,7 @@ export function SideNav({ activeItem }) {
 		));
 
 	return (
-		<Navbar.Section className="flex pl-2 ">
+		<Navbar.Section className="flex pl-2 mt-[20px]">
 			<div className={classes.aside}>
 				<span>{mainLinks}</span>
 

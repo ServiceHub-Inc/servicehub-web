@@ -99,7 +99,8 @@ export function DashboardHeader() {
 		</Anchor>
 	));
 
-	return username ? (
+	// username ? (
+	return (
 		<Header className="fixed  transition-all duration-300 shadow-md px-4 lg:px-8 z-[100]">
 			<div className="grid grid-cols-3 items-center h-[65px] w-full">
 				<Logo className="mt-2 " />
@@ -134,7 +135,8 @@ export function DashboardHeader() {
 				</div>
 			</div>
 		</Header>
-	) : (
-		<div />
 	);
+	// : (
+	// 	<div />
+	// );
 }

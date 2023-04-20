@@ -1,181 +1,205 @@
 import { useState, useContext } from "react";
 import {
-  createStyles,
-  Container,
-  Avatar,
-  UnstyledButton,
-  Group,
-  Text,
-  Menu,
-  Tabs,
-  Burger,
-  rem,
+	createStyles,
+	Container,
+	Avatar,
+	UnstyledButton,
+	Group,
+	Text,
+	Menu,
+	Tabs,
+	Burger,
+	rem,
+	ActionIcon,
+	useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconLogout,
-  IconSettings,
-  IconSwitchHorizontal,
-  IconChevronDown,
+	IconLogout,
+	IconSettings,
+	IconSwitchHorizontal,
+	IconChevronDown,
+	IconSun,
+	IconMoonStars,
 } from "@tabler/icons";
 import { Logo } from "./AppHeader";
 import { LoginContext } from "../../lib/contexts/LoginContext";
 import config from "../../lib/config";
 
 const useStyles = createStyles((theme) => ({
-  header: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
-  },
+	header: {
+		backgroundColor:
+			theme.colorScheme === "dark"
+				? theme.colors.dark[6]
+				: theme.colors.gray[0],
+	},
 
-  mainSection: {
-    paddingBottom: theme.spacing.xs,
-    marginLeft: theme.spacing.xs,
-    marginRight: theme.spacing.xs,
-    maxWidth: "100%",
-  },
+	mainSection: {
+		paddingBottom: theme.spacing.xs,
+		marginLeft: theme.spacing.xs,
+		marginRight: theme.spacing.xs,
+		maxWidth: "100%",
+	},
 
-  user: {
-    color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[0]
-        : theme.fn.primaryColor(),
-    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-    borderRadius: theme.radius.sm,
-    transition: "background-color 100ms ease",
+	user: {
+		color:
+			theme.colorScheme === "dark"
+				? theme.colors.dark[0]
+				: theme.fn.primaryColor(),
+		padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+		borderRadius: theme.radius.sm,
+		transition: "background-color 100ms ease",
 
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[8]
-          : theme.colors.green[0],
-    },
+		"&:hover": {
+			backgroundColor:
+				theme.colorScheme === "dark"
+					? theme.colors.dark[8]
+					: theme.colors.green[0],
+		},
 
-    [theme.fn.smallerThan("xs")]: {
-      display: "none",
-    },
-  },
+		[theme.fn.smallerThan("xs")]: {
+			display: "none",
+		},
+	},
 
-  burger: {
-    [theme.fn.largerThan("xs")]: {
-      display: "none",
-    },
-  },
+	burger: {
+		[theme.fn.largerThan("xs")]: {
+			display: "none",
+		},
+	},
 
-  userActive: {
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[8] : "transparent",
-  },
+	userActive: {
+		backgroundColor:
+			theme.colorScheme === "dark" ? theme.colors.dark[8] : "transparent",
+	},
 
-  tabs: {
-    [theme.fn.smallerThan("sm")]: {
-      display: "none",
-    },
-  },
+	tabs: {
+		[theme.fn.smallerThan("sm")]: {
+			display: "none",
+		},
+	},
 
-  tabsList: {
-    borderBottom: "0 !important",
-  },
+	tabsList: {
+		borderBottom: "0 !important",
+	},
 
-  tab: {
-    fontWeight: 500,
-    height: rem(38),
-    backgroundColor: "transparent",
+	tab: {
+		fontWeight: 500,
+		height: rem(38),
+		backgroundColor: "transparent",
 
-    "&:hover": {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[5]
-          : theme.colors.gray[1],
-    },
+		"&:hover": {
+			backgroundColor:
+				theme.colorScheme === "dark"
+					? theme.colors.dark[5]
+					: theme.colors.gray[1],
+		},
 
-    "&[data-active]": {
-      backgroundColor:
-        theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-      borderColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[7]
-          : theme.colors.gray[2],
-    },
-  },
+		"&[data-active]": {
+			backgroundColor:
+				theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+			borderColor:
+				theme.colorScheme === "dark"
+					? theme.colors.dark[7]
+					: theme.colors.gray[2],
+		},
+	},
 }));
 
 const details = {
-  user: {
-    name: "Frank Thomas",
-    email: "frank@servicehub.com",
-    image:
-      "https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmxhY2slMjB3b21hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
-  },
-  tabs: [
-    "Services",
-    "Pending Services",
-    "Promoted",
-    "Requested",
-    "Completed",
-    "Support",
-  ],
+	user: {
+		name: "Frank Thomas",
+		email: "frank@servicehub.com",
+		image:
+			"https://images.unsplash.com/photo-1539701938214-0d9736e1c16b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmxhY2slMjB3b21hbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60",
+	},
+	tabs: [
+		"Services",
+		"Pending Services",
+		"Promoted",
+		"Requested",
+		"Completed",
+		"Support",
+	],
 };
 
 export function HeaderTabs({}) {
-  const { classes, theme, cx } = useStyles();
-  const [opened, { toggle }] = useDisclosure(false);
-  const [userMenuOpened, setUserMenuOpened] = useState(false);
+	const { classes, theme, cx } = useStyles();
+	const [opened, { toggle }] = useDisclosure(false);
+	const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-  const items = details.tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab}>
-      {tab}
-    </Tabs.Tab>
-  ));
+	//Setting Color Scheme
+	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+	const dark = colorScheme === "dark";
 
-  //Getting Login State
-  const { setLoginState, token, profile } = useContext(LoginContext);
+	const items = details.tabs.map((tab) => (
+		<Tabs.Tab value={tab} key={tab}>
+			{tab}
+		</Tabs.Tab>
+	));
 
-  //Logout Function
-  const handleLogout = () => {
-    setLoginState({ logout: true });
-    // redirect to login page
-    window.location.href = "/login";
-  };
+	//Getting Login State
+	const { setLoginState, token, profile } = useContext(LoginContext);
 
-  return (
-    <div className={classes.header}>
-      <Container className="py-1 mx-4 max-w-full">
-        <Group className="flex items-center justify-between">
-          <Logo />
-          <Menu>
-            <Menu.Target>
-              <UnstyledButton
-                className={cx(classes.user, {
-                  [classes.userActive]: userMenuOpened,
-                })}
-              >
-                <Group spacing={8} className="mx-4">
-                  <Avatar
-                    src={
-                      profile.imageUrl
-                        ? config.baseUrl + profile.imageUrl
-                        : null
-                    }
-                    color="blue"
-                    alt={profile.firstName}
-                    radius={32}
-                    size={32}
-                  >
-                    {profile.firstName.charAt(0)}
-                    {profile.lastName.charAt(0)}
-                  </Avatar>
-                  <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={2}>
-                    {profile.firstName}
-                  </Text>
-                  <IconChevronDown size={rem(15)} stroke={1.5} />
-                </Group>
-              </UnstyledButton>
-            </Menu.Target>
-            <Menu.Dropdown>
-              {/* <Menu.Item
+	//Logout Function
+	const handleLogout = () => {
+		setLoginState({ logout: true });
+		// redirect to login page
+		window.location.href = "/login";
+	};
+
+	return (
+		<div className={classes.header}>
+			<Container className="py-1 mx-4 max-w-full">
+				<Group className="flex items-center justify-between">
+					<Logo />
+					<div className="flex">
+						{/* Dark mode Switch */}
+						<p className="flex justify-end mr-4">
+							<ActionIcon
+								variant="outline"
+								color={dark ? "yellow" : "green"}
+								onClick={() => toggleColorScheme()}
+								title="Toggle color scheme"
+							>
+								{dark ? (
+									<IconSun size="1.1rem" />
+								) : (
+									<IconMoonStars size="1.1rem" />
+								)}
+							</ActionIcon>
+						</p>
+						<Menu>
+							<Menu.Target>
+								<UnstyledButton
+									className={cx(classes.user, {
+										[classes.userActive]: userMenuOpened,
+									})}
+								>
+									<Group spacing={8} className="mx-4">
+										<Avatar
+											src={
+												profile.imageUrl
+													? config.baseUrl + profile.imageUrl
+													: null
+											}
+											color="blue"
+											alt={profile.firstName}
+											radius={32}
+											size={32}
+										>
+											{profile.firstName.charAt(0)}
+											{profile.lastName.charAt(0)}
+										</Avatar>
+										<Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={2}>
+											{profile.firstName}
+										</Text>
+										<IconChevronDown size={rem(15)} stroke={1.5} />
+									</Group>
+								</UnstyledButton>
+							</Menu.Target>
+							<Menu.Dropdown>
+								{/* <Menu.Item
                 icon={
                   <IconHeart
                     size="0.9rem"
@@ -209,29 +233,30 @@ export function HeaderTabs({}) {
                 Your comments
               </Menu.Item> */}
 
-              <Menu.Label>Settings</Menu.Label>
-              <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
-                Account settings
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconSwitchHorizontal size="0.9rem" stroke={1.5} />}
-              >
-                Change account
-              </Menu.Item>
-              <Menu.Item
-                icon={<IconLogout size="0.9rem" stroke={1.5} />}
-                onClick={handleLogout}
-              >
-                Logout
-              </Menu.Item>
+								<Menu.Label>Settings</Menu.Label>
+								<Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>
+									Account settings
+								</Menu.Item>
+								<Menu.Item
+									icon={<IconSwitchHorizontal size="0.9rem" stroke={1.5} />}
+								>
+									Change account
+								</Menu.Item>
+								<Menu.Item
+									icon={<IconLogout size="0.9rem" stroke={1.5} />}
+									onClick={handleLogout}
+								>
+									Logout
+								</Menu.Item>
 
-              <Menu.Divider />
-            </Menu.Dropdown>
-          </Menu>
-        </Group>
-      </Container>
-      <Container>
-        {/* <Tabs
+								<Menu.Divider />
+							</Menu.Dropdown>
+						</Menu>
+					</div>
+				</Group>
+			</Container>
+			<Container>
+				{/* <Tabs
           defaultValue="Services"
           variant="outline"
           classNames={{
@@ -242,7 +267,7 @@ export function HeaderTabs({}) {
         >
           <Tabs.List>{items}</Tabs.List>
         </Tabs> */}
-      </Container>
-    </div>
-  );
+			</Container>
+		</div>
+	);
 }
