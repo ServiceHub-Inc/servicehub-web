@@ -105,35 +105,30 @@ const AppProvider = ({ children }) => {
 				>
 					<Notifications autoClose={4000} />
 					<ModalsProvider
-						modalProps={
-							{
-								// classNames: {
-								//   modal: "max-w-[min(100vw,720px)] w-full",
-								//   header: "text-center bg-primary m-3",
-								//   title:
-								//     "text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
-								//   body: " border border-solid border-gray-200 rounded-md p-6",
-								//   close: "text-red-700  text-4xl hover:text-red-800",
-								// },
-							}
-						}
+						modalProps={{
+							classNames: {
+								modal: "max-w-[min(100vw,720px)] w-full z-[99999]",
+								header: "text-center bg-primary m-3",
+								title:
+									"text-center w-full font-bold text-center w-full rounded-md text-white font-bold",
+								body: " border border-solid border-gray-200 rounded-md p-6",
+								close: "text-red-700  text-4xl hover:text-red-800",
+							},
+						}}
 					>
-						<div className="w-full h-[calc(100%-60px)]">{children}</div>
-						{/* <div className="h-screen ">
-							<AppShell
-								header={
-									window.location.pathname === "/" ? (
-										<AppHeader />
-									) : (
-										showComponents && <DashboardHeader />
-									)
-								}
-								navbar={showDashboard && <SideNav />}
-								footer={showComponents && <AppFooter />}
-							>
-								
-							</AppShell>
-						</div> */}
+						{window.location.pathname === "/" ? (
+							<div className="h-screen ">
+								<AppShell
+									header={<AppHeader />}
+									navbar={showDashboard && <SideNav />}
+									footer={showComponents && <AppFooter />}
+								>
+									{children}
+								</AppShell>
+							</div>
+						) : (
+							<div className="w-full h-[calc(100%-60px)]">{children}</div>
+						)}
 					</ModalsProvider>
 				</MantineProvider>
 			</ColorSchemeProvider>

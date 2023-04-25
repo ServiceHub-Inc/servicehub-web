@@ -238,6 +238,7 @@ export default function UsersComponent() {
 	//------------------------------ADD USER MODAL---------------------------//
 	const openAddUserModal = () => {
 		const id = modals.open({
+			centered: true,
 			classNames: {
 				header: "text-center bg-primary m-3",
 				title:
@@ -268,6 +269,7 @@ export default function UsersComponent() {
 	//------------------------------EDIT USER MODAL---------------------------//
 	const openEditUserModal = (user) => {
 		const id = modals.open({
+			centered: true,
 			classNames: {
 				header: "text-center bg-primary m-3",
 				title:
